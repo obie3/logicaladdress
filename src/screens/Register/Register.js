@@ -183,7 +183,7 @@ export default class Register extends Component {
 
       const response = await fetch(generateOTPEndpoint, settings);
       const res = await response.json();
-      if (typeof res.id === 'undefined') {
+      if (typeof res.data.id === 'undefined') {
         return this.showNotification('error', 'Message', res.meta.message);
       }
       await saveToLocalStorage(name, email, phone);

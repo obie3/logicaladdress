@@ -90,29 +90,27 @@ export default styles = StyleSheet.create({
     flexDirection : 'column',
     backgroundColor : theme.backgroundColor,
     alignItems : 'center',
-    height : (Platform.OS === 'ios') ? '30%' : '25%',
-    paddingTop : 8
+    height: (Platform.OS === 'ios') ? '30%' : '25%',
+    justifyContent: 'center'
+    //paddingTop : 
     
   },
   userDetailView : {
     flexDirection : 'column',
-    // paddingTop : 16,
     justifyContent : 'center',
     alignItems : 'center',
   },
   txtuser: {
-    fontFamily : theme.subHeaderFont, 
-    // marginLeft : 15,
-    
+    fontFamily: theme.inputHintFont,
+    color: colors.label,
+    marginTop: 15,    
   },
   sideMenuContainer: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#fff',
-    // alignItems: 'center',
-    // paddingTop: 10,
-    
+    backgroundColor: '#fff',  
   },
+  
   sideMenuProfileIcon: {
     resizeMode: 'cover',
     width: 100,

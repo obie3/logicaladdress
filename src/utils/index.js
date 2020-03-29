@@ -101,6 +101,18 @@ export const fetchToken = async () => {
     });
 };
 
+export const saveToken = async (token) => {
+    const profile = { token };
+    await AsyncStorage.setItem('token', JSON.stringify(profile));
+    return true;
+}
+
+export const logout = async()=> {
+    let keys = [ 'profile', 'token' ];
+     return await AsyncStorage.multiRemove(keys, (err) => {
+    })
+}
+
 
 
 
@@ -249,11 +261,6 @@ export const getOnBoardingStatus = async () => {
         }).catch(error => error);
 }
 
-export const logout = async()=> {
-    let keys = [ 'expoToken', 'registered', 'profile', 'isAccountVerified', 'completed' ];
-     return await AsyncStorage.multiRemove(keys, (err) => {
-    })
-}
 
 
 

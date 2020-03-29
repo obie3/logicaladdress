@@ -5,30 +5,28 @@ import colors from '../../assets/colors';
 import styles from './styles';
 import theme from '../../assets/theme';
 import {connect} from 'react-redux';
-import {DisplayText } from '../../components';
+import { DisplayText } from '../../components';
+import UserAvatar from 'react-native-user-avatar';
+import { fetchProfile } from '../../utils';
 
 const dashboard = require('../../assets/images/home.png'),
-  profile = require('../../assets/images/profile.png'),
-//  notification = require('../../assets/images/notification.png'),
-//  settings = require('../../assets/images/setting.png'),
+ profile = require('../../assets/images/profile.png'),
  logout = require('../../assets/images/logout.png');
 
  class CustomSidebarMenu extends Component {
   constructor() {
     super();
+    this.state = {
+      firstName: '',
+      lastName: '',
+      phone: '',
+    }
     this.items = [
       {
         navOptionThumb: dashboard,
-        navOptionName: 'DashBoard',
+        navOptionName: 'Dashboard',
         screenToNavigate: 'DashBoard',
-      },
-
-      // {
-      //   navOptionThumb: profile,
-      //   navOptionName: 'Survey/FeedBack',
-      //   screenToNavigate: 'Profile',
-      // },
-      
+      },  
       { 
         navOptionThumb: logout,
         navOptionName: 'Logout',
@@ -37,46 +35,43 @@ const dashboard = require('../../assets/images/home.png'),
       
     ];
   }
-
-  displayProfileImage = () =>{
-    if(typeof this.props.profile.photo !==  'undefined') {
-      return (<Image
-        source = {{uri: this.props.profile.photo}}
-        style={styles.sideMenuProfileIcon}
-      />);
-      }
-    else if(typeof this.props.profile.photo !==  'undefined')  {
-      return (<Image
-        source = {{uri: this.props.profile.photo}}
-        style={styles.sideMenuProfileIcon}
-      />);
-    }
-    else {
-      return (<Image
-        source = {require('../../assets/images/male.png')}
-        style={styles.ProfileIcon}
-      />);
-    } 
+   
+  componentDidMount() {
+    this.getProfile();
   }
+   
+  getProfile = async () => {
+    let response = await fetchProfile(); 
+    if (typeof response.name !== 'undefined') {
+      let phone = response.phone.substring(4);
+      let nPhone = `${'0'}${phone}`;
+
+      let names = response.name;
+      let firstName = names.split(' ')[0];
+      let lastName = names.split(' ')[1];
+      
+      return this.setState({
+        phone: nPhone,
+        firstName,
+        lastName,
+      });
+    }
+  };
+  
   render() {
+    const { phone, firstName, lastName } = this.state;
     return (
       <SafeAreaView style={styles.sideMenuContainer}>
-        {/*Top Large Image */}
         <View style = {styles.drawerImageView}>
-            {this.displayProfileImage()}
+          <UserAvatar size = "80" name = {`${firstName}${' '}${lastName}`} color = { colors.buttonBlue } />
           <View style = {styles.userDetailView}>
             <DisplayText
-              text={`${this.props.profile.title} ${this.props.profile.name}`}
+              text={phone}
               styles = {StyleSheet.flatten(styles.txtuser)}
             />
-            {/* <Text style = {styles.txtuser}>
-              Speaker
-            </Text> */}
           </View>
         </View>
-        {/*Divider between Top Image and Sidebar Option*/}
         <View style={styles.divider}/>
-        {/*Setting up Navigation Options from option array using loop*/}
         <View style={{ width: '100%' }}>
           {this.items.map((item, key) => (
             <View key = {key}
@@ -91,9 +86,6 @@ const dashboard = require('../../assets/images/home.png'),
               }}>
                 
               <View style={{ marginRight: 10, marginLeft: 20 }}>
-                
-                {/* <Icon name={item.navOptionThumb} size={25} color="#0F959A" /> */}
-
               <Image
                 source = {item.navOptionThumb}
                 style={styles.draweIcon}/>

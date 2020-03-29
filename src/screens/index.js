@@ -28,6 +28,7 @@ import MyProgram from './MyProgram';
 import PeopleMain from './PeopleMain';
 import ProgramDetails from './ProgramDetails'
 import Resources from './Resources';
+import Map from './Map';
 export default {
   ForgetPassword, 
   VerificationScreen,
@@ -60,4 +61,5 @@ export default {
   PeopleMain,
   ProgramDetails,
   Resources,
+  Map,
 };

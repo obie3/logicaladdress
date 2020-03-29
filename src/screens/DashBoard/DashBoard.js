@@ -14,7 +14,9 @@ class Dashboard extends Component {
     this.state = {
       phone: '',
       firstName: '',
-      otherNames: '',
+      lastName: '',
+      middleName: '',
+
     }
   }
 
@@ -40,6 +42,8 @@ class Dashboard extends Component {
     }
   };
 
+  gotoMap = () => this.props.navigation.navigate('Map');
+
   render() {
     const { phone, firstName, lastNames } = this.state;
     return(
@@ -52,14 +56,7 @@ class Dashboard extends Component {
           <View style = {styles.viewBody}>
             <View style={styles.cardLayout}>
               <View style={styles.cardContents}>
-              <View style={{ flexDirection: 'row', }}>
-                <View style={styles.cardIconLayout}>
-                  <Image
-                    style={styles.cardIcon}
-                    borderRadius={20}
-                    source={require('../../assets/images/maplocation.png')}
-                  />
-                </View>
+              <View style={{ flexDirection: 'row', alignContent: 'center', alignSelf: 'center' }}>
                 <View style={styles.verificationStatusLayout}>
                   <DisplayText
                     text = {phone}
@@ -70,15 +67,15 @@ class Dashboard extends Component {
                       text = {'Verified'}
                       styles = {StyleSheet.flatten(styles.verificationText)}
                     /> 
-                    <Verified layoutSize={40}
-                      size={28}/>
+                    <Verified layoutSize={30}
+                      size={20}/>
                   </View>
                 </View>    
                 </View>
-                <View style={{paddingBottom: 15}}>
+                <View style={styles.buttonLayout}>
                   <SubmitButton
-                    title={'Verify'}
-                    onPress={()=>console.log('hellooo')}
+                    title={'Set Address'}
+                    onPress={this.gotoMap}
                     btnStyle={styles.button}
                     titleStyle={styles.buttonTxt}
                     disabled={false}
@@ -124,7 +121,7 @@ class Dashboard extends Component {
                   </View>
                   <View style={styles.profileItem}>
                     <DisplayText
-                      text = {'Other Names'}
+                      text = {'Last Names'}
                       styles = {styles.headerThreeLabel}
                     /> 
                     <DisplayText
@@ -133,12 +130,7 @@ class Dashboard extends Component {
                     /> 
                   </View>
                 </View>
-                
-
-              </View>
-
-              
-              
+              </View> 
               </View>
            </View>
            

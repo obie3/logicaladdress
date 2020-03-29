@@ -79,6 +79,8 @@ export default styles = StyleSheet.create({
   },
   viewBody : {
     flex: 1,
+    alignContent: 'center',
+    //justifyContent: 'center',
     //padding: 5,
     justifyContent: 'space-evenly' ////spaced here initially
   },
@@ -97,7 +99,7 @@ export default styles = StyleSheet.create({
     height: 100,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     //backgroundColor: 'green'
   },
 
@@ -106,7 +108,6 @@ export default styles = StyleSheet.create({
     paddingRight: 25,
     paddingLeft: 25,
     marginTop: -20,
-    //backgroundColor: 'black', //'#F8F8FF',
   },
 
   cardIconLayout: {
@@ -126,15 +127,17 @@ export default styles = StyleSheet.create({
   },
 
   verificationStatusLayout: {
-    flex: 1,
     flexDirection: 'column',
-    padding: 20,
-    justifyContent: 'flex-end'
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',// 'flex-end'
+    alignSelf: 'center',
   },
 
   verificationIndicators: {
     flexDirection: 'row',
     alignItems: 'center',
+    alignContent: 'center',
   },
 
   headerText : {
@@ -145,13 +148,13 @@ export default styles = StyleSheet.create({
 
   verificationText : {
     fontFamily : theme.inputHintFont,
-    fontSize : 22,
+    fontSize : 24,
     color: colors.label,
     paddingRight: 6,
   },
 
   headerTwo: {
-    fontSize : 22,
+    fontSize : 26,
     color:  '#4A5459', //theme.primaryTextColor,
     fontWeight: 'bold',
     //paddingRight: 6,
@@ -214,13 +217,22 @@ export default styles = StyleSheet.create({
     marginRight: 15,
   },
 
+  buttonLayout: {
+    //paddingBottom: 15,
+    alignContent: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    //backgroundColor: 'green'
+  },
+
   button : {
     borderRadius : 5,
-    width : '100%',
+    width : '50%',
     height : 35,
     backgroundColor : colors.buttonBlue, //theme.buttonPrimary,
     justifyContent: 'center',
-    alignItems : 'center',
+    alignItems: 'center',
+    //alignSelf: 'center',
     flexDirection : 'row',
   },
 

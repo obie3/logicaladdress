@@ -1,7 +1,7 @@
 import {Animated, StyleSheet, SafeAreaView, View} from 'react-native';
 import React, { useState, memo, useEffect } from 'react';
 import {DisplayText, SubmitButton, Preloader} from '../../components';
-import { fetchProfile, VerifyOTPEndpoint, generateOTPEndpoint, RegistrationEndpoint} from '../../utils';
+import { fetchProfile, saveToken, VerifyOTPEndpoint, generateOTPEndpoint, RegistrationEndpoint} from '../../utils';
 import DropdownAlert from 'react-native-dropdownalert';
 
 import {
@@ -17,7 +17,7 @@ import styles, {
   CELL_SIZE,
   DEFAULT_CELL_BG_COLOR,
   NOT_EMPTY_CELL_BG_COLOR,
-} from './Styles';
+} from './styles';
 
 const {Value, Text: AnimatedText} = Animated;
 const CELL_COUNT = 4;
@@ -133,16 +133,12 @@ const VerificationScreen = ({ navigation }) => {
     };
 
     try {
-
-     hideLoadingDialogue();
-     return navigation.navigate('App');
-
       const response = await fetch(VerifyOTPEndpoint, settings);
       const res = await response.json();
-      if (res.token === 'undefined') {
-        return showNotification('error', 'Message', res.message);
+      if (typeof res.data === 'undefined') {
+        return showNotification('error', 'Message', res.error);
       }
-      return completeRegistration(res.token, params);
+      return completeRegistration(res.data.token, params);
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }
@@ -163,11 +159,10 @@ const VerificationScreen = ({ navigation }) => {
 
       const response = await fetch(generateOTPEndpoint, settings);
       const res = await response.json();
-
-      if (res.meta.message !== 'success') {
-        return showNotification('error', 'Message', res.meta.message);
+      if (typeof res.data === 'undefined') {
+        return showNotification('error', 'Message', res.error.message);
       }
-      return showNotification('success', 'Message', res.meta.message);
+      return showNotification('success', 'Message', 'OTP sent successfully');
 
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
@@ -179,18 +174,18 @@ const VerificationScreen = ({ navigation }) => {
     let name = params.name.split(' ');
     let defaultParams = {
       firstName: name[0],
-      token : token,
+      email: params.email ? params.email : '',
    } 
     let body = (name.length == 2) ?
       { ...defaultParams, lastName : name[1] } :
-      { ...defaultParams, lastName : name[2], middleName : name[1] };
+      { ...defaultParams, lastName: name[2], middleName: name[1] };
     
     const settings = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        token: token
+        'TempAuthorization': token
       },
       body: JSON.stringify(body),
     };
@@ -198,9 +193,11 @@ const VerificationScreen = ({ navigation }) => {
     try {
       const response = await fetch(RegistrationEndpoint, settings);
       const res = await response.json();
-      if (res.meta.message !== 'success') {
-        return showNotification('error', 'Message', res.meta.message);
+      if (typeof res.data === 'undefined') {
+        return showNotification('error', 'Message', res.error.message);
       }
+      let result = res.data;
+      await saveToken(result.token);
       hideLoadingDialogue();
       return navigation.navigate('App');
 

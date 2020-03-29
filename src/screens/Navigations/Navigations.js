@@ -57,19 +57,9 @@ const DashBoard_StackNavigator = createStackNavigator({
   },
 });
 
-// const Profile_StackNavigator = createStackNavigator({
-//   //All the screen from the Profile will be indexed here
-//   Profile: {
-//     screen: Profile,
-//     navigationOptions: {
-//       header : null,
-//     }
-//   },
-// });
-
 const Logout_StackNavigator = createStackNavigator({
   //All the screen from the Referral will be indexed here
-  Forth: {
+  Logout: {
     screen: Logout,
     navigationOptions: {
       header : null,
@@ -86,24 +76,6 @@ const DrawerNavigator = createDrawerNavigator({
     }
   },
 
-  // Profile : {
-  //   screen : Profile_StackNavigator,
-  //   navigationOptions: {
-  //     header: null
-  //   }
-  // },
-  // Notification : {
-  //   screen : Notification_StackNavigator,
-  //   navigationOptions: {
-  //     header : null,
-  //   }
-  // },
-  // Settings : {
-  //   screen : Settings_StackNavigator,
-  //   navigationOptions: {
-  //     header : null
-  //   }
-  // },
   Logout : {
     screen : Logout_StackNavigator,
     navigationOptions: {
@@ -184,8 +156,8 @@ const BottomTab = createBottomTabNavigator({
   }
 });
 
+//const App = createAppContainer(BottomTab);
+//export default App;
 
 
-const App = createAppContainer(BottomTab);
-
-export default App;
+export default AppDrawer;

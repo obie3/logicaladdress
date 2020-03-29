@@ -32,6 +32,7 @@ import ProgramDetails from '../screens/ProgramDetails/ProgramDetails';
 import People from '../screens/People/People';
 import PeopleMain from '../screens/PeopleMain/PeopleMain';
 import Resources from '../screens/Resources/Resources';
+import Map from '../screens/Map/Map';
 
 const AuthStack = createStackNavigator({ 
 
@@ -98,6 +99,13 @@ export const AppStack = createStackNavigator({
   },
   Dashboard : {
     screen : Dashboard,
+    navigationOptions : {
+      header : null,
+    }
+  },
+
+  Map : {
+    screen : Map,
     navigationOptions : {
       header : null,
     }
