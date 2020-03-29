@@ -1,0 +1,82 @@
+{
+  "expo": {
+    "name": "LogicalAddress",
+    "slug": "LogicalAddress",
+    "privacy": "public",
+    "sdkVersion": "36.0.0",
+    "description": "Logical Address Mobile",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.2.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/images/icon.png",
+    "splash": {
+      "image": "./src/assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 300000
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "com.logicaladdress.mobile",
+      "versionCode": 3,
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=",
+      "permissions": [
+        "CAMERA",
+        "MANAGE_DOCUMENTS",
+        "READ_INTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_PHONE_STATE",
+        "VIBRATE",
+        "WAKE_LOCK",
+        "com.anddoes.launcher.permission.UPDATE_COUNT",
+        "com.android.launcher.permission.INSTALL_SHORTCUT",
+        "com.google.android.c2dm.permission.RECEIVE",
+        "com.google.android.gms.permission.ACTIVITY_RECOGNITION",
+        "com.htc.launcher.permission.READ_SETTINGS",
+        "com.htc.launcher.permission.UPDATE_SHORTCUT",
+        "com.majeur.launcher.permission.UPDATE_BADGE",
+        "com.sec.android.provider.badge.permission.READ",
+        "com.sec.android.provider.badge.permission.WRITE",
+        "com.sonyericsson.home.permission.BROADCAST_BADGE"
+      ],
+      "splash": {
+        "resizeMode": "contain",
+        "mdpi": "./src/assets/images/splash_mdpi.png",
+        "hdpi": "./src/assets/images/splash_hdpi.png",
+        "xhdpi": "./src/assets/images/splash_xhdpi.png"
+      },
+      "config": {
+        "fabric": {
+          "apiKey": "f4c6d386ecadd3ebe0d71c5769113ac0ecfa76ac",
+          "buildSecret": "3d37edf3c238007caee6d09968c4a3f7334267b9c0015bdc604f2169abf01831"
+        }
+      }
+    },
+    "notification": {
+      "icon": "./src/assets/images/icon.png",
+      "androidMode": "collapse",
+      "androidCollapsedTitle": "New Messages"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.sprout.conferenceapp",
+      "buildNumber": "1.0.0",
+      "icon": "./src/assets/images/icon.png",
+      "splash": {
+        "backgroundColor": "#ffffff",
+        "resizeMode": "contain",
+        "image": "./src/assets/images/splash.png"
+      }
+    }
+  }
+}
