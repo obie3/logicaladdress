@@ -387,7 +387,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, FlatList, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, InputField} from '../../components';
+import {Paragraph, InputField} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
 import {connect} from 'react-redux';
@@ -419,7 +419,7 @@ class MyPrograms extends Component {
           /&gt;
         &lt;/TouchableOpacity&gt;
         &lt;View style = {styles.nameView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {"MY PROGRAMS"}
             styles = {StyleSheet.flatten(styles.txtHeader)}
           /&gt;
@@ -470,18 +470,18 @@ class MyPrograms extends Component {
         onPress = {this.handleViewSponser}
         style = {styles.cardView}&gt;
         &lt;View style = {styles.cardHeaderView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {"The Business of Branding"}
             styles = {StyleSheet.flatten(styles.headerText)}
           /&gt;
           &lt;TouchableOpacity style = {styles.buttonView}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text = {"workshop"}
               styles = {StyleSheet.flatten(styles.btnText)}
             /&gt; 
           &lt;/TouchableOpacity&gt;
         &lt;/View&gt;
-        &lt;DisplayText
+        &lt;Paragraph
           text = {'Today 03:00pm - 05:00pm'}
           styles = {StyleSheet.flatten(styles.timeText)}
           /&gt;
@@ -494,42 +494,42 @@ class MyPrograms extends Component {
             source = {require('../../assets/images/male.png')}
             style = {StyleSheet.flatten(styles.maleIcon)}
           /&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {' Barr. Josh Av,'}
             styles = {StyleSheet.flatten(styles.nameText)}
             /&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {'Tammy J,'}
             styles = {StyleSheet.flatten(styles.nameText)}
             /&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {'Dr John'}
             styles = {StyleSheet.flatten(styles.nameText)}
             /&gt;
         &lt;/View&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {'Lorem ipsum dolor sit amet, consecteturedmunn swacing elit, sed do eiusmod tempor incidffsddewrer'}
             styles = {StyleSheet.flatten(styles.cardTxtBody)}
           /&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {'Hall 4, Long Amphitheatre, Sheraton. '}
             styles = {StyleSheet.flatten(styles.nameText)}
             /&gt;
           &lt;View style = {styles.tagsView}&gt;
             &lt;TouchableOpacity style = {styles.buttonView}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 text = {"Technology"}
                 styles = {StyleSheet.flatten(styles.btnText)}
               /&gt; 
             &lt;/TouchableOpacity&gt;
             &lt;TouchableOpacity style = {styles.buttonView}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 text = {"Business"}
                 styles = {StyleSheet.flatten(styles.btnText)}
               /&gt; 
             &lt;/TouchableOpacity&gt;
             &lt;TouchableOpacity style = {styles.buttonView}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 text = {"TalkShow"}
                 styles = {StyleSheet.flatten(styles.btnText)}
               /&gt; 

@@ -7,7 +7,5 @@ export default styles = StyleSheet.create({
     resizeMode: 'contain',
     justifyContent: 'center',
     alignItems: 'center',
-    
-      
-    },
+  },
 });

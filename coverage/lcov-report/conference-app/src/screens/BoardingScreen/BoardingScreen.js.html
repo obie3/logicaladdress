@@ -573,7 +573,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, Image } from 'react-native';
-import {DisplayText} from '../../components';
+import {Paragraph} from '../../components';
 import styles  from './styles';
 import { saveExpoToken, post, FetchProfileEndpoint, getOnBoardingStatus, getVerification, getProfile} from '../../utils';
 import AppIntroSlider from 'react-native-app-intro-slider';
@@ -682,12 +682,12 @@ const slides = <span class="cstat-no" title="statement not covered" >[</span>
           &lt;Image source={item.image} /&gt;
         &lt;/View&gt;
 &nbsp;
-        &lt;DisplayText 
+        &lt;Paragraph 
           styles={styles.sliderTitle}
           text={item.title}
         /&gt;
 &nbsp;
-        &lt;DisplayText 
+        &lt;Paragraph 
           styles={styles.sliderText}
           text={item.text}
           /&gt;

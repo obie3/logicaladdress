@@ -441,7 +441,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, FlatList, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, InputField} from '../../components';
+import {Paragraph, InputField} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
 import {connect} from 'react-redux';
@@ -539,7 +539,7 @@ class People extends  React.PureComponent {
             /&gt;
           &lt;/View&gt;
           &lt;View style = {styles.txtView}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               numberOfLines = { 1 } 
               ellipsizeMode = 'middle'
               text = {item.profile.profile.name}
@@ -547,7 +547,7 @@ class People extends  React.PureComponent {
               onPress = {<span class="fstat-no" title="function not covered" >()</span>=&gt;{<span class="cstat-no" title="statement not covered" >this.handlePeopleMain(item)}</span>}
             /&gt;
 &nbsp;
-            &lt;DisplayText
+            &lt;Paragraph
               numberOfLines = { 1 } 
               // ellipsizeMode = 'middle'
               text = {item.profile.profile.company_name}
@@ -558,7 +558,7 @@ class People extends  React.PureComponent {
           &lt;/View&gt;
             &lt;View style={styles.buttonMoreView}&gt;
               &lt;View style = {styles.bioTextView}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   numberOfLines = { 2 } 
                   ellipsizeMode = 'middle'
                   text = {item.profile.profile.short_bio}
@@ -589,7 +589,7 @@ class People extends  React.PureComponent {
            /&gt;
          &lt;/TouchableOpacity&gt;
          &lt;View style = {styles.nameView}&gt;
-           &lt;DisplayText
+           &lt;Paragraph
              text = {"PEOPLE"}
              styles = {StyleSheet.flatten(styles.txtHeader)}
            /&gt;

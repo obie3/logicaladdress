@@ -169,7 +169,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, } from '../../components';
+import {Paragraph, } from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
 import LastPageSvg from './LastPageSvg';
@@ -206,11 +206,11 @@ export default class LastPage extends Component {
       &lt;LastPageSvg/&gt;
       &lt;/View&gt;
       &lt;View style = {styles.textView}&gt;
-        &lt;DisplayText
+        &lt;Paragraph
           styles={StyleSheet.flatten(styles.firstTxt)}
           text = {'Last Page'}
         /&gt;  
-         &lt;DisplayText
+         &lt;Paragraph
           styles={StyleSheet.flatten(styles.secondText)}
           text = {'We Promise'}
         /&gt;
@@ -219,7 +219,7 @@ export default class LastPage extends Component {
         &lt;TouchableOpacity 
           onPress = {this.handleSwipe}
           style = {styles.buttonView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             onPress = {this.handleSwipe}
             text={'Next'}
             styles = {StyleSheet.flatten(styles.txtNext)}

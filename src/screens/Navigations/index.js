@@ -1,3 +1,3 @@
 import Navigations from './Navigations';
 
-export {Navigations};
+export { Navigations };

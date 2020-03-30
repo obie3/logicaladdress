@@ -1,13 +1,18 @@
 'use strict';
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, View, Text, Modal, TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import {
+  Platform,
+  StyleSheet,
+  View,
+  Text,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
 import colors from '../../assets/colors';
 import PropTypes from 'prop-types';
 
-
 export default class Alert extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -18,70 +23,81 @@ export default class Alert extends Component {
   }
 
   closeNotification = () => {
-    return this.props.handleCloseNotification();  
-  }
+    return this.props.handleCloseNotification();
+  };
 
   render() {
-
-    const {title, message, visible, positiveButton, negetiveButton,} = this.props;
-      const posButton = positiveButton || 'OK';
-      const negButton = negetiveButton || 'CANCEL';
+    const {
+      title,
+      message,
+      visible,
+      positiveButton,
+      negetiveButton,
+    } = this.props;
+    const posButton = positiveButton || 'OK';
+    const negButton = negetiveButton || 'CANCEL';
     return (
       <View>
-       <Modal
-        visible={visible}
-        transparent={true}
-        animationType={"fade"}
-        onRequestClose={this.closeNotification} >
+        <Modal
+          visible={visible}
+          transparent={true}
+          animationType={'fade'}
+          onRequestClose={this.closeNotification}
+        >
+          <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <View style={styles.Alert_Main_View}>
+              <Text style={styles.Alert_Title}>{title}</Text>
 
-        <View style={{ flex:1, alignItems: 'center', justifyContent: 'center' }}>
+              <View
+                style={{
+                  width: '100%',
+                  height: StyleSheet.hairlineWidth,
+                  backgroundColor: colors.gold,
+                }}
+              />
+              <Text style={styles.Alert_Message}>{message}</Text>
 
-          <View style={styles.Alert_Main_View}>
-
-             <Text style={styles.Alert_Title}>
-               {title}
-              </Text>
-
-             <View style={{ width: '100%', height: StyleSheet.hairlineWidth, backgroundColor: colors.gold}} />
-              <Text style={styles.Alert_Message}>
-                {message} 
-              </Text>
-
-             <View style={{ width: '100%', height: StyleSheet.hairlineWidth, backgroundColor: colors.gold}} />
-              <View style={{flexDirection: 'row', height: '30%'}}>
-
-                <TouchableOpacity 
+              <View
+                style={{
+                  width: '100%',
+                  height: StyleSheet.hairlineWidth,
+                  backgroundColor: colors.gold,
+                }}
+              />
+              <View style={{ flexDirection: 'row', height: '30%' }}>
+                <TouchableOpacity
                   style={styles.buttonStyle}
-                  onPress={this.closeNotification } 
-                  activeOpacity={0.2} 
+                  onPress={this.closeNotification}
+                  activeOpacity={0.2}
                 >
-
-                  <Text style={styles.TextStyle}>
-                    {negButton}
-                  </Text>
-         
+                  <Text style={styles.TextStyle}>{negButton}</Text>
                 </TouchableOpacity>
 
-                <View style={{ width: StyleSheet.hairlineWidth, height: '100%', backgroundColor: colors.gold}} />
+                <View
+                  style={{
+                    width: StyleSheet.hairlineWidth,
+                    height: '100%',
+                    backgroundColor: colors.gold,
+                  }}
+                />
 
-                <TouchableOpacity 
-                  style={styles.buttonStyle} 
-                  onPress={this.closeNotification } 
-                  activeOpacity={0.2} 
-                  >
-                  <Text style={styles.TextStyle}>
-                    {posButton}
-                  </Text>
+                <TouchableOpacity
+                  style={styles.buttonStyle}
+                  onPress={this.closeNotification}
+                  activeOpacity={0.2}
+                >
+                  <Text style={styles.TextStyle}>{posButton}</Text>
                 </TouchableOpacity>
-             </View> 
+              </View>
             </View>
           </View>
         </Modal>
-      </View>      
-    )
+      </View>
+    );
   }
 }
-
 
 Alert.propTypes = {
   title: PropTypes.string.isRequired,
@@ -90,56 +106,52 @@ Alert.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  MainContainer :{ 
+  MainContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: (Platform.OS == 'ios') ? 20 : 0,    
-   },
-    
-   Alert_Main_View:{
+    marginTop: Platform.OS == 'ios' ? 20 : 0,
+  },
+
+  Alert_Main_View: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor : colors.white, 
-    height: 155 ,
+    backgroundColor: colors.white,
+    height: 155,
     width: '80%',
     borderWidth: 0.5,
     borderColor: colors.gold,
-    borderRadius:4,
-    
-   },
-    
-   Alert_Title:{  
-    fontSize: 20, 
+    borderRadius: 4,
+  },
+
+  Alert_Title: {
+    fontSize: 20,
     color: colors.gold,
     textAlign: 'center',
     padding: 5,
     height: '25%',
     fontFamily: 'Poppins-Regular',
-    
-   },
-    
-   Alert_Message:{
-    fontSize: 18, 
+  },
+
+  Alert_Message: {
+    fontSize: 18,
     color: colors.gold,
     textAlign: 'center',
     padding: 10,
-    height: '42%'
-      
+    height: '42%',
   },
-    
-   buttonStyle: {  
+
+  buttonStyle: {
     width: '50%',
     height: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
-    
-   },
-      
-   TextStyle:{
+    alignItems: 'center',
+  },
+
+  TextStyle: {
     color: colors.gold,
-    textAlign:'center',
+    textAlign: 'center',
     fontSize: 18,
     fontFamily: 'Poppins-Regular',
-    marginTop: -5
-   }
-})
+    marginTop: -5,
+  },
+});

@@ -6,7 +6,8 @@ const Logo = () => (
   <Image
     source={require('../../assets/images/logicallogo.png')}
     resizeMode={'cover'}
-    style={styles.image} />
+    style={styles.image}
+  />
 );
 
 export default memo(Logo);

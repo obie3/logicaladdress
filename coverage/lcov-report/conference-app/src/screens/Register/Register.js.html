@@ -751,7 +751,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, SafeAreaView, StatusBar, Image, StyleSheet, KeyboardAvoidingView} from 'react-native';
-import {DisplayText, InputField, SubmitButton, Preloader, SuccessAlert, ErrorAlert } from '../../components';
+import {Paragraph, InputField, SubmitButton, Preloader, SuccessAlert, ErrorAlert } from '../../components';
 import colors from '../../assets/colors';
 import styles from './styles';
 import {isEmailValid, sendRoute, RegisterEndpoint, getExpoToken, isEmpty} from '../../utils';
@@ -1049,7 +1049,7 @@ export default class Register extends Component {
                 isChecked={isChecked}
                 // rightText={"I agree to the"}
               /&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 text={'By continuing, you agree to our terms, \nconditions and privacy policy.'}
                 styles = {styles.termCondition}
                 onPress = {this.handleLogin}
@@ -1068,12 +1068,12 @@ export default class Register extends Component {
                 /&gt;
                 
                 &lt;View style = {StyleSheet.flatten(styles.signupLinkView)}&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     text={'Already have an Account? '}
                     styles = {styles.signupText}
                     onPress = {this.handleLoginRoute}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     text={'Log In'}
                     styles = {styles.createAccount}
                     onPress = {this.handleLoginRoute}

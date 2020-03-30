@@ -1,28 +1,34 @@
-import React, {Component} from 'react';
-import {PropTypes} from 'prop-types';
+import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import colors from '../../assets/colors';
-import {TouchableHighlight, StyleSheet} from 'react-native';
+import { TouchableHighlight, StyleSheet } from 'react-native';
 import Icon from '@expo/vector-icons/FontAwesome';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class Icons  extends Component {
-
+export default class Icons extends Component {
   render() {
-    const {disabled, onPress, name, btnstyle, iconColor, iconSize} = this.props;
+    const {
+      disabled,
+      onPress,
+      name,
+      btnstyle,
+      iconColor,
+      iconSize,
+    } = this.props;
     const opacityStyle = disabled ? 0.2 : null;
     const style = btnstyle || styles.button;
-      
-    return(
 
-      <TouchableHighlight 
-        style = {[{opacity: opacityStyle}, style]}
-        disabled = {disabled}
-        onPress = {onPress}>
+    return (
+      <TouchableHighlight
+        style={[{ opacity: opacityStyle }, style]}
+        disabled={disabled}
+        onPress={onPress}
+      >
         <Icon
-          name= {name}
-          color = {iconColor}
-          size = {iconSize}
-          style = {styles.icon}
+          name={name}
+          color={iconColor}
+          size={iconSize}
+          style={styles.icon}
         />
       </TouchableHighlight>
     );
@@ -34,8 +40,7 @@ Icons.propTypes = {
   handleNextButton: PropTypes.func,
   onPress: PropTypes.func.isRequired,
   style: PropTypes.object,
-
-}
+};
 
 const styles = StyleSheet.create({
   button: {
@@ -55,5 +60,5 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: -2,
     marginTop: -2,
-  }
-})
+  },
+});

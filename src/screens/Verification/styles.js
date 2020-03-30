@@ -1,8 +1,7 @@
-import { StyleSheet, Platform, Dimensions} from 'react-native';
-import Constants  from 'expo-constants';
-import colors from '../../assets/colors';
-import theme from '../../assets/theme'
-
+import { StyleSheet, Platform, Dimensions } from 'react-native';
+import Constants from 'expo-constants';
+import colors from 'assets/colors';
+import theme from 'assets/theme';
 
 export const CELL_SIZE = 50;
 export const CELL_BORDER_RADIUS = 8;
@@ -22,13 +21,12 @@ const styles = StyleSheet.create({
     height: CELL_SIZE,
     width: CELL_SIZE,
     lineHeight: CELL_SIZE - 5,
-    ...Platform.select({web: {lineHeight: 65}}),
+    ...Platform.select({ web: { lineHeight: 65 } }),
     fontSize: 30,
     textAlign: 'center',
     borderRadius: CELL_BORDER_RADIUS,
     color: '#3759b8',
     backgroundColor: '#fff',
-
     // IOS
     shadowColor: '#000',
     shadowOffset: {
@@ -37,7 +35,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-
     // Android
     elevation: 3,
   },
@@ -48,35 +45,31 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Constants.statusBarHeight,
   },
-  closeView : {
-    width : 40,
-    height : 40,
-    marginLeft : 10,
-    marginTop : 10,
-    backgroundColor : 'transparent',
+
+  closeView: {
+    width: 40,
+    height: 40,
+    marginLeft: 10,
+    marginTop: 10,
+    backgroundColor: 'transparent',
     justifyContent: 'center',
-    alignItems : 'center',
-  }, 
-  closeIcon : {
-    width : 18,
-    height : 18,
-    tintColor : colors.green_background
+    alignItems: 'center',
   },
-  wrapper : {
-    
-  },
-  textView : {
+
+  textView: {
     justifyContent: 'center',
-    alignItems : 'center',
-    padding : 20,
+    alignItems: 'center',
+    padding: 20,
   },
-  Verification : {
+
+  Verification: {
     fontSize: theme.SmallFont,
     color: colors.darkSilver,
     marginTop: 15,
     fontFamily: theme.headerFont,
     alignSelf: 'center',
   },
+
   msgText: {
     fontSize: theme.SmallFont,
     color: colors.darkSilver,
@@ -84,82 +77,82 @@ const styles = StyleSheet.create({
     fontFamily: theme.subHeaderFont,
     alignSelf: 'center',
   },
+
   msgText2: {
     fontSize: theme.SmallFont,
     color: colors.darkSilver,
     fontFamily: theme.subHeaderFont,
     alignSelf: 'center',
   },
-  resend : {
+
+  resend: {
     fontSize: theme.SmallFont,
-    marginTop : 8,
+    marginTop: 8,
     color: colors.green_background,
     fontFamily: theme.headerFont,
     alignSelf: 'center',
   },
+
   buttonBorder: {
     alignItems: 'center',
     justifyContent: 'center',
     width: '20%',
     height: 40,
     backgroundColor: colors.white,
-    borderRadius : 25,
+    borderRadius: 25,
   },
-  btnText : {
+
+  btnText: {
     fontSize: theme.MediumFont,
     color: colors.white,
     fontFamily: theme.headerFont,
-    alignSelf: 'center',    
+    alignSelf: 'center',
   },
 
-  // otp design
-  optView : { 
-    marginTop : '20%',
+  optView: {
+    marginTop: '20%',
     justifyContent: 'center',
-    padding : 20,
+    padding: 20,
   },
+
   btnView: {
-    alignItems : 'center',
-    width : '100%',
-    marginTop : 30,
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 30,
   },
-  buttonWithImage : {
-    borderRadius : 30,
-    width : '60%',
-    height : 45,
-    backgroundColor : theme.buttonPrimary,
+
+  buttonWithImage: {
+    borderRadius: 30,
+    width: '60%',
+    height: 45,
+    backgroundColor: theme.buttonPrimary,
     justifyContent: 'center',
-    alignItems : 'center',
-    flexDirection : 'row',
-    marginTop : 25,
-    paddingRight : 8,
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: 25,
+    paddingRight: 8,
   },
-  iconDoor : {
-    height : 18,
-    width : 18,
-    resizeMode : 'contain',
+
+  iconDoor: {
+    height: 18,
+    width: 18,
+    resizeMode: 'contain',
     marginLeft: 24,
   },
-  buttonTxt : {
-    fontFamily : theme.headerFont,
-    color : theme.colorAccent,
+
+  buttonTxt: {
+    fontFamily: theme.headerFont,
+    color: theme.colorAccent,
     fontSize: theme.SmallFont,
-    alignSelf : 'center',
+    alignSelf: 'center',
   },
 
-  tokenText: {
-    fontFamily : theme.headerFont,
-    color : theme.msgText,
-    fontSize: theme.SmallFont,
-  },
   alert: {
     paddingRight: 20,
     paddingLeft: 20,
     paddingTop: Constants.statusBarHeight,
     flexDirection: 'row',
-    
-  }
-
+  },
 });
 
 export default styles;

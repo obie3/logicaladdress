@@ -1071,7 +1071,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, KeyboardAvoidingView,StatusBar,Text, Modal,TouchableHighlight,Image, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, InputField, ErrorAlert, Preloader } from '../../components';
+import {Paragraph, InputField, ErrorAlert, Preloader } from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors'
 import theme from '../../assets/theme';
@@ -1359,7 +1359,7 @@ import { addProfile } from '../../redux/actions/ProfileActions';
       &lt;View style = {styles.navBar}&gt;
        
         &lt;View style = {styles.nameView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text={'PROFILE'}
             styles = {StyleSheet.flatten(styles.txtHeader)}
           /&gt;
@@ -1398,14 +1398,14 @@ import { addProfile } from '../../redux/actions/ProfileActions';
             /&gt;
           &lt;/TouchableOpacity&gt;
         &lt;/View&gt;
-        &lt;DisplayText
+        &lt;Paragraph
           styles={StyleSheet.flatten(styles.profileNameTxt)}
           text = {name}
         /&gt;
 &nbsp;
           &lt;View style = {styles.titleView}&gt;
             &lt;View style = {styles.formContainer}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   text={'Title *'}
                   styles = {styles.formHeaderTxt}
                 /&gt;
@@ -1436,7 +1436,7 @@ import { addProfile } from '../../redux/actions/ProfileActions';
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ padding: 16}}&gt;
                     &lt;View style={{flex: 1, justifyContent: 'center'}}&gt;
-                      &lt;DisplayText
+                      &lt;Paragraph
                         style={styles.textHeaderStyle}
                         text ={' Title '} 
                         /&gt;
@@ -1457,7 +1457,7 @@ import { addProfile } from '../../redux/actions/ProfileActions';
             borderBottomColor: isNameFocused ? colors.green
             :theme.secondaryTextColor,
               }]}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               styles={StyleSheet.flatten(styles.nameText)}
               text = {'Name'}
             /&gt;
@@ -1499,7 +1499,7 @@ import { addProfile } from '../../redux/actions/ProfileActions';
             borderBottomColor: isJobTitleFocused ? colors.green
             :theme.secondaryTextColor,
               }]}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               styles={StyleSheet.flatten(styles.jobtitleText)}
               text = {'Job Title'}
             /&gt;
@@ -1541,7 +1541,7 @@ import { addProfile } from '../../redux/actions/ProfileActions';
           &lt;TouchableOpacity 
             onPress = {this.handleSubmitForm}
             style = {styles.buttonView}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               onPress = {this.handleSubmitForm}
               text={'NEXT'}
               styles = {StyleSheet.flatten(styles.txtNext)}

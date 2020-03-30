@@ -349,7 +349,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet, Animated,Dimensions,} from 'react-native';
-import {DisplayText, } from '../../components';
+import {Paragraph, } from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors';
 import {connect} from 'react-redux';
@@ -405,7 +405,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
           /&gt;
         &lt;/TouchableOpacity&gt;
         &lt;View style = {styles.nameView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {"ABOUT VENUE"}
             styles = {StyleSheet.flatten(styles.txtHeader)}
           /&gt;
@@ -434,22 +434,22 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
             &lt;/ScrollView&gt;
            &lt;/View&gt;
             &lt;View style={styles.srollContent}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 text = {data.location.name}
                 styles = {StyleSheet.flatten(styles.aboutHeaderTxt)}
               /&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 text = {data.location.description}
                 styles = {StyleSheet.flatten(styles.aboutBodyTxt)}
               /&gt;
           &lt;/View&gt;
           &lt;View style = {styles.formContainer}&gt;         
               &lt;View style = {styles.formView}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles={StyleSheet.flatten(styles.titleText)}
                   text = {'Address'}
                 /&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles={StyleSheet.flatten(styles.textInfo)}
                   text = {data.location.address ? data.location.address : ''}
                 /&gt;
@@ -457,32 +457,32 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
               &lt;/View&gt;
               {/* Phone number */}
               {/* &lt;View style = {styles.formView}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles={StyleSheet.flatten(styles.titleText)}
                   text = {'Post Code'}
                 /&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles={StyleSheet.flatten(styles.textInfo)}
                   text = {data.location.postcode ? data.location.postcode : ''}
                 /&gt;
               &lt;/View&gt; */}
               {/* Email Address Texf */}
               &lt;View style = {styles.formView}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles={StyleSheet.flatten(styles.titleText)}
                   text = {'State'}
                 /&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles={StyleSheet.flatten(styles.textInfo)}
                   text = {data.location.state}
                 /&gt;
               &lt;/View&gt;
               &lt;View style = {styles.formView}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles={StyleSheet.flatten(styles.titleText)}
                   text = {'Country'}
                 /&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles={StyleSheet.flatten(styles.textInfo)}
                   text = {data.location.country}
                 /&gt;

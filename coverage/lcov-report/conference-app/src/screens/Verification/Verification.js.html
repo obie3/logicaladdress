@@ -471,7 +471,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { TouchableOpacity, View, StyleSheet, SafeAreaView, Image} from 'react-native';
-import {DisplayText, SingleButtonAlert, SubmitButton, Preloader} from '../../components';
+import {Paragraph, SingleButtonAlert, SubmitButton, Preloader} from '../../components';
 import styles from './styles';
 import OtpInputs from 'react-native-otp-inputs';;
 import colors from '../../assets/colors';
@@ -616,15 +616,15 @@ export default class Verification extends Component {
           style={StyleSheet.flatten(styles.closeIcon)}/&gt;   
       &lt;/TouchableOpacity&gt;
       &lt;View style = {styles.textView}&gt;
-        &lt;DisplayText
+        &lt;Paragraph
           text={' Verification Code Sent'}
           styles = {styles.Verification}
         /&gt;
-        &lt;DisplayText
+        &lt;Paragraph
           text={'Enter 4 characters sent to'}
           styles = {styles.msgText}
         /&gt;
-        &lt;DisplayText
+        &lt;Paragraph
           text={email}
           styles = {styles.msgText2}
         /&gt;
@@ -653,11 +653,11 @@ export default class Verification extends Component {
             /&gt;
             
              &lt;View style = {styles.textView}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 text={'Didn\'t get code?'}
                 styles = {styles.msgText}
               /&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 text={'Resend'}
                 styles = {styles.resend}
                 onPress = {this.handleNewTokenRequest}            

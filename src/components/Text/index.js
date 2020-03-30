@@ -1,2 +1,2 @@
-import DisplayText from './DisplayText';
-export {DisplayText};
+import Paragraph from './Paragraph';
+export { Paragraph };

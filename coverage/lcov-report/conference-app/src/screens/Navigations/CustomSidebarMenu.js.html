@@ -287,7 +287,7 @@ import colors from '../../assets/colors';
 import styles from './styles';
 import theme from '../../assets/theme';
 import {connect} from 'react-redux';
-import {DisplayText } from '../../components';
+import {Paragraph } from '../../components';
 &nbsp;
 const dashboard = <span class="cstat-no" title="statement not covered" >require('../../assets/images/home.png'),</span>
   profile = <span class="cstat-no" title="statement not covered" >require('../../assets/images/profile.png'),</span>
@@ -347,7 +347,7 @@ const dashboard = <span class="cstat-no" title="statement not covered" >require(
         &lt;View style = {styles.drawerImageView}&gt;
             {this.displayProfileImage()}
           &lt;View style = {styles.userDetailView}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text={`${this.props.profile.title} ${this.props.profile.name}`}
               styles = {StyleSheet.flatten(styles.txtuser)}
             /&gt;

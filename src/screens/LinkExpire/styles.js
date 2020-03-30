@@ -4,26 +4,26 @@ import theme from '../../assets/theme';
 
 export default styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   navBar: {
-    flexDirection : 'row',
-    marginTop : (Platform.OS === "ios") ? 20 : 20,
-    height : 60,
+    flexDirection: 'row',
+    marginTop: Platform.OS === 'ios' ? 20 : 20,
+    height: 60,
     backgroundColor: 'transparent',
     width: '100%',
     paddingLeft: 16,
     paddingRight: 16,
     alignItems: 'center',
-  }, 
-  backView : {
-    height : 30,
-    width : 30,
+  },
+  backView: {
+    height: 30,
+    width: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius : 30
+    borderRadius: 30,
   },
   wrapper: {
     flex: 1,
@@ -32,49 +32,49 @@ export default styles = StyleSheet.create({
     // marginTop: 15,
     paddingTop: 8,
     justifyContent: 'center',
-    alignItems : 'center',
+    alignItems: 'center',
   },
   btnView: {
-    alignItems : 'center',
-    width : '100%',
+    alignItems: 'center',
+    width: '100%',
   },
-  buttonWithImage : {
-    borderRadius : 30,
-    width : '60%',
-    height : 45,
-    backgroundColor : theme.buttonPrimary,
+  buttonWithImage: {
+    borderRadius: 30,
+    width: '60%',
+    height: 45,
+    backgroundColor: theme.buttonPrimary,
     justifyContent: 'center',
-    alignItems : 'center',
-    flexDirection : 'row',
-    marginTop : 25,
-    paddingRight : 8,
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: 25,
+    paddingRight: 8,
   },
-  buttonTxt : {
-    fontFamily : 'Poppins-Regular',
-    color : theme.colorAccent,
-    fontSize : 18,
-    alignSelf : 'center',
+  buttonTxt: {
+    fontFamily: 'Poppins-Regular',
+    color: theme.colorAccent,
+    fontSize: 18,
+    alignSelf: 'center',
   },
-  iconDoor : {
-    height : 18,
-    width : 18,
-    resizeMode : 'contain',
+  iconDoor: {
+    height: 18,
+    width: 18,
+    resizeMode: 'contain',
     marginLeft: 24,
   },
-  titleTxtView : {
+  titleTxtView: {
     justifyContent: 'center',
-    alignItems : 'center',
-    padding : 8,
+    alignItems: 'center',
+    padding: 8,
   },
-  topTxt : {
+  topTxt: {
     fontSize: defaultTheme.MediumFont,
     color: defaultTheme.primaryTextColor,
     backgroundColor: 'transparent',
     textAlign: 'center',
-    paddingTop : 40,
-    fontFamily: defaultTheme.primaryFont
+    paddingTop: 40,
+    fontFamily: defaultTheme.primaryFont,
   },
-  bottomTxt : {
+  bottomTxt: {
     fontSize: defaultTheme.thinyFont,
     color: defaultTheme.primaryTextColor,
     backgroundColor: 'transparent',
@@ -83,9 +83,9 @@ export default styles = StyleSheet.create({
     paddingRight: 10,
     paddingLeft: 10,
   },
-  backIcon : {
-    width : 18,
-    height : 18,
-    tintColor : theme.primaryTextColor,
-  }
+  backIcon: {
+    width: 18,
+    height: 18,
+    tintColor: theme.primaryTextColor,
+  },
 });

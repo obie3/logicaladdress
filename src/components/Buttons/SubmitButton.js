@@ -1,20 +1,32 @@
 'use strict';
 
-import React, {Component} from 'react';
-import {PropTypes} from 'prop-types';
+import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import colors from '../../assets/colors';
-import {TouchableHighlight, TouchableOpacity, StyleSheet,Image, Text} from 'react-native';
-
+import {
+  TouchableHighlight,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Text,
+} from 'react-native';
 
 export default class SubmitButton extends Component {
-
-  render(){
-    const {disabled, onPress, title, btnStyle, imgStyle, imgSrc, titleStyle} = this.props;
+  render() {
+    const {
+      disabled,
+      onPress,
+      title,
+      btnStyle,
+      imgStyle,
+      imgSrc,
+      titleStyle,
+    } = this.props;
     const opacityStyle = disabled ? 0.5 : null;
     const style = btnStyle || styles.button;
     const textStyle = titleStyle || styles.title;
-    return(
-      // <TouchableHighlight 
+    return (
+      // <TouchableHighlight
       //   style = {[{opacity: opacityStyle}, style]}
       //   disabled = {disabled}
       //   onPress = {onPress}>
@@ -22,31 +34,27 @@ export default class SubmitButton extends Component {
       //     {title}
       //   </Text>
       // </TouchableHighlight>
-            
-          <TouchableOpacity 
-            onPress={onPress}
-            style = {[{opacity: opacityStyle}, style]}
-            disabled = {disabled}>
-            <Text 
-              style={textStyle}
-              onPress={onPress}>
-              {title}
-            </Text>
-            <Image
-              source={imgSrc}
-              style={imgStyle}/> 
-          </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={onPress}
+        style={[{ opacity: opacityStyle }, style]}
+        disabled={disabled}
+      >
+        <Text style={textStyle} onPress={onPress}>
+          {title}
+        </Text>
+        <Image source={imgSrc} style={imgStyle} />
+      </TouchableOpacity>
     );
   }
 }
 
 SubmitButton.propTypes = {
   disabled: PropTypes.bool.isRequired,
-  onPress : PropTypes.func.isRequired,
-  style : PropTypes.object,
-  title : PropTypes.string.isRequired,
-
-}
+  onPress: PropTypes.func.isRequired,
+  style: PropTypes.object,
+  title: PropTypes.string.isRequired,
+};
 
 const styles = StyleSheet.create({
   button: {
@@ -67,5 +75,5 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: -2,
     marginTop: -2,
-  }
-})
+  },
+});

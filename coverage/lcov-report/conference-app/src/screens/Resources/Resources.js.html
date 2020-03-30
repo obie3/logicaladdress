@@ -399,7 +399,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, FlatList, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet, Linking} from 'react-native';
-import {DisplayText, InputField, Preloader, ErrorAlert} from '../../components';
+import {Paragraph, InputField, Preloader, ErrorAlert} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
 import {connect} from 'react-redux';
@@ -469,7 +469,7 @@ import {connect} from 'react-redux';
 <span class="cstat-no" title="statement not covered" >    return (</span>
        &lt;View style = {styles.listViewItem}&gt;    
         &lt;View style = {styles.cardView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
              text = {item.title}
              styles = {StyleSheet.flatten(styles.titleText)}
            /&gt;
@@ -478,7 +478,7 @@ import {connect} from 'react-redux';
               source = {require('../../assets/images/pdf.png')}
               style = {StyleSheet.flatten(styles.pdfIcon)}
             /&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
               text = {item.description}
@@ -490,7 +490,7 @@ import {connect} from 'react-redux';
           &lt;TouchableOpacity 
             style = {styles.downloadBtn} 
             onPress={<span class="fstat-no" title="function not covered" >()</span>=&gt;<span class="cstat-no" title="statement not covered" >this.downloadResource(item.url)}</span>&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text = {'Open'}
               onPress={<span class="fstat-no" title="function not covered" >()</span>=&gt;<span class="cstat-no" title="statement not covered" >this.downloadResource(item.url)}</span>
               styles = {StyleSheet.flatten(styles.downloadtxt)}
@@ -525,7 +525,7 @@ import {connect} from 'react-redux';
            /&gt;
          &lt;/TouchableOpacity&gt;
          &lt;View style = {styles.nameView}&gt;
-           &lt;DisplayText
+           &lt;Paragraph
              text = {"RESOURCES"}
              styles = {StyleSheet.flatten(styles.txtHeader)}
            /&gt;

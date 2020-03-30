@@ -355,7 +355,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, TouchableOpacity, SafeAreaView, StatusBar, Image, StyleSheet, Linking} from 'react-native';
-import {DisplayText, Preloader} from '../../components';
+import {Paragraph, Preloader} from '../../components';
 import styles from './styles';
 import ExpireSvg from './ExpireSvg';
 import { sendRoute, getEmail, VerificationStatusEndpoint} from '../../utils';
@@ -476,11 +476,11 @@ export default class ActivateEmail extends Component {
           behavior = 'padding'&gt; 
             &lt;ExpireSvg/&gt;
             &lt;View style = {styles.titleTxtView}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 styles = {StyleSheet.flatten(styles.topTxt)}
                 text = {'Success!'}
               /&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 styles = {StyleSheet.flatten(styles.bottomTxt)}
                 text = {`Activation link has been sent to \n${email}!`}
               /&gt;
@@ -501,7 +501,7 @@ export default class ActivateEmail extends Component {
               &lt;TouchableOpacity 
                 onPress={this.handleReset}
                 style = {styles.buttonWithImage}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles = {StyleSheet.flatten(styles.buttonTxt)}
                   text = {'Activate'}
                 /&gt;

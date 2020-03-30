@@ -1,24 +1,22 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 const window = Dimensions.get('window');
 export const IMAGE_HEIGHT = window.width / 3;
-export const IMAGE_HEIGHT_SMALL = window.width /6;
+export const IMAGE_HEIGHT_SMALL = window.width / 6;
 import defaultTheme from '../../assets/theme';
-
 
 let styles = StyleSheet.create({
   container: {
-    flex: 1, 
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    alignContent:'center',
+    alignContent: 'center',
     // paddingTop: (Platform.OS) === 'ios' ? 20 : 0,
     // padding : 20
-
   },
 
   slide: {
     flex: 1,
-    paddingBottom: 10, 
+    paddingBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -31,29 +29,28 @@ let styles = StyleSheet.create({
     fontFamily: defaultTheme.secondaryFont,
     paddingRight: 10,
     paddingLeft: 10,
-    marginTop: '5%'
-
+    marginTop: '5%',
   },
   sliderTitle: {
     fontSize: defaultTheme.MediumFont,
     color: defaultTheme.primaryTextColor,
     backgroundColor: 'transparent',
     textAlign: 'center',
-    paddingTop : 40,
-    fontFamily: defaultTheme.primaryFont
+    paddingTop: 40,
+    fontFamily: defaultTheme.primaryFont,
   },
   image: {
     width: 100,
     height: 100,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
-  
-  sliderDots : {
-    backgroundColor: defaultTheme.primaryTextColor
+
+  sliderDots: {
+    backgroundColor: defaultTheme.primaryTextColor,
   },
 
   activeDotStyle: {
-    backgroundColor: defaultTheme.buttonPrimary
+    backgroundColor: defaultTheme.buttonPrimary,
   },
 
   buttonCircle: {
@@ -67,8 +64,7 @@ let styles = StyleSheet.create({
   image: {
     width: 320,
     height: 320,
-  } 
-
+  },
 });
 
 export default styles;

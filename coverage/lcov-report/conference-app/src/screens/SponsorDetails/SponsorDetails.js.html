@@ -613,7 +613,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, StatusBar, Image, KeyboardAvoidingView,TouchableOpacity, StyleSheet, Linking} from 'react-native';
-import {DisplayText, ErrorAlert} from '../../components';
+import {Paragraph, ErrorAlert} from '../../components';
 import styles from './styles';
 &nbsp;
 export default class SponsorDetails extends Component {
@@ -639,7 +639,7 @@ export default class SponsorDetails extends Component {
     const item = <span class="cstat-no" title="statement not covered" >this.props.navigation.getParam('item');</span>
 <span class="cstat-no" title="statement not covered" >    if(item.profile.website) {</span>
 <span class="cstat-no" title="statement not covered" >      return(</span>
-        &lt;DisplayText
+        &lt;Paragraph
           styles={[StyleSheet.flatten(styles.socialTitleText), {color:'blue' }]}
           text = {item.profile.website}
           onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${item.profile.website}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
@@ -648,7 +648,7 @@ export default class SponsorDetails extends Component {
     }
     else  {
 <span class="cstat-no" title="statement not covered" >      return(</span>
-          &lt;DisplayText
+          &lt;Paragraph
             styles={StyleSheet.flatten(styles.socialTitleText)}
             text = {''}
           /&gt;
@@ -667,7 +667,7 @@ export default class SponsorDetails extends Component {
     const item = <span class="cstat-no" title="statement not covered" >this.props.navigation.getParam('item');</span>
 <span class="cstat-no" title="statement not covered" >    if(item.profile.facebook_visible || item.profile.twitter_visible || item.profile.instagram_visible || item.profile.linkedin_visible ) {</span>
 <span class="cstat-no" title="statement not covered" >      return(</span>
-        &lt;DisplayText
+        &lt;Paragraph
           styles={StyleSheet.flatten(styles.titleText)}
           text = {'Social Media'}
         /&gt;
@@ -693,7 +693,7 @@ export default class SponsorDetails extends Component {
           /&gt;
         &lt;/TouchableOpacity&gt;
         &lt;View style = {styles.nameView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {"SPONSOR"}
             styles = {StyleSheet.flatten(styles.txtHeader)}
           /&gt;
@@ -724,16 +724,16 @@ export default class SponsorDetails extends Component {
               }
              
             &lt;/View&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               styles={StyleSheet.flatten(styles.profileNameTxt)}
               text = {item.profile.company_name}
             /&gt;
             &lt;View style = {styles.line}&gt;&lt;/View&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               styles={StyleSheet.flatten(styles.formHeaderTxt)}
               text = {'About'}
             /&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               styles={StyleSheet.flatten(styles.aboutTxt)}
               text = {item.profile.short_bio}
             /&gt;
@@ -750,7 +750,7 @@ export default class SponsorDetails extends Component {
                       source = {require('../../assets/images/facebook.png')}
                       style = {StyleSheet.flatten(styles.socialIcon)}
                     /&gt;               
-                    &lt;DisplayText
+                    &lt;Paragraph
                       styles={[StyleSheet.flatten(styles.socialTitleText), {color:'blue'}]}
                       text = {`${item.profile.facebook_visible ? item.profile.facebook: '*******'}`}
                       onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${item.profile.facebook}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
@@ -778,7 +778,7 @@ export default class SponsorDetails extends Component {
                         source = {require('../../assets/images/twitter.png')}
                         style = {StyleSheet.flatten(styles.socialIcon)}
                       /&gt;               
-                      &lt;DisplayText
+                      &lt;Paragraph
                         styles={[StyleSheet.flatten(styles.socialTitleText), {color:'blue'}]}
                         onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${item.profile.twitter}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
                         /&gt;
@@ -801,7 +801,7 @@ export default class SponsorDetails extends Component {
                         source = {require('../../assets/images/linkedin.png')}
                         style = {StyleSheet.flatten(styles.socialIcon)}
                       /&gt;               
-                      &lt;DisplayText
+                      &lt;Paragraph
                         styles={[StyleSheet.flatten(styles.socialTitleText), {color:'blue'}]}
                         text = {`${item.profile.linkedin_visible ? item.profile.linkedin: '*******'}`}
                         onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${item.profile.linkedin}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
@@ -826,7 +826,7 @@ export default class SponsorDetails extends Component {
                             source = {require('../../assets/images/instagram.png')}
                             style = {StyleSheet.flatten(styles.socialIcon)}
                           /&gt;               
-                          &lt;DisplayText
+                          &lt;Paragraph
                             styles={[StyleSheet.flatten(styles.socialTitleText), {color:'blue'}]}
                             text = {`${item.profile.instagram_visible ? item.profile.instagram: '*******'}`}
                             onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${item.profile.instagram}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
@@ -845,7 +845,7 @@ export default class SponsorDetails extends Component {
                 &lt;View style = {styles.bodyViewPhone}&gt;
                   &lt;View style={styles.socialView}&gt;
                     &lt;View style = {styles.textInputView}&gt;
-                      &lt;DisplayText
+                      &lt;Paragraph
                         styles={StyleSheet.flatten(styles.titleText)}
                         text = {'Phone Number'}
                       /&gt;
@@ -854,7 +854,7 @@ export default class SponsorDetails extends Component {
                           source = {require('../../assets/images/call.png')}
                           style = {StyleSheet.flatten(styles.socialIcon)}
                         /&gt;               
-                        &lt;DisplayText
+                        &lt;Paragraph
                           styles={StyleSheet.flatten(styles.socialTitleText)}
                           text = {item.profile.phone? item.profile.phone.toString(): ''}
                         /&gt;
@@ -871,7 +871,7 @@ export default class SponsorDetails extends Component {
                &lt;View style = {styles.bodyView}&gt;
                 &lt;View style={styles.socialView}&gt;
                   &lt;View style = {styles.textInputView}&gt;
-                    &lt;DisplayText
+                    &lt;Paragraph
                       styles={StyleSheet.flatten(styles.titleText)}
                       text = {'Website'}
                     /&gt;

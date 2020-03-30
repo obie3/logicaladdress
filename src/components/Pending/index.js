@@ -1,3 +1,3 @@
 import Pending from './Pending';
 
-export {Pending};
+export { Pending };

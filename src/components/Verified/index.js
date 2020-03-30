@@ -1,3 +1,3 @@
 import Verified from './Verified';
 
-export {Verified};
+export { Verified };

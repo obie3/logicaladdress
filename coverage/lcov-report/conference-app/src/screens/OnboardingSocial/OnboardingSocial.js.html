@@ -1464,7 +1464,7 @@
 import React, {Component} from 'react';
 import { View, ScrollView, FlatList, Switch, Modal, TextInput, KeyboardAvoidingView, 
   TouchableWithoutFeedback,SafeAreaView, StatusBar, Image, TouchableOpacity, Text, StyleSheet,} from 'react-native';
-import {DisplayText, InputField, ErrorAlert, SubmitButton, Preloader } from '../../components';
+import {Paragraph, InputField, ErrorAlert, SubmitButton, Preloader } from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
 import data from '../../utils/Countries';
@@ -1737,7 +1737,7 @@ class OnboardingSocial extends Component {
           /&gt;
         &lt;/TouchableOpacity&gt;
         &lt;View style = {styles.nameView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text={'SOCIAL'}
             styles = {StyleSheet.flatten(styles.txtHeader)}
           /&gt;
@@ -1753,7 +1753,7 @@ class OnboardingSocial extends Component {
           
         {/* Phone input with country code */}
         &lt;View style = {styles.formView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text={'Phone Number'}
             styles = {styles.formHeaderTxt}
           /&gt; 
@@ -1855,7 +1855,7 @@ class OnboardingSocial extends Component {
         &lt;View style = {[styles.nameInputView, { 
               borderBottomColor: isWebsiteFocused ? colors.green
               :theme.secondaryTextColor}]}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             styles={StyleSheet.flatten(styles.titleText)}
             text = {'Website URL'}
           /&gt;
@@ -1898,11 +1898,11 @@ class OnboardingSocial extends Component {
         &lt;/View&gt;
         &lt;View style = {styles.socialMediaView}&gt;
           &lt;View style = {styles.headerTxt}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               styles={StyleSheet.flatten(styles.titleText)}
               text = {'Social Media'}
             /&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               styles={StyleSheet.flatten(styles.publicText)}
               text = {'Public'}
             /&gt;

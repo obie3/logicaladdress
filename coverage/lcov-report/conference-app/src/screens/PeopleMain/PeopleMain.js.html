@@ -642,7 +642,7 @@
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, StatusBar, Image, KeyboardAvoidingView,TouchableOpacity, 
   StyleSheet, Linking} from 'react-native';
-import {DisplayText, ErrorAlert } from '../../components';
+import {Paragraph, ErrorAlert } from '../../components';
 import styles from './styles';
 &nbsp;
 export default class PeopleMain extends Component {
@@ -670,7 +670,7 @@ export default class PeopleMain extends Component {
     const item = <span class="cstat-no" title="statement not covered" >this.props.navigation.getParam('item');</span>
 <span class="cstat-no" title="statement not covered" >    if(item.profile.profile.facebook_visible || item.profile.profile.twitter_visible || item.profile.profile.instagram_visible || item.profile.profile.linkedin_visible ) {</span>
 <span class="cstat-no" title="statement not covered" >      return(</span>
-        &lt;DisplayText
+        &lt;Paragraph
           styles={StyleSheet.flatten(styles.titleText)}
           text = {'Social Media'}
         /&gt;
@@ -684,13 +684,13 @@ export default class PeopleMain extends Component {
         &lt;View style = {styles.bodyView}&gt;
         &lt;View style={styles.socialView}&gt;
           &lt;View style = {styles.textView}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               styles={StyleSheet.flatten(styles.titleText)}
               text = {'Website'}
             /&gt;
             &lt;View style = {styles.hanlenameView}&gt;                    
             &lt;View style = {styles.dot}&gt;&lt;/View&gt;               
-              &lt;DisplayText
+              &lt;Paragraph
                 styles={[StyleSheet.flatten(styles.socialTitleText), {color:'blue' }]}
                 text = {item.profile.profile.website}
                 onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${item.profile.profile.website}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
@@ -721,7 +721,7 @@ export default class PeopleMain extends Component {
           /&gt;
         &lt;/TouchableOpacity&gt;
         &lt;View style = {styles.nameView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {"PEOPLE"}
             styles = {StyleSheet.flatten(styles.txtHeader)}
           /&gt;
@@ -752,11 +752,11 @@ export default class PeopleMain extends Component {
                 
               }
             &lt;/View&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               styles={StyleSheet.flatten(styles.profileNameTxt)}
               text = {item.profile.profile.name}
             /&gt;
-             &lt;DisplayText
+             &lt;Paragraph
               styles={StyleSheet.flatten(styles.jobName)}
               text = {item.profile.profile.job_title}
             /&gt;
@@ -766,12 +766,12 @@ export default class PeopleMain extends Component {
             {
               item.profile.profile.event.length ?
                 &lt;View style = {styles.textViewUserRole}&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     styles={StyleSheet.flatten(styles.formHeaderTxt)}
                     text = {'Role'}
                   /&gt;
                   &lt;View style = {styles.hanlenameView}&gt;
-                    &lt;DisplayText
+                    &lt;Paragraph
                       styles={StyleSheet.flatten(styles.roleTitleText)}
                       text = {item.role}
                     /&gt;             
@@ -783,12 +783,12 @@ export default class PeopleMain extends Component {
             {/* Short Bio */}
             { item.profile.profile.short_bio ?
               &lt;View style = {styles.textViewUserRole}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 styles={StyleSheet.flatten(styles.formHeaderTxt)}
                 text = {'Bio'}
               /&gt;
               &lt;View style = {styles.hanlenameView}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   text = {item.profile.profile.short_bio}
                   styles = {StyleSheet.flatten(styles.bioTxt)}
                 /&gt;            
@@ -809,7 +809,7 @@ export default class PeopleMain extends Component {
                         source = {require('../../assets/images/facebook.png')}
                         style = {StyleSheet.flatten(styles.socialIcon)}
                       /&gt;               
-                      &lt;DisplayText
+                      &lt;Paragraph
                         styles={[StyleSheet.flatten(styles.socialTitleText), {color:'blue'}]}
                         text = {`${item.profile.profile.facebook_visible ? item.profile.profile.facebook: '*******'}`}
                         onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${item.profile.profile.facebook}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
@@ -835,7 +835,7 @@ export default class PeopleMain extends Component {
                           source = {require('../../assets/images/twitter.png')}
                           style = {StyleSheet.flatten(styles.socialIcon)}
                         /&gt;               
-                        &lt;DisplayText
+                        &lt;Paragraph
                           styles={[StyleSheet.flatten(styles.socialTitleText), {color:'blue'}]}
                           text = {`${item.profile.profile.twitter_visible ? item.profile.profile.twitter: '*******'}`}
                           onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${item.profile.profile.twitter}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
@@ -860,7 +860,7 @@ export default class PeopleMain extends Component {
                         source = {require('../../assets/images/linkedin.png')}
                         style = {StyleSheet.flatten(styles.socialIcon)}
                       /&gt;               
-                      &lt;DisplayText
+                      &lt;Paragraph
                         styles={[StyleSheet.flatten(styles.socialTitleText), {color:'blue'}]}
                         text = {`${item.profile.profile.linkedin_visible ? item.profile.profile.linkedin: '*******'}`}
                         onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${item.profile.profile.linkedin}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
@@ -886,7 +886,7 @@ export default class PeopleMain extends Component {
                           source = {require('../../assets/images/instagram.png')}
                           style = {StyleSheet.flatten(styles.socialIcon)}
                         /&gt;               
-                        &lt;DisplayText
+                        &lt;Paragraph
                           styles={[StyleSheet.flatten(styles.socialTitleText), {color:'blue'}]}
                           text = {`${item.profile.profile.instagram_visible ? item.profile.profile.instagram: '*******'}`}
                           onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${item.profile.profile.instagram}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
@@ -906,7 +906,7 @@ export default class PeopleMain extends Component {
                  &lt;View style = {styles.bodyViewPhone}&gt;
                  &lt;View style={styles.socialView}&gt;
                    &lt;View style = {styles.textView}&gt;
-                     {/* &lt;DisplayText
+                     {/* &lt;Paragraph
                        styles={StyleSheet.flatten(styles.titleText)}
                        text = {'Phone Number'}
                      /&gt; */}
@@ -915,7 +915,7 @@ export default class PeopleMain extends Component {
                          source = {require('../../assets/images/call.png')}
                          style = {StyleSheet.flatten(styles.socialIcon)}
                        /&gt;               
-                       &lt;DisplayText
+                       &lt;Paragraph
                          styles={StyleSheet.flatten(styles.socialTitleText)}
                          text = {item.profile.profile.phone? item.profile.profile.phone.toString(): ''}
                        /&gt;

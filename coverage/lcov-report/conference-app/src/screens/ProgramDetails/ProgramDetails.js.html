@@ -591,7 +591,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, Preloader, ErrorAlert, SuccessAlert} from '../../components';
+import {Paragraph, Preloader, ErrorAlert, SuccessAlert} from '../../components';
 import styles from './styles';
 import { DrawerActions } from "react-navigation";
 import moment from 'moment';
@@ -649,7 +649,7 @@ export default class Profile extends Component {
     let items = <span class="cstat-no" title="statement not covered" >[];</span>
 <span class="cstat-no" title="statement not covered" >    if(speakers) {</span>
 <span class="cstat-no" title="statement not covered" >     items = speakers.map(<span class="fstat-no" title="function not covered" >(r</span>ow, i ) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      return (&lt;DisplayText</span>
+<span class="cstat-no" title="statement not covered" >      return (&lt;Paragraph</span>
         text = {`${row.name} ${' '}`}
         styles = {StyleSheet.flatten(styles.sponserName)}
         key={i}
@@ -749,7 +749,7 @@ export default class Profile extends Component {
           /&gt;
         &lt;/TouchableOpacity&gt;
         &lt;View style = {styles.nameView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {'PROGRAMS'}
             styles = {StyleSheet.flatten(styles.txtHeader)}
           /&gt;
@@ -760,22 +760,22 @@ export default class Profile extends Component {
           style={{flex:1,}}
           showsVerticalScrollIndicator={false}&gt;
           &lt;View style = {styles.blueCard}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text = {program.title || ''}
               styles = {StyleSheet.flatten(styles.headerCardTxt)}
             /&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text = {`${date} ${program.start_time}`}
               styles = {StyleSheet.flatten(styles.cardDate)}
             /&gt;
           &lt;/View&gt;
           {/* Description */}
           &lt;View style = {styles.cardCategory}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text = {'Program and Event Description'}
               styles = {StyleSheet.flatten(styles.sponser)}
             /&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text = {program.description || '' }
               styles = {StyleSheet.flatten(styles.typeTxt)}
             /&gt;
@@ -783,14 +783,14 @@ export default class Profile extends Component {
           
 &nbsp;
           &lt;View style = {styles.cardCategory}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text = {'Category'}
               styles = {StyleSheet.flatten(styles.sponser)}
             /&gt;
            
             &lt;View style ={styles.catTypeView}&gt;
               &lt;View style = {styles.textCont}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   text = {program.type || ''}
                   styles = {StyleSheet.flatten(styles.cartType)}
                 /&gt;
@@ -799,14 +799,14 @@ export default class Profile extends Component {
           &lt;/View&gt;
 &nbsp;
           &lt;TouchableOpacity style = {styles.blueButton} onPress={this.setNotification}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text = {'+ Add to my Program'}
               styles = {StyleSheet.flatten(styles.buttonTxt)}
             /&gt;
           &lt;/TouchableOpacity&gt;
           {/* Rating */}
           &lt;View style = {styles.cardSpeaker}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text = {'Rating'}
               styles = {StyleSheet.flatten(styles.sponser)}
             /&gt;
@@ -824,18 +824,18 @@ export default class Profile extends Component {
 &nbsp;
           {/* LOCATIO */}
           &lt;View style = {styles.cardSpeaker}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text = {'Location'}
               styles = {StyleSheet.flatten(styles.sponser)}
             /&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text = {program.venue || ''}
               styles = {StyleSheet.flatten(styles.sponserName)}
             /&gt;
           &lt;/View&gt;
 &nbsp;
           &lt;View style = {styles.cardSpeaker}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               text = {'Speaker'}
               styles = {StyleSheet.flatten(styles.sponser)}
             /&gt;

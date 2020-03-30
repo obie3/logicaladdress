@@ -1,6 +1,6 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { StyleSheet } from 'react-native';
-import colors from '../../assets/colors'
+import colors from '../../assets/colors';
 
 const INPUT_HEIGHT = 48;
 const BORDER_RADIUS = 4;
@@ -32,15 +32,15 @@ export default EStyleSheet.create({
     fontSize: 18,
     paddingHorizontal: 8,
     color: '$inputText',
-    fontFamily : 'Poppins-Regular',
+    fontFamily: 'Poppins-Regular',
   },
   border: {
     height: INPUT_HEIGHT,
     width: StyleSheet.hairlineWidth,
-    backgroundColor: '$border'
+    backgroundColor: '$border',
   },
   error: {
     borderWidth: 1,
-    borderColor: 'red'
-  }
+    borderColor: 'red',
+  },
 });

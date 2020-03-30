@@ -1030,7 +1030,7 @@
 import React, {Component} from 'react';
 import { View, ScrollView, FlatList, TextInput,KeyboardAvoidingView,Modal,
    Text, TouchableWithoutFeedback, SafeAreaView, StatusBar, Image, TouchableHighlight, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, InputField, ErrorAlert} from '../../components';
+import {Paragraph, InputField, ErrorAlert} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
 import data from '../../utils/Countries';
@@ -1234,7 +1234,7 @@ class OnboardingBio extends Component {
           /&gt;
         &lt;/TouchableOpacity&gt;
         &lt;View style = {styles.nameView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text={'BIO'}
             styles = {StyleSheet.flatten(styles.txtHeader)}
           /&gt;
@@ -1248,7 +1248,7 @@ class OnboardingBio extends Component {
             showsVerticalScrollIndicator={false}&gt;
               {/* Gender modal selection */}
             {/* &lt;View style = {styles.titleView}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 styles={StyleSheet.flatten(styles.titleText)}
                 text = {'Gender'}
               /&gt;
@@ -1271,7 +1271,7 @@ class OnboardingBio extends Component {
     
             &lt;/View&gt; */}
             &lt;View style = {styles.formContainer}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   text={'Gender *'}
                   styles = {styles.formHeaderTxt}
                 /&gt;
@@ -1302,7 +1302,7 @@ class OnboardingBio extends Component {
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ padding: 16}}&gt;
                     &lt;View style={{flex: 1, justifyContent: 'center'}}&gt;
-                      &lt;DisplayText
+                      &lt;Paragraph
                         style={styles.textHeaderStyle}
                         text ={' Gender '} 
                         /&gt;
@@ -1318,7 +1318,7 @@ class OnboardingBio extends Component {
                 &lt;/View&gt;
               &lt;/Modal&gt;
           &lt;View style = {styles.CountryView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text={'Nationality'}
             styles = {styles.formHeaderTxt}
           /&gt;
@@ -1374,7 +1374,7 @@ class OnboardingBio extends Component {
             &lt;View style = {[styles.nameInputView, { 
               borderBottomColor: isCompanyFocused ? colors.green
               :theme.secondaryTextColor}]}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 styles={StyleSheet.flatten(styles.titleText)}
                 text = {'Company'}
               /&gt;
@@ -1414,7 +1414,7 @@ class OnboardingBio extends Component {
           &lt;View style = {[styles.nameInputView, { 
             borderBottomColor: isShortBioFocused ? colors.green
             :theme.secondaryTextColor}]}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 styles={StyleSheet.flatten(styles.titleText)}
                 text = {'Short Bio'}
               /&gt;
@@ -1451,7 +1451,7 @@ class OnboardingBio extends Component {
           &lt;View style = {styles.interestView}&gt;
             
             {/* &lt;View style = {styles.interestHeader}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 styles={StyleSheet.flatten(styles.titleText)}
                 text = {'Interest'}
               /&gt;
@@ -1486,7 +1486,7 @@ class OnboardingBio extends Component {
             &lt;TouchableOpacity 
               onPress = {this.handleNextButton}
               style = {styles.buttonView}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 onPress = {this.handleNextButton}
                 text={'NEXT'}
                 styles = {StyleSheet.flatten(styles.txtNext)}

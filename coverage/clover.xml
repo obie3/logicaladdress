@@ -177,7 +177,7 @@
     </package>
     <package name="conference-app.src.components.Text">
       <metrics statements="4" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
-      <file name="DisplayText.js" path="/Users/eddie/work/mobile/conference-app/src/components/Text/DisplayText.js">
+      <file name="Paragraph.js" path="/Users/eddie/work/mobile/conference-app/src/components/Text/Paragraph.js">
         <metrics statements="4" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="10" count="0" type="stmt"/>
         <line num="11" count="0" type="cond" truecount="0" falsecount="2"/>

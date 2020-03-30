@@ -261,7 +261,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet, Animated, Dimensions} from 'react-native';
-import {DisplayText, } from '../../components';
+import {Paragraph, } from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors';
 import {connect} from 'react-redux';
@@ -317,7 +317,7 @@ class AboutConference extends Component {
           /&gt;
         &lt;/TouchableOpacity&gt;
         &lt;View style = {styles.nameView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {"ABOUT"}
             styles = {StyleSheet.flatten(styles.txtHeader)}
           /&gt;
@@ -347,11 +347,11 @@ class AboutConference extends Component {
         
           &lt;/View&gt;
             &lt;View style={styles.srollContent}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 text = {data.title}
                 styles = {StyleSheet.flatten(styles.aboutHeaderTxt)}
               /&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 text = {data.description}
                 styles = {StyleSheet.flatten(styles.aboutBodyTxt)}
               /&gt;

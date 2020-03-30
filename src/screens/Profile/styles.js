@@ -3,31 +3,30 @@ import theme from '../../assets/theme';
 import colors from '../../assets/colors';
 
 export default styles = StyleSheet.create({
-
   container: {
-  flex : 1,
-},
+    flex: 1,
+  },
   navBar: {
-    flexDirection : 'row',
+    flexDirection: 'row',
     // paddingTop : (Platform.OS === "ios") ? 16 : 14,
-    height : 60,
+    height: 60,
     backgroundColor: theme.toolBarColor,
     width: '100%',
     alignItems: 'center',
     paddingBottom: 4,
     shadowColor: theme.secondaryTextColor,
-    shadowOffset: { 
-      width: 0, 
-      height: 4 
+    shadowOffset: {
+      width: 0,
+      height: 4,
     },
     shadowOpacity: 0.5,
     shadowRadius: 2,
-    elevation: 3,  
+    elevation: 3,
   },
   headerIcon: {
     height: 18,
     width: 18,
-    tintColor : theme.primaryColor,
+    tintColor: theme.primaryColor,
   },
   headerLogoIcon: {
     height: 35,
@@ -40,57 +39,56 @@ export default styles = StyleSheet.create({
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft : 8,
+    marginLeft: 8,
   },
   balanceTxtView: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    width: '50%'
+    width: '50%',
   },
   nameView: {
     flexDirection: 'row',
     width: '70%',
     justifyContent: 'center',
-    alignItems : 'center'
+    alignItems: 'center',
   },
   txtHeader: {
     fontSize: 18,
     color: theme.primaryTextColor,
     marginLeft: 16,
     alignSelf: 'center',
-    fontFamily : theme.secondaryFont
+    fontFamily: theme.secondaryFont,
   },
 
-  iconBotton : {
-    width : 25,
-    height : 25,
+  iconBotton: {
+    width: 25,
+    height: 25,
     justifyContent: 'center',
-    alignItems : 'center',
+    alignItems: 'center',
   },
-  iconBottonSearch : {
-    width : 25,
-    height : 25,
+  iconBottonSearch: {
+    width: 25,
+    height: 25,
     justifyContent: 'center',
-    alignItems : 'center',
-    marginLeft : 4,
+    alignItems: 'center',
+    marginLeft: 4,
   },
-  viewBody : {
+  viewBody: {
     flex: 1,
-    paddingLeft : 20,
-    paddingRight : 20,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
- 
-  cardLayout : {
+
+  cardLayout: {
     flexDirection: 'column',
     marginTop: 20,
-    backgroundColor : theme.colorAccent,
+    backgroundColor: theme.colorAccent,
     borderRadius: 4,
-    shadowColor : theme.primaryTextColor,
+    shadowColor: theme.primaryTextColor,
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     shadowOffset: { height: 1, width: 0 },
-    elevation : 1,
-
+    elevation: 1,
   },
 
   cardContents: {
@@ -103,7 +101,7 @@ export default styles = StyleSheet.create({
   cardIconLayout: {
     width: 100,
     height: 100,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
 
   cardIcon: {
@@ -112,13 +110,13 @@ export default styles = StyleSheet.create({
     resizeMode: 'cover',
     alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   verificationStatusLayout: {
     flex: 1,
     flexDirection: 'column',
-    padding: 20 
+    padding: 20,
   },
 
   verificationIndicators: {
@@ -128,78 +126,72 @@ export default styles = StyleSheet.create({
     //backgroundColor: 'white'
   },
 
-  
-
-  headerText : {
-    fontFamily : theme.inputHintFont,
-    fontSize : theme.SmallFont,
-    color : theme.primaryTextColor,
+  headerText: {
+    fontFamily: theme.inputHintFont,
+    fontSize: theme.SmallFont,
+    color: theme.primaryTextColor,
   },
 
-  verificationText : {
-    fontFamily : theme.inputHintFont,
-    fontSize : theme.SmallFont,
+  verificationText: {
+    fontFamily: theme.inputHintFont,
+    fontSize: theme.SmallFont,
     color: '#bdc3c7',
     paddingRight: 6,
     paddingTop: 6,
   },
 
   nameText: {
-    fontFamily : theme.inputHintFont,
-    fontSize : 24,
+    fontFamily: theme.inputHintFont,
+    fontSize: 24,
     color: theme.primaryTextColor,
     fontWeight: 'bold',
     paddingRight: 6,
-    
   },
 
   iconStyle: {
     marginRight: -2,
-    marginTop: -2
+    marginTop: -2,
   },
 
   iconLayout: {
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 50,
-    width:20,
-    height:20,
+    width: 20,
+    height: 20,
     backgroundColor: '#2ecc71',
     marginTop: 5,
     marginRight: 15,
-    marginRight: 15
+    marginRight: 15,
   },
 
-  headerProgramView:{
-    width : '60%',
-    marginTop : 2,
+  headerProgramView: {
+    width: '60%',
+    marginTop: 2,
   },
 
-  button : {
-    borderRadius : 5,
-    width : '100%',
-    height : 35,
-    backgroundColor : theme.buttonPrimary,
+  button: {
+    borderRadius: 5,
+    width: '100%',
+    height: 35,
+    backgroundColor: theme.buttonPrimary,
     justifyContent: 'center',
-    alignItems : 'center',
-    flexDirection : 'row',
+    alignItems: 'center',
+    flexDirection: 'row',
     //paddingRight : 8,
   },
 
-  buttonTxt : {
-    fontFamily : theme.headerFont,
-    color : theme.colorAccent,
+  buttonTxt: {
+    fontFamily: theme.headerFont,
+    color: theme.colorAccent,
     fontSize: theme.SmallFont,
     //alignSelf : 'center',
   },
 
-
-
-  subHeaderText : {
-    fontFamily : theme.subHeaderFont,
-    fontSize : theme.SmallFont,
-    color : theme.secondaryTextColor,
-    height : 40
+  subHeaderText: {
+    fontFamily: theme.subHeaderFont,
+    fontSize: theme.SmallFont,
+    color: theme.secondaryTextColor,
+    height: 40,
   },
-
 });

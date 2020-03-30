@@ -24,14 +24,14 @@ export default class InputField extends Component {
     this.onChangeText = this.onChangeText.bind(this);
   }
 
-  toggleShowPassword () {
+  toggleShowPassword() {
     this.setState({ secureInput: !this.state.secureInput });
   }
 
-  onChangeText = (text) => {
+  onChangeText = text => {
     this.props.onChangeText(text);
     this.setState({ inputValue: text });
-  }
+  };
 
   render() {
     const {
@@ -70,7 +70,7 @@ export default class InputField extends Component {
       autoFocus,
       blurOnSubmit,
       onSubmitEditing,
-       numberOfLines,
+      numberOfLines,
       ellipsizeMode,
     } = this.props;
 
@@ -79,37 +79,33 @@ export default class InputField extends Component {
     const fontWeight = labelTextWeight || '700';
     const color = labelColor || colors.white;
     const inputColor = textColor || colors.white;
-    const placeholderColor =  placeholderTextColor || colors.text;
+    const placeholderColor = placeholderTextColor || colors.text;
     const style = formStyle || styles.forms;
     const customInputStyle = inputStyle || {};
-    if (!inputStyle || inputStyle && !inputStyle.paddingBottom) {
+    if (!inputStyle || (inputStyle && !inputStyle.paddingBottom)) {
       customInputStyle.paddingBottom = 5;
     }
 
     let keyboardType;
 
-    if(inputType === 'phone'){
+    if (inputType === 'phone') {
       keyboardType = 'phone-pad';
-
-    }
-    else if(inputType === 'number'){
+    } else if (inputType === 'number') {
       keyboardType = 'numeric';
-    } else if(inputType === 'name') {
+    } else if (inputType === 'name') {
       keyboardType = 'default';
-    } else if(inputType === 'email') {
+    } else if (inputType === 'email') {
       keyboardType = 'email-address';
     }
-  
 
     return (
       <View style={[customStyle, styles.wrapper]}>
-         {/* <Text style={[{ fontWeight, color, fontSize }, styles.label]}>
+        {/* <Text style={[{ fontWeight, color, fontSize }, styles.label]}>
           {labelText}
         </Text> */}
-        
-   
+
         <TextInput
-          style={[{ color: inputColor }, style,inputStyle, styles.inputField]}         
+          style={[{ color: inputColor }, style, inputStyle, styles.inputField]}
           //borderWidth={borderWidth}
           borderColor={borderColor}
           borderRadius={borderRadius}
@@ -124,14 +120,14 @@ export default class InputField extends Component {
           autoCapitalize={autoCapitalize}
           autoCorrect={false}
           paddingLeft={paddingLeft}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
           placeholder={placeholder}
-          placeholderTextColor = {placeholderColor}
+          placeholderTextColor={placeholderColor}
           defaultValue={defaultValue}
           value={inputValue}
           inputType={inputType}
           maxLength={maxLength}
-          height={height}    
+          height={height}
           width={width}
           onBlur={onBlur}
           onFocus={onFocus}
@@ -142,16 +138,14 @@ export default class InputField extends Component {
           onSubmitEditing={onSubmitEditing}
           returnKeyType={returnKeyType}
           blurOnSubmit={blurOnSubmit}
-          numberOfLines = { numberOfLines } 
-          ellipsizeMode = {ellipsizeMode}
-
+          numberOfLines={numberOfLines}
+          ellipsizeMode={ellipsizeMode}
         />
-        {inputType === 'password'
-          ? (
-            <TouchableOpacity
-              style={styles.showButton}
-              onPress={this.toggleShowPassword}
-            >
+        {inputType === 'password' ? (
+          <TouchableOpacity
+            style={styles.showButton}
+            onPress={this.toggleShowPassword}
+          >
             {/* {
               secureInput ? 
               <Image
@@ -164,13 +158,12 @@ export default class InputField extends Component {
                 source={require('../../assets/images/hide.png')}
                 style={StyleSheet.flatten(styles.logoIcon)}/> 
             } */}
-            
-              {/* <Text style={styles.showButtonText}>
+
+            {/* <Text style={styles.showButtonText}>
                 {secureInput ? 'Show' : 'Hide'}
               </Text> */}
-            </TouchableOpacity>
-          )
-          : null } 
+          </TouchableOpacity>
+        ) : null}
       </View>
     );
   }
@@ -185,12 +178,12 @@ InputField.propTypes = {
   borderBottomLeftRadius: PropTypes.number,
   borderBottomRightRadius: PropTypes.number,
   borderTopRightRadius: PropTypes.number,
-  borderBottomWidth: PropTypes.number, 
+  borderBottomWidth: PropTypes.number,
   borderTopLeftRadius: PropTypes.number,
   borderWidth: PropTypes.number,
   backgroundColor: PropTypes.string,
   borderColor: PropTypes.string,
-  paddingLeft : PropTypes.number,
+  paddingLeft: PropTypes.number,
   inputType: PropTypes.string.isRequired,
   customStyle: PropTypes.object,
   onChangeText: PropTypes.func,
@@ -200,56 +193,55 @@ InputField.propTypes = {
   inputStyle: PropTypes.object,
   defaultValue: PropTypes.string,
   placeholderTextColor: PropTypes.string,
-  maxLength:PropTypes.number,
+  maxLength: PropTypes.number,
   height: PropTypes.number,
-  width: PropTypes.string
+  width: PropTypes.string,
 };
 
 const styles = StyleSheet.create({
   wrapper: {
     display: 'flex',
-    width: '100%'
+    width: '100%',
   },
   label: {
-    marginBottom:1,
+    marginBottom: 1,
     fontFamily: 'Poppins-Regular',
   },
   forms: {
     backgroundColor: colors.white,
   },
-  inputField : {
+  inputField: {
     // borderBottomWidth : 1,
-    paddingTop : 1,
-    fontFamily : theme.subHeaderFont,
-    fontSize : theme.SmallFont,
+    paddingTop: 1,
+    fontFamily: theme.subHeaderFont,
+    fontSize: theme.SmallFont,
     // backgroundColor: colors.white
     // height :40,
   },
   form: {
     // backgroundColor: colors.white,
   },
-  
+
   showButton: {
     position: 'absolute',
     right: 0,
-    top : 6,
-    paddingTop : 4,
+    top: 6,
+    paddingTop: 4,
     justifyContent: 'center',
     alignItems: 'center',
-    width : 40,
-    height : 40
+    width: 40,
+    height: 40,
     //marginTop:15
   },
   showButtonText: {
     color: colors.green_background,
     fontWeight: '100',
-    fontFamily: 'Poppins-Regular'
+    fontFamily: 'Poppins-Regular',
   },
-  logoIcon : {
-    height : 20,
-    width : 20,
-    tintColor : theme.secondaryTextColor,
+  logoIcon: {
+    height: 20,
+    width: 20,
+    tintColor: theme.secondaryTextColor,
     // marginTop: 16,
   },
-
 });

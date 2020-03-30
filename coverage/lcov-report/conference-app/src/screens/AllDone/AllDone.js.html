@@ -131,7 +131,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, StatusBar, Image, AsyncStorage, StyleSheet,} from 'react-native';
-import {DisplayText, } from '../../components';
+import {Paragraph, } from '../../components';
 import styles from './styles';
 import HoldHands from './HoldHands';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -162,11 +162,11 @@ export default class Profile extends Component {
       /&gt;
       &lt;/View&gt;
       &lt;View style = {styles.textView}&gt;
-        &lt;DisplayText
+        &lt;Paragraph
           styles={StyleSheet.flatten(styles.firstTxt)}
           text = {' Great '}
         /&gt;  
-         &lt;DisplayText
+         &lt;Paragraph
           styles={StyleSheet.flatten(styles.secondText)}
           text = {'You Are All Done!'}
         /&gt;

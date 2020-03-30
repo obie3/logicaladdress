@@ -1,18 +1,18 @@
-import React, {Component} from 'react';
-import {PropTypes} from 'prop-types';
+import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import colors from '../../assets/colors';
-import {TouchableHighlight, StyleSheet} from 'react-native';
+import { TouchableHighlight, StyleSheet } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 
-export default class Pending  extends Component {
-  render() {    
-    return(
+export default class Pending extends Component {
+  render() {
+    return (
       <TouchableHighlight style={styles.button}>
         <Icon
-          name= {'exclamation'}
-          color = {'red'}
-          size = {14}
-          style = {styles.icon}
+          name={'exclamation'}
+          color={'red'}
+          size={14}
+          style={styles.icon}
         />
       </TouchableHighlight>
     );
@@ -21,11 +21,10 @@ export default class Pending  extends Component {
 
 Pending.propTypes = {
   disabled: PropTypes.bool,
- // handleNextButton: PropTypes.func,
+  // handleNextButton: PropTypes.func,
   //onPress: PropTypes.func.isRequired,
   style: PropTypes.object,
-
-}
+};
 
 const styles = StyleSheet.create({
   button: {
@@ -40,5 +39,5 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: -2,
     marginTop: -2,
-  }
-})
+  },
+});

@@ -726,7 +726,7 @@
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet, KeyboardAvoidingView, 
    Animated,Dimensions, Linking, Platform} from 'react-native';
-import {DisplayText, ErrorAlert} from '../../components';
+import {Paragraph, ErrorAlert} from '../../components';
 import styles from './styles';
 import {connect} from 'react-redux';
 &nbsp;
@@ -815,11 +815,11 @@ class Organisers extends Component {
 <span class="cstat-no" title="statement not covered" >    if(data.company.website) {</span>
 <span class="cstat-no" title="statement not covered" >      return(</span>
         &lt;View style = {styles.formView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             styles={StyleSheet.flatten(styles.titleText)}
             text = {'Website'}
           /&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             styles={[StyleSheet.flatten(styles.textInfo), {color:'blue' }]}
             text = {data.company.website}
             onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${data.company.website}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
@@ -829,7 +829,7 @@ class Organisers extends Component {
     }
     else  {
 <span class="cstat-no" title="statement not covered" >      return(</span>
-          &lt;DisplayText
+          &lt;Paragraph
             styles={StyleSheet.flatten(styles.textInfo)}
             text = {''}
           /&gt;
@@ -842,7 +842,7 @@ class Organisers extends Component {
     const item = <span class="cstat-no" title="statement not covered" >this.props.data;</span>
 <span class="cstat-no" title="statement not covered" >    if(item.facebook_visible || item.twitter_visible || item.instagram_visible || item.linkedin_visible ) {</span>
 <span class="cstat-no" title="statement not covered" >      return(</span>
-        &lt;DisplayText
+        &lt;Paragraph
           styles={StyleSheet.flatten(styles.titleText)}
           text = {'Social Media'}
         /&gt;
@@ -886,7 +886,7 @@ class Organisers extends Component {
           /&gt;
         &lt;/TouchableOpacity&gt;
         &lt;View style = {styles.nameView}&gt;
-          &lt;DisplayText
+          &lt;Paragraph
             text = {"ABOUT ORGANISERS"}
             styles = {StyleSheet.flatten(styles.txtHeader)}
           /&gt;
@@ -919,22 +919,22 @@ class Organisers extends Component {
             &lt;/ScrollView&gt;
            &lt;/View&gt;
             &lt;View style={styles.srollContent}&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 text = {data.company.name ? data.company.name : '' }
                 styles = {StyleSheet.flatten(styles.aboutHeaderTxt)}
               /&gt;
-              &lt;DisplayText
+              &lt;Paragraph
                 text = {data.company.short_bio ? data.company.short_bio : ''}
                 styles = {StyleSheet.flatten(styles.aboutBodyTxt)}
               /&gt;
           &lt;/View&gt;
             &lt;View style = {styles.formContainer}&gt;         
               &lt;View style = {styles.formView}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles={StyleSheet.flatten(styles.titleText)}
                   text = {'Contact Address'}
                 /&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles={StyleSheet.flatten(styles.textInfo)}
                   text = {data.company.address ? data.company.address : ''}
                 /&gt;
@@ -942,11 +942,11 @@ class Organisers extends Component {
               &lt;/View&gt;
               {/* Phone number */}
               &lt;View style = {styles.formView}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles={StyleSheet.flatten(styles.titleText)}
                   text = {'Phone Number'}
                 /&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   styles={StyleSheet.flatten(styles.textInfo)}
                   text = {data.company.phone ? data.company.phone.toString() : ''}
                 /&gt;
@@ -955,11 +955,11 @@ class Organisers extends Component {
               {
                 data.company.email ?
                   &lt;View style = {styles.formView}&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     styles={StyleSheet.flatten(styles.titleText)}
                     text = {'Email Address'}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     styles={StyleSheet.flatten(styles.textInfo)}
                     text = {data.company.email ? data.company.email : ''}
                   /&gt;
@@ -974,7 +974,7 @@ class Organisers extends Component {
                 {data.company.facebook_visible ?
                   &lt;View style = {styles.formView}&gt;
 &nbsp;
-                      &lt;DisplayText
+                      &lt;Paragraph
 &nbsp;
                       styles={[StyleSheet.flatten(styles.textInfo), {color:'blue'}]}
                       onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${data.company.facebook}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
@@ -987,7 +987,7 @@ class Organisers extends Component {
                 {data.company.instagram_visible ?
                   &lt;View style = {styles.formView}&gt;
 &nbsp;
-                    &lt;DisplayText
+                    &lt;Paragraph
                       styles={[StyleSheet.flatten(styles.textInfo), {color:'blue'}]}
                       onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${data.company.instagram}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
 &nbsp;
@@ -999,7 +999,7 @@ class Organisers extends Component {
                 { data.company.twitter_visible ?
                   &lt;View style = {styles.formView}&gt;
 &nbsp;
-                    &lt;DisplayText
+                    &lt;Paragraph
                     styles={[StyleSheet.flatten(styles.textInfo), {color:'blue'}]}
                     onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${data.company.twitter}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
 &nbsp;
@@ -1011,7 +1011,7 @@ class Organisers extends Component {
                 { data.company.linkedin_visible ? 
                   &lt;View style = {styles.formView}&gt;
 &nbsp;
-                    &lt;DisplayText
+                    &lt;Paragraph
                       styles={[StyleSheet.flatten(styles.textInfo), {color:'blue'}]}
                       onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >Linking.openURL(`${data.company.linkedin}`).catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {<span class="cstat-no" title="statement not covered" >this.setState({errorMessage:err.toString(), showErrorAlert:true})}</span>)}</span>
 &nbsp;

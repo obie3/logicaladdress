@@ -845,7 +845,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, StatusBar, Image, StyleSheet, Text,TouchableOpacity, Animated,Dimensions,} from 'react-native';
-import {DisplayText, ErrorAlert, Preloader } from '../../components';
+import {Paragraph, ErrorAlert, Preloader } from '../../components';
 import styles from './styles';
 import { DrawerActions } from "react-navigation";
 import {connect} from 'react-redux';
@@ -1048,7 +1048,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
           &lt;/ScrollView&gt;
             &lt;View style = {styles.sliderDot}&gt;
               &lt;View style ={styles.sliderTxtView}&gt;
-                &lt;DisplayText
+                &lt;Paragraph
                   text={'Africas Leading Media Conference for Women '}
                   styles = {styles.boxText}
                 /&gt;
@@ -1075,7 +1075,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
                     source = {require('../../assets/images/about.png')}
                     style = {StyleSheet.flatten(styles.boxIcon)}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     onPress = {this.handleAboutRoute}
                     text={'About'}
                     styles = {styles.boxText}
@@ -1088,7 +1088,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
                     source = {require('../../assets/images/program.png')}
                     style = {StyleSheet.flatten(styles.boxIcon)}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     text={'Programs'}
                     styles = {styles.boxText}
                   /&gt;
@@ -1101,7 +1101,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
                     source = {require('../../assets/images/group.png')}
                     style = {StyleSheet.flatten(styles.boxIcon)}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     onPress = {this.handlepeople}
                     text={'People'}
                     styles = {styles.boxText}
@@ -1115,7 +1115,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
                     source = {require('../../assets/images/sponsors.png')}
                     style = {StyleSheet.flatten(styles.boxIcon)}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     onPress = {this.handleSponsors}
                     text={'Sponsors'}
                     styles = {styles.boxText}
@@ -1129,7 +1129,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
                     source = {require('../../assets/images/resources.png')}
                     style = {StyleSheet.flatten(styles.boxIcon)}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     onPress = {this.handleResources}
                     text={'Resources'}
                     styles = {styles.boxText}
@@ -1143,7 +1143,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
                     source = {require('../../assets/images/news_feed.png')}
                     style = {StyleSheet.flatten(styles.boxIcon)}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     onPress = {this.handleOrganiser}
                     text={'Organiser'}
                     styles = {styles.boxText}
@@ -1154,7 +1154,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
                     source = {require('../../assets/images/contact.png')}
                     style = {StyleSheet.flatten(styles.boxIcon)}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     text={'Contact'}
                     styles = {styles.boxText}
                   /&gt;
@@ -1164,7 +1164,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
                     source = {require('../../assets/images/floor_plan.png')}
                     style = {StyleSheet.flatten(styles.boxIcon)}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     text={'Floor Plan'}
                     styles = {styles.boxText}
                   /&gt;
@@ -1174,7 +1174,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
                     source = {require('../../assets/images/message.png')}
                     style = {StyleSheet.flatten(styles.boxIcon)}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     text={'Message/Chat'}
                     styles = {styles.boxText}
                   /&gt;
@@ -1184,7 +1184,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
                     source = {require('../../assets/images/photo.png')}
                     style = {StyleSheet.flatten(styles.boxIcon)}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     text={'Photo'}
                     styles = {styles.boxText}
                   /&gt;
@@ -1194,7 +1194,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
                     source = {require('../../assets/images/guide.png')}
                     style = {StyleSheet.flatten(styles.boxIcon)}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     text={'Guide'}
                     styles = {styles.boxText}
                   /&gt;
@@ -1204,7 +1204,7 @@ const deviceWidth = <span class="cstat-no" title="statement not covered" >Dimens
                     source = {require('../../assets/images/feedback.png')}
                     style = {StyleSheet.flatten(styles.boxIcon)}
                   /&gt;
-                  &lt;DisplayText
+                  &lt;Paragraph
                     text={'Feedback/\nSurvey'}
                     styles = {styles.boxText}
                   /&gt;

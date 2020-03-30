@@ -311,7 +311,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 import React, {Component} from 'react';
 import { View, TouchableOpacity, SafeAreaView, StatusBar, Image, StyleSheet,} from 'react-native';
-import {DisplayText, SubmitButton , Preloader,  ErrorAlert} from '../../components';
+import {Paragraph, SubmitButton , Preloader,  ErrorAlert} from '../../components';
 import styles from './styles';
 import ExpireSvg from './ExpireSvg';
 import { sendRoute, RequestNewTokenEndpoint, getEmail} from '../../utils';
@@ -413,11 +413,11 @@ export default class LinkExpire extends Component {
         behavior = 'padding'&gt; 
           &lt;ExpireSvg/&gt;
           &lt;View style = {styles.titleTxtView}&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               styles = {StyleSheet.flatten(styles.topTxt)}
               text = {'Token Expired!'}
             /&gt;
-            &lt;DisplayText
+            &lt;Paragraph
               styles = {StyleSheet.flatten(styles.bottomTxt)}
               text = {'Click to resend New verification \ntoken '}
             /&gt;

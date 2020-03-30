@@ -1,7 +1,13 @@
-import {Animated, StyleSheet, SafeAreaView, View} from 'react-native';
+import { Animated, StyleSheet, SafeAreaView, View } from 'react-native';
 import React, { useState, memo, useEffect } from 'react';
-import {DisplayText, SubmitButton, Preloader} from '../../components';
-import { fetchProfile, saveToken, VerifyOTPEndpoint, generateOTPEndpoint, RegistrationEndpoint} from '../../utils';
+import { Paragraph, SubmitButton, Preloader } from 'components';
+import {
+  fetchProfile,
+  saveToken,
+  VerifyOTPEndpoint,
+  generateOTPEndpoint,
+  RegistrationEndpoint,
+} from 'utils';
 import DropdownAlert from 'react-native-dropdownalert';
 
 import {
@@ -19,12 +25,12 @@ import styles, {
   NOT_EMPTY_CELL_BG_COLOR,
 } from './styles';
 
-const {Value, Text: AnimatedText} = Animated;
+const { Value, Text: AnimatedText } = Animated;
 const CELL_COUNT = 4;
 
 const animationsColor = [...new Array(CELL_COUNT)].map(() => new Value(0));
 const animationsScale = [...new Array(CELL_COUNT)].map(() => new Value(1));
-const animateCell = ({hasValue, index, isFocused}) => {
+const animateCell = ({ hasValue, index, isFocused }) => {
   Animated.parallel([
     Animated.timing(animationsColor[index], {
       toValue: isFocused ? 1 : 0,
@@ -37,7 +43,6 @@ const animateCell = ({hasValue, index, isFocused}) => {
   ]).start();
 };
 
-
 const VerificationScreen = ({ navigation }) => {
   const [value, setValue] = useState('');
   const [phone, setPhone] = useState('');
@@ -45,8 +50,7 @@ const VerificationScreen = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState(false);
   const [params, setParams] = useState({});
 
-
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -56,7 +60,7 @@ const VerificationScreen = ({ navigation }) => {
     getParams();
   }, []);
 
-  const renderCell = ({index, symbol, isFocused}) => {
+  const renderCell = ({ index, symbol, isFocused }) => {
     const hasValue = Boolean(symbol);
     const animatedCellStyle = {
       backgroundColor: hasValue
@@ -85,14 +89,15 @@ const VerificationScreen = ({ navigation }) => {
     // Run animation on next event loop tik
     // Because we need first return new style prop and then animate this value
     setTimeout(() => {
-      animateCell({hasValue, index, isFocused});
+      animateCell({ hasValue, index, isFocused });
     }, 0);
 
     return (
       <AnimatedText
         key={index}
         style={[styles.cell, animatedCellStyle]}
-        onLayout={getCellOnLayoutHandler(index)}>
+        onLayout={getCellOnLayoutHandler(index)}
+      >
         {symbol || (isFocused ? <Cursor /> : null)}
       </AnimatedText>
     );
@@ -108,11 +113,11 @@ const VerificationScreen = ({ navigation }) => {
   };
 
   let showLoadingDialogue = () => {
-    setShowLoading(true)
+    setShowLoading(true);
   };
 
   let hideLoadingDialogue = () => {
-    setShowLoading(false)
+    setShowLoading(false);
   };
 
   let showNotification = (type, title, message) => {
@@ -129,7 +134,7 @@ const VerificationScreen = ({ navigation }) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({phone, otp}),
+      body: JSON.stringify({ phone, otp }),
     };
 
     try {
@@ -142,7 +147,7 @@ const VerificationScreen = ({ navigation }) => {
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }
-  }
+  };
 
   let requestNewToken = async () => {
     showLoadingDialogue();
@@ -152,40 +157,38 @@ const VerificationScreen = ({ navigation }) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({phone}),
+      body: JSON.stringify({ phone }),
     };
 
     try {
-
       const response = await fetch(generateOTPEndpoint, settings);
       const res = await response.json();
       if (typeof res.data === 'undefined') {
         return showNotification('error', 'Message', res.error.message);
       }
       return showNotification('success', 'Message', 'OTP sent successfully');
-
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }
-  }
-
+  };
 
   let completeRegistration = async (token, params) => {
     let name = params.name.split(' ');
     let defaultParams = {
       firstName: name[0],
       email: params.email ? params.email : '',
-   } 
-    let body = (name.length == 2) ?
-      { ...defaultParams, lastName : name[1] } :
-      { ...defaultParams, lastName: name[2], middleName: name[1] };
-    
+    };
+    let body =
+      name.length == 2
+        ? { ...defaultParams, lastName: name[1] }
+        : { ...defaultParams, lastName: name[2], middleName: name[1] };
+
     const settings = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'TempAuthorization': token
+        TempAuthorization: token,
       },
       body: JSON.stringify(body),
     };
@@ -200,83 +203,64 @@ const VerificationScreen = ({ navigation }) => {
       await saveToken(result.token);
       hideLoadingDialogue();
       return navigation.navigate('App');
-
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }
-  }
-
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <DropdownAlert duration={5} defaultContainer={styles.alert}  ref={ref => dropDownAlertRef = ref} />
-      <View style = {styles.textView}>
-        <DisplayText
+      <DropdownAlert
+        duration={5}
+        defaultContainer={styles.alert}
+        ref={ref => (dropDownAlertRef = ref)}
+      />
+      <View style={styles.textView}>
+        <Paragraph
           text={' Verification Code Sent'}
-          styles = {styles.Verification}
+          styles={styles.Verification}
         />
-        <DisplayText
+        <Paragraph
           text={'Enter 4 digits code sent to'}
-          styles = {styles.msgText}
+          styles={styles.msgText}
         />
-        <DisplayText
-          text={nPhone}
-          styles = {styles.msgText2}
-        />
+        <Paragraph text={nPhone} styles={styles.msgText2} />
       </View>
 
-
-         <View style={styles.optView}>
+      <View style={styles.optView}>
         <CodeField
-            ref={ref}
-            {...props}
-            value={value}
-            onChangeText={setValue}
-            cellCount={CELL_COUNT}
-            rootStyle={styles.codeFiledRoot}
-            keyboardType="number-pad"
-            renderCell={renderCell}
+          ref={ref}
+          {...props}
+          value={value}
+          onChangeText={setValue}
+          cellCount={CELL_COUNT}
+          rootStyle={styles.codeFiledRoot}
+          keyboardType='number-pad'
+          renderCell={renderCell}
+        />
+        <View style={styles.btnView}>
+          <SubmitButton
+            title={'Verify'}
+            onPress={phoneVerification}
+            imgSrc={require('assets/images/add_peopl.png')}
+            btnStyle={styles.buttonWithImage}
+            imgStyle={StyleSheet.flatten(styles.iconDoor)}
+            titleStyle={StyleSheet.flatten(styles.buttonTxt)}
+            disabled={false}
           />
-        <View style = {styles.btnView}>
-            <SubmitButton
-              title={'Verify'}
-              onPress={phoneVerification}
-              imgSrc={require('../../assets/images/add_peopl.png')}
-              btnStyle={styles.buttonWithImage}
-              imgStyle={StyleSheet.flatten(styles.iconDoor)}
-              titleStyle={StyleSheet.flatten(styles.buttonTxt)}
-              disabled={false}
-            />
-            
-             <View style = {styles.textView}>
-              <DisplayText
-                text={'Didn\'t get code?'}
-                styles = {styles.msgText}
-              />
-              <DisplayText
-                text={'Resend'}
-                styles = {styles.resend}
-                onPress = {requestNewToken}            
-              />
-            </View> 
-             {/* <Toast
-              ref="toast"
-              style={{backgroundColor: 'green'}}
-              position='bottom'
-              positionValue={200}
-              fadeInDuration={750}
-              fadeOutDuration={5000}
-              opacity={0.8}
-              textStyle={{color:'white'}}
-            />  */}
-           <Preloader
-              modalVisible={showLoading}
-             animationType="fade"
+
+          <View style={styles.textView}>
+            <Paragraph text={"Didn't get code?"} styles={styles.msgText} />
+            <Paragraph
+              text={'Resend'}
+              styles={styles.resend}
+              onPress={requestNewToken}
             />
           </View>
+          <Preloader modalVisible={showLoading} animationType='fade' />
         </View>
-
-      </SafeAreaView>
+      </View>
+    </SafeAreaView>
   );
 };
 
