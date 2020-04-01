@@ -109,4 +109,8 @@ export default styles = StyleSheet.create({
     height: 18,
     tintColor: theme.primaryTextColor,
   },
+
+  alert: {
+    ...theme.alertNotification,
+  },
 });

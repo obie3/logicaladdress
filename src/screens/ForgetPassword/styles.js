@@ -1,91 +1,44 @@
 import { StyleSheet } from 'react-native';
-import colors from '../../assets/colors';
 import theme from '../../assets/theme';
-import { Platform } from '@unimodules/core';
 
 export default styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    ...theme.container,
   },
-  navBar: {
-    flexDirection: 'row',
-    marginTop: Platform.OS === 'ios' ? 20 : 20,
-    height: 60,
-    backgroundColor: 'transparent',
-    width: '100%',
-    paddingLeft: 16,
-    paddingRight: 16,
-    alignItems: 'center',
-  },
-  backView: {
-    height: 30,
-    width: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 30,
-  },
+
   wrapper: {
-    flex: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
-    // marginTop: 15,
-    paddingTop: 8,
-    justifyContent: 'center',
+    ...theme.wrapper,
     alignItems: 'center',
   },
   textInputView: {
-    width: '90%',
-    height: 45,
-    backgroundColor: theme.bgColorPrimary,
-    borderRadius: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-    paddingLeft: 8,
-    borderWidth: 1,
-    borderColor: theme.secondaryTextColor,
+    ...theme.inputField,
   },
-  textinputCont: {},
+
   iconForm: {
-    height: 20,
-    width: 20,
-    resizeMode: 'contain',
-    marginRight: 8,
+    ...theme.formIcon,
   },
   btnView: {
-    alignItems: 'center',
-    width: '100%',
+    ...theme.buttonView,
   },
+
   buttonWithImage: {
-    borderRadius: 30,
-    width: '60%',
-    height: 45,
-    backgroundColor: theme.buttonPrimary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginTop: 25,
-    paddingRight: 8,
+    ...theme.button,
   },
+
   buttonTxt: {
-    fontFamily: 'Poppins-Regular',
-    color: theme.colorAccent,
-    fontSize: 18,
-    alignSelf: 'center',
+    ...theme.buttonText,
   },
+
   iconDoor: {
-    height: 18,
-    width: 18,
-    resizeMode: 'contain',
-    marginLeft: 24,
+    ...theme.buttonIcon,
   },
+
   titleTxtView: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 8,
   },
+
   topTxt: {
     fontSize: defaultTheme.MediumFont,
     color: defaultTheme.primaryTextColor,
@@ -95,6 +48,7 @@ export default styles = StyleSheet.create({
     paddingTop: 40,
     fontFamily: defaultTheme.primaryFont,
   },
+
   bottomTxt: {
     fontSize: defaultTheme.thinyFont,
     color: defaultTheme.primaryTextColor,
@@ -104,9 +58,8 @@ export default styles = StyleSheet.create({
     paddingRight: 10,
     paddingLeft: 10,
   },
-  backIcon: {
-    width: 18,
-    height: 18,
-    tintColor: theme.primaryTextColor,
+
+  alert: {
+    ...theme.alertNotification,
   },
 });

@@ -1,6 +1,4 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-const window = Dimensions.get('window');
-import colors from 'assets/colors';
 import theme from 'assets/theme';
 
 let styles = StyleSheet.create({
@@ -9,61 +7,30 @@ let styles = StyleSheet.create({
     paddingBottom: 10,
   },
 
+  wrapper: {
+    ...theme.wrapper,
+  },
+
   iconForm: {
-    height: 20,
-    width: 20,
-    resizeMode: 'contain',
-    marginRight: 8,
+    ...theme.formIcon,
   },
 
   buttonTxt: {
-    fontFamily: 'Poppins-Regular',
-    color: colors.white,
-    fontSize: 18,
-    alignSelf: 'center',
+    ...theme.buttonText,
   },
   iconDoor: {
-    height: 18,
-    width: 18,
-    resizeMode: 'contain',
-    marginLeft: 24,
+    ...theme.buttonIcon,
   },
   textInputView: {
-    width: '100%',
-    height: 45,
-    backgroundColor: colors.white,
-    borderRadius: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-    paddingLeft: 8,
-    borderWidth: 1,
-    borderColor: theme.secondaryTextColor,
-  },
-
-  wrapper: {
-    flex: 1,
-    paddingLeft: Platform.OS === 'ios' ? 30 : 30,
-    paddingRight: Platform.OS === 'ios' ? 30 : 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    ...theme.inputField,
   },
 
   btnView: {
-    alignItems: 'center',
-    width: '100%',
+    ...theme.buttonView,
   },
 
   buttonWithImage: {
-    borderRadius: 30,
-    width: '60%',
-    height: 45,
-    backgroundColor: theme.buttonPrimary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginTop: 25,
-    paddingRight: 8,
+    ...theme.button,
   },
 
   footerView: {
@@ -140,6 +107,10 @@ let styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  alert: {
+    ...theme.alertNotification,
   },
 });
 

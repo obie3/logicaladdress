@@ -5,21 +5,19 @@ import {
   SafeAreaView,
   StatusBar,
   Image,
-  StyleSheet,
   KeyboardAvoidingView,
 } from 'react-native';
 import {
   Paragraph,
   InputField,
-  SingleButtonAlert,
   SubmitButton,
   Preloader,
-} from '../../components';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import colors from '../../assets/colors';
+  BackIcon,
+} from 'components';
+import colors from 'assets/colors';
 import styles from './styles';
 import LockSvg from './LockSvg';
-import { isEmailValid, sendRoute, Forgetpassword } from '../../utils';
+import { isEmailValid, sendRoute, Forgetpassword } from 'utils';
 
 export default class ForgetPassword extends Component {
   constructor(props) {
@@ -35,12 +33,8 @@ export default class ForgetPassword extends Component {
     };
   }
 
-  handleLoginRoute = () => {
-    this.props.navigation.navigate('Login');
-  };
-  handleResetPassword = () => {
-    this.props.navigation.navigate('LinkExpire');
-  };
+  handleLoginRoute = () => this.props.navigation.navigate('Login');
+  handleResetPassword = () => this.props.navigation.navigate('LinkExpire');
 
   handleEmailChange = email => {
     if (email.length > 0) {
@@ -113,38 +107,24 @@ export default class ForgetPassword extends Component {
   };
 
   render() {
-    const { showLoading, showAlert, message } = this.state;
+    const { showLoading } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle='default' />
-        <View style={styles.navBar}>
-          <TouchableOpacity
-            onPress={this.handleLoginRoute}
-            style={styles.backView}
-          >
-            <Image
-              onPress={this.handleLoginRoute}
-              source={require('../../assets/images/back.png')}
-              style={StyleSheet.flatten(styles.backIcon)}
-            />
-          </TouchableOpacity>
-        </View>
+        <BackIcon onPress={this.handleLoginRoute} />
         <KeyboardAvoidingView style={styles.wrapper} behavior='padding'>
           <LockSvg />
           <View style={styles.titleTxtView}>
+            <Paragraph styles={styles.topTxt} text={'Forgot password?'} />
             <Paragraph
-              styles={StyleSheet.flatten(styles.topTxt)}
-              text={'Forgot password?'}
-            />
-            <Paragraph
-              styles={StyleSheet.flatten(styles.bottomTxt)}
+              styles={styles.bottomTxt}
               text={'Enter your Registered Email Address '}
             />
           </View>
           <View style={styles.textInputView}>
             <Image
-              source={require('../../assets/images/email.png')}
-              style={StyleSheet.flatten(styles.iconForm)}
+              source={require('assets/images/email.png')}
+              style={styles.iconForm}
             />
             <InputField
               placeholder={'Email'}
@@ -165,19 +145,13 @@ export default class ForgetPassword extends Component {
               title={'Log in'}
               disabled={!this.toggleButtonState()}
               onPress={this.handleResetPassword}
-              imgSrc={require('../../assets/images/settings.png')}
+              imgSrc={require('assets/images/settings.png')}
               btnStyle={styles.buttonWithImage}
-              imgStyle={StyleSheet.flatten(styles.iconDoor)}
-              titleStyle={StyleSheet.flatten(styles.buttonTxt)}
+              imgStyle={styles.iconDoor}
+              titleStyle={styles.buttonTxt}
             />
 
             <Preloader modalVisible={showLoading} animationType='fade' />
-            <SingleButtonAlert
-              title={'Hello'}
-              message={message}
-              handleCloseNotification={this.handleCloseNotification}
-              visible={showAlert}
-            />
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>

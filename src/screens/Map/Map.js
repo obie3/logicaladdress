@@ -1,15 +1,10 @@
 import React from 'react';
-import {
-  View,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Image,
-  Text,
-} from 'react-native';
-
+import { View, Dimensions, StatusBar, SafeAreaView } from 'react-native';
 import MapView, { Marker, ProviderPropType } from 'react-native-maps';
 import BottomSheet from 'reanimated-bottom-sheet';
 import styles from './styles';
+import Icon from './Icon';
+import { Paragraph, SubmitButton } from 'components';
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
@@ -28,28 +23,53 @@ class MarkerTypes extends React.Component {
     super(props);
 
     this.state = {
-      a: {
-        latitude: LATITUDE + SPACE,
-        longitude: LONGITUDE + SPACE,
-      },
+      home: {},
+      panelHeight: 1,
       b: {
         latitude: LATITUDE - SPACE,
         longitude: LONGITUDE - SPACE,
       },
     };
   }
+  handleBackPress = () => this.props.navigation.navigate('Home');
 
-  renderInner = () => (
-    <View style={styles.panel}>
-      <Text style={styles.panelTitle}>San Francisco Airport</Text>
-      <Text style={styles.panelSubtitle}>
-        International Airport - 40 miles away
-      </Text>
-      <View style={styles.panelButton}>
-        <Text style={styles.panelButtonTitle}>Directions</Text>
+  handleSetHomeAddress = response => {
+    return this.setState({
+      panelHeight: 2,
+      home: response.nativeEvent,
+    });
+  };
+
+  renderInner = () => {
+    const { home } = this.state;
+    if (typeof home.coordinate == 'undefined') {
+      return (
+        <View style={[styles.panel]}>
+          <Paragraph
+            styles={styles.panelTitle}
+            text={'Drag Marker to Set Address'}
+          />
+        </View>
+      );
+    }
+    return (
+      <View style={styles.panel}>
+        <Paragraph
+          styles={styles.panelSubtitle}
+          text={home.coordinate.latitude.toString()}
+        />
+        <View style={styles.panelButton}>
+          <SubmitButton
+            title={'Confirm'}
+            onPress={() => {}}
+            btnStyle={styles.buttonWithImage}
+            titleStyle={styles.panelButtonTitle}
+            disabled={true}
+          />
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   renderHeader = () => (
     <View style={styles.header}>
@@ -63,7 +83,9 @@ class MarkerTypes extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle='default' />
+
         <MapView
           provider={this.props.provider}
           style={styles.map}
@@ -79,22 +101,20 @@ class MarkerTypes extends React.Component {
             onSelect={e => log('onSelect', e)}
             onDrag={e => log('onDrag', e)}
             onDragStart={e => log('onDragStart', e)}
-            onDragEnd={e => log('onDragEnd', e)}
+            onDragEnd={e => this.handleSetHomeAddress(e)}
             onPress={e => log('onPress', e)}
             draggable={true}
           />
         </MapView>
+        <Icon onPress={this.handleBackPress} />
         <BottomSheet
           ref={this.bs}
-          snapPoints={[500, 250, 0]}
+          snapPoints={[200, 100, 20]}
           renderContent={this.renderInner}
           renderHeader={this.renderHeader}
           initialSnap={1}
         />
-        <TouchableWithoutFeedback onPress={() => this.bs.current.snapTo(0)}>
-          <Image style={styles.map} source={require('assets/images/map.jpg')} />
-        </TouchableWithoutFeedback>
-      </View>
+      </SafeAreaView>
     );
   }
 }

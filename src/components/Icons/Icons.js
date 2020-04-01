@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import colors from '../../assets/colors';
+import colors from 'assets/colors';
 import { TouchableHighlight, StyleSheet } from 'react-native';
 import Icon from '@expo/vector-icons/FontAwesome';
 //import Icon from 'react-native-vector-icons/FontAwesome';
@@ -53,10 +53,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gold,
   },
 
-  // title: {
-  //   fontFamily: 'Montserrat-Bold',
-  //   color: colors.black,
-  // },
   icon: {
     marginRight: -2,
     marginTop: -2,

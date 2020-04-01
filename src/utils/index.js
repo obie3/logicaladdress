@@ -3,8 +3,14 @@ const ENDPOINT = 'https://logicaladdress-api.herokuapp.com/api/v1/';
 const generateOTPEndpoint = `${ENDPOINT}otp/generate`;
 const RegistrationEndpoint = `${ENDPOINT}auth/register`;
 const VerifyOTPEndpoint = `${ENDPOINT}otp/verify`;
+const ProfileEndpoint = `${ENDPOINT}auth/profile`;
 
-export { generateOTPEndpoint, RegistrationEndpoint, VerifyOTPEndpoint };
+export {
+  generateOTPEndpoint,
+  RegistrationEndpoint,
+  VerifyOTPEndpoint,
+  ProfileEndpoint,
+};
 
 export const isEmailValid = email => {
   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -23,11 +29,17 @@ export const isEmpty = str => {
   return !str || 0 === str.toString().trim().length;
 };
 
-export const saveToLocalStorage = async (name, email, phone) => {
+export const saveToLocalStorage = async (
+  name = null,
+  email = null,
+  phone = null,
+  imageUrl = null,
+) => {
   const profile = {
     name,
     email,
     phone,
+    imageUrl,
   };
   await AsyncStorage.setItem('profile', JSON.stringify(profile));
   return true;
@@ -59,7 +71,7 @@ export const saveToken = async token => {
 };
 
 export const logout = async () => {
-  let keys = ['profile', 'token'];
+  let keys = ['token', 'profile'];
   return await AsyncStorage.multiRemove(keys, err => {});
 };
 

@@ -8,4 +8,10 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  LogoLayout: {
+    height: 100,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
 });

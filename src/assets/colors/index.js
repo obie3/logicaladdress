@@ -23,6 +23,7 @@ export default {
   yellow: '#FFBB00',
   buttonBlue: '#0177C1', //'#23B2D6',
   skyBlue: '#23B2D6',
-  backGround: '#F1FAFC',
+  background: '#ecf0f1',
   label: '#00000033',
+  headerFontColor: '#4A5459',
 };

@@ -1,12 +1,15 @@
-import { Animated, StyleSheet, SafeAreaView, View } from 'react-native';
+import { Animated, SafeAreaView, View, StatusBar } from 'react-native';
 import React, { useState, memo, useEffect } from 'react';
-import { Paragraph, SubmitButton, Preloader } from 'components';
+import { Paragraph, SubmitButton, Preloader, BackIcon } from 'components';
+
 import {
   fetchProfile,
   saveToken,
   VerifyOTPEndpoint,
   generateOTPEndpoint,
   RegistrationEndpoint,
+  ProfileEndpoint,
+  logout,
 } from 'utils';
 import DropdownAlert from 'react-native-dropdownalert';
 
@@ -112,12 +115,17 @@ const VerificationScreen = ({ navigation }) => {
     setParams(profile);
   };
 
+  let handleBackPress = async () => {
+    await logout();
+    return navigation.navigate('Login');
+  };
+
   let showLoadingDialogue = () => {
-    setShowLoading(true);
+    return setShowLoading(true);
   };
 
   let hideLoadingDialogue = () => {
-    setShowLoading(false);
+    return setShowLoading(false);
   };
 
   let showNotification = (type, title, message) => {
@@ -143,7 +151,11 @@ const VerificationScreen = ({ navigation }) => {
       if (typeof res.data === 'undefined') {
         return showNotification('error', 'Message', res.error);
       }
-      return completeRegistration(res.data.token, params);
+      let result = res.data;
+      await saveToken(result.token);
+      return typeof result.user === 'undefined'
+        ? completeRegistration(result.token, params)
+        : navigation.navigate('App'); //getProfile(result.token);
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }
@@ -197,10 +209,37 @@ const VerificationScreen = ({ navigation }) => {
       const response = await fetch(RegistrationEndpoint, settings);
       const res = await response.json();
       if (typeof res.data === 'undefined') {
-        return showNotification('error', 'Message', res.error.message);
+        return showNotification('error', 'Message', res.error);
       }
-      let result = res.data;
-      await saveToken(result.token);
+      await saveToken(res.data.token);
+      hideLoadingDialogue();
+      return navigation.navigate('App');
+      //return getProfile(result);
+    } catch (error) {
+      return showNotification('error', 'Hello', error.toString());
+    }
+  };
+
+  let getProfile = async token => {
+    const settings = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      //body: JSON.stringify(body),
+    };
+
+    try {
+      const response = await fetch(ProfileEndpoint, settings);
+      const res = await response.json();
+      console.log({ 'profile res': token });
+      if (typeof res.data === 'undefined') {
+        return showNotification('error', 'Message', res.error);
+      }
+      //let result = res.data;
+      await saveToLocalStorage(phone);
       hideLoadingDialogue();
       return navigation.navigate('App');
     } catch (error) {
@@ -210,11 +249,13 @@ const VerificationScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle='default' />
       <DropdownAlert
         duration={5}
         defaultContainer={styles.alert}
         ref={ref => (dropDownAlertRef = ref)}
       />
+      <BackIcon onPress={handleBackPress} />
       <View style={styles.textView}>
         <Paragraph
           text={' Verification Code Sent'}
@@ -244,8 +285,8 @@ const VerificationScreen = ({ navigation }) => {
             onPress={phoneVerification}
             imgSrc={require('assets/images/add_peopl.png')}
             btnStyle={styles.buttonWithImage}
-            imgStyle={StyleSheet.flatten(styles.iconDoor)}
-            titleStyle={StyleSheet.flatten(styles.buttonTxt)}
+            imgStyle={styles.iconDoor}
+            titleStyle={styles.buttonTxt}
             disabled={false}
           />
 

@@ -6,6 +6,9 @@ import { Preloader } from '../../components';
 export default class Logout extends Component {
   constructor() {
     super();
+    this.state = {
+      showLoading: true,
+    };
   }
 
   componentDidMount() {
@@ -18,7 +21,7 @@ export default class Logout extends Component {
     const { showLoading } = this.state;
     return (
       <SafeAreaView style={styles.container}>
-        <Preloader modalVisible={true} animationType='fade' />
+        <Preloader modalVisible={showLoading} animationType='fade' />
       </SafeAreaView>
     );
   }

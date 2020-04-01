@@ -6,12 +6,18 @@ import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default class Pending extends Component {
   render() {
+    const { size, layoutSize } = this.props;
+    const iconsize = size || 14;
+    const nHeight = layoutSize || 22;
+    const nWidth = layoutSize || 22;
     return (
-      <TouchableHighlight style={styles.button}>
+      <TouchableHighlight
+        style={[styles.button, { height: nHeight, width: nWidth }]}
+      >
         <Icon
           name={'exclamation'}
           color={'red'}
-          size={14}
+          size={iconsize}
           style={styles.icon}
         />
       </TouchableHighlight>

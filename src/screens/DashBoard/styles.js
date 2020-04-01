@@ -5,7 +5,7 @@ import colors from 'assets/colors';
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ecf0f1',
+    backgroundColor: colors.backgroundColor,
   },
 
   navBar: {
@@ -38,13 +38,6 @@ export default styles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     shadowOffset: { height: 1, width: 0 },
-  },
-
-  LogoLayout: {
-    height: 100,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
   },
 
   cardContents: {
@@ -84,33 +77,28 @@ export default styles = StyleSheet.create({
   },
 
   verificationText: {
-    fontFamily: theme.inputHintFont,
-    fontSize: 24,
+    fontSize: theme.headerOneFont,
     color: colors.label,
+    fontWeight: 'bold',
     paddingRight: 6,
   },
 
-  headerTwo: {
-    fontSize: 26,
-    color: '#4A5459',
+  phoneText: {
+    fontFamily: theme.inputHintFont,
+    fontSize: theme.headerOneFont,
+    color: colors.headerFontColor,
     fontWeight: 'bold',
   },
 
-  headerThree: {
-    fontSize: 16,
-    color: '#4A5459',
+  nameText: {
+    fontSize: theme.headerFourFont,
+    color: colors.headerFontColor,
     fontWeight: 'bold',
   },
 
-  headerTwoLabel: {
+  fieldLabel: {
     fontFamily: theme.inputHintFont,
-    fontSize: 16,
-    color: colors.label,
-  },
-
-  headerThreeLabel: {
-    fontFamily: theme.inputHintFont,
-    fontSize: 16,
+    fontSize: theme.headerFourFont,
     color: colors.label,
   },
 
@@ -157,13 +145,8 @@ export default styles = StyleSheet.create({
   },
 
   button: {
-    borderRadius: 5,
+    ...theme.button,
     width: '50%',
-    height: 35,
-    backgroundColor: colors.buttonBlue,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
   },
 
   buttonTxt: {

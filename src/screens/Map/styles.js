@@ -1,18 +1,15 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 const IMAGE_SIZE = 50;
+import theme from 'assets/theme';
+import colors from 'assets/colors';
 
 export default styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    flex: 1,
+    //backgroundColor: 'green',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
   },
   box: {
     width: IMAGE_SIZE,
@@ -26,9 +23,10 @@ export default styles = StyleSheet.create({
     right: 0,
   },
   panel: {
-    height: 400,
+    height: 200,
     padding: 20,
     backgroundColor: '#f7f5eee8',
+    alignItems: 'center',
   },
   header: {
     backgroundColor: '#f7f5eee8',
@@ -48,8 +46,9 @@ export default styles = StyleSheet.create({
     marginBottom: 10,
   },
   panelTitle: {
-    fontSize: 27,
-    height: 35,
+    fontSize: theme.headerThreeFont,
+    color: colors.blue, //colors.headerFontColor,
+    fontWeight: 'bold',
   },
   panelSubtitle: {
     fontSize: 14,
@@ -58,24 +57,19 @@ export default styles = StyleSheet.create({
     marginBottom: 10,
   },
   panelButton: {
-    padding: 20,
-    borderRadius: 10,
-    backgroundColor: '#318bfb',
-    alignItems: 'center',
-    marginVertical: 10,
+    ...theme.buttonView,
+  },
+
+  buttonWithImage: {
+    ...theme.button,
   },
   panelButtonTitle: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    color: 'white',
+    ...theme.buttonText,
   },
-  photo: {
-    width: '100%',
-    height: 225,
-    marginTop: 30,
-  },
-  map: {
-    height: '100%',
-    width: '100%',
-  },
+
+  // photo: {
+  //   width: '100%',
+  //   height: 225,
+  //   marginTop: 30,
+  // },
 });

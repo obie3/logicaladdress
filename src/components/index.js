@@ -1,5 +1,5 @@
 import { Alert, SingleButtonAlert, SuccessAlert, ErrorAlert } from './Alert';
-import { SubmitButton } from './Buttons';
+import { SubmitButton, BackIcon } from './Buttons';
 import { InputField } from './TextInput';
 import { Paragraph } from './Text';
 import { Icons } from './Icons/Icons';
@@ -23,5 +23,5 @@ export {
   Verified,
   Pending,
   Logo,
-  //InputFieldBorder
+  BackIcon,
 };

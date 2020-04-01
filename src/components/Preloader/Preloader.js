@@ -22,8 +22,7 @@ export default class Preloader extends Component {
           <View style={styles.loaderContainer}>
             <Image
               style={styles.loaderImage}
-              source={require('../../assets/images/loader.gif')}
-              /* source={require('../../assets/images/whiteLoader.gif')} */
+              source={require('assets/images/loader.gif')}
             />
           </View>
         </View>

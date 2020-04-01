@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
+import { View, SafeAreaView, StatusBar } from 'react-native';
 import {
   Paragraph,
   SubmitButton,
@@ -54,10 +54,9 @@ class Dashboard extends Component {
     const { phone, firstName, lastNames } = this.state;
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle='dark-content' />
-        <View style={styles.LogoLayout}>
-          <Logo />
-        </View>
+        <StatusBar barStyle='default' />
+
+        <Logo />
 
         <View style={styles.viewBody}>
           <View style={styles.cardLayout}>
@@ -70,16 +69,13 @@ class Dashboard extends Component {
                 }}
               >
                 <View style={styles.verificationStatusLayout}>
-                  <Paragraph
-                    text={phone}
-                    styles={StyleSheet.flatten(styles.headerTwo)}
-                  />
+                  <Paragraph text={phone} styles={styles.phoneText} />
                   <View style={styles.verificationIndicators}>
                     <Paragraph
                       text={'Verified'}
-                      styles={StyleSheet.flatten(styles.verificationText)}
+                      styles={styles.verificationText}
                     />
-                    <Verified layoutSize={30} size={20} />
+                    <Verified layoutSize={25} size={15} />
                   </View>
                 </View>
               </View>
@@ -93,10 +89,7 @@ class Dashboard extends Component {
                 />
               </View>
               <Line />
-              <Paragraph
-                text={'Personal Details'}
-                styles={styles.headerThree}
-              />
+              <Paragraph text={'Personal Details'} styles={styles.nameText} />
 
               <View style={styles.avatarLayout}>
                 <UserAvatar
@@ -108,27 +101,21 @@ class Dashboard extends Component {
               <View>
                 <View style={styles.profileRowItem}>
                   <View style={styles.profileIconLayout}>
-                    <Verified layoutSize={40} size={24} />
+                    <Verified layoutSize={30} size={20} />
                   </View>
                   <View style={styles.profileItem}>
-                    <Paragraph
-                      text={'First Name'}
-                      styles={styles.headerThreeLabel}
-                    />
-                    <Paragraph text={firstName} styles={styles.headerThree} />
+                    <Paragraph text={'First Name'} styles={styles.fieldLabel} />
+                    <Paragraph text={firstName} styles={styles.nameText} />
                   </View>
                 </View>
 
                 <View style={styles.profileRowItem}>
                   <View style={styles.profileIconLayout}>
-                    <Verified layoutSize={40} size={24} />
+                    <Verified layoutSize={30} size={20} />
                   </View>
                   <View style={styles.profileItem}>
-                    <Paragraph
-                      text={'Last Name'}
-                      styles={styles.headerThreeLabel}
-                    />
-                    <Paragraph text={lastNames} styles={styles.headerThree} />
+                    <Paragraph text={'Last Name'} styles={styles.fieldLabel} />
+                    <Paragraph text={lastNames} styles={styles.nameText} />
                   </View>
                 </View>
               </View>

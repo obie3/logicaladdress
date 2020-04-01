@@ -123,7 +123,7 @@ export default class ForgetPassword extends Component {
           >
             <Image
               onPress={this.handleLoginRoute}
-              source={require('../../assets/images/back.png')}
+              source={require('assets/images/back.png')}
               style={StyleSheet.flatten(styles.backIcon)}
             />
           </TouchableOpacity>
@@ -177,12 +177,6 @@ export default class ForgetPassword extends Component {
             </TouchableOpacity>
 
             <Preloader modalVisible={showLoading} animationType='fade' />
-            <SingleButtonAlert
-              title={'Hello'}
-              message={message}
-              handleCloseNotification={this.handleCloseNotification}
-              visible={showAlert}
-            />
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>

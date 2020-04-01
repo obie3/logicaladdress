@@ -1,50 +1,41 @@
 'use strict';
-
 import React, { Component } from 'react';
 import {
   View,
   Image,
   StyleSheet,
-  Animated,
   KeyboardAvoidingView,
+  SafeAreaView,
+  StatusBar,
 } from 'react-native';
 import {
-  Paragraph,
   InputField,
   SubmitButton,
   Preloader,
   Logo,
-} from '../../components';
-import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL } from './styles';
+  Paragraph,
+} from 'components';
+import styles from './styles';
 import {
-  isEmailValid,
-  sendRoute,
-  LoginEndpoint,
-  saveProfile,
   isEmpty,
-} from '../../utils';
-import colors from '../../assets/colors';
+  isPhoneValid,
+  generateOTPEndpoint,
+  saveToLocalStorage,
+} from 'utils';
+import colors from 'assets/colors';
 import { NavigationActions, StackActions } from 'react-navigation';
-import theme from '../../assets/theme';
 import { connect } from 'react-redux';
-import { addProfile } from '../../redux/actions/ProfileActions';
+import { addProfile } from 'redux/actions/ProfileActions';
+import DropdownAlert from 'react-native-dropdownalert';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isUsernameValid: false,
-      isPasswordValid: false,
-      showAlert: false,
+      isPhoneValid: false,
       showLoading: false,
-      // isChecked: false,
-      email: '',
-      title: '',
-      message: '',
-      isEmailFocused: false,
-      isPasswordFocused: false,
+      isPhoneFocused: false,
     };
-    this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
   }
 
   resetNavigationStack = location => {
@@ -60,242 +51,171 @@ class Login extends Component {
     this.props.navigation.dispatch(navigateAction);
   };
 
-  keyboardWillShow = event => {
-    Animated.timing(this.imageHeight, {
-      duration: event.duration,
-      toValue: IMAGE_HEIGHT_SMALL,
-    }).start();
-  };
-
-  keyboardWillHide = event => {
-    Animated.timing(this.imageHeight, {
-      duration: event.duration,
-      toValue: IMAGE_HEIGHT,
-    }).start();
-  };
-
-  keyboardDidShow = event => {
-    Animated.timing(this.imageHeight, {
-      toValue: IMAGE_HEIGHT_SMALL,
-    }).start();
-  };
-
-  keyboardDidHide = event => {
-    Animated.timing(this.imageHeight, {
-      toValue: IMAGE_HEIGHT,
-    }).start();
-  };
-  onBlur() {}
-
-  handleCloseNotification = () => {
-    return this.setState({
-      showAlert: false,
-    });
-  };
-
-  handleEmailChange = email => {
-    if (email.length > 0) {
+  handlePhoneChange = phone => {
+    if (phone.length > 0) {
       this.setState({
-        isUsernameValid: true,
-        email: email,
+        isPhoneValid: true,
+        phone: phone,
       });
     } else {
-      if (email.length < 1) {
+      if (phone.length < 1) {
         this.setState({
-          isUsernameValid: false,
-        });
-      }
-    }
-  };
-
-  handlePasswordChange = password => {
-    if (password.length > 0) {
-      this.setState({
-        isPasswordValid: true,
-        password: password,
-      });
-    } else {
-      if (password.length < 1) {
-        this.setState({
-          isPasswordValid: false,
+          isPhoneValid: false,
         });
       }
     }
   };
 
   toggleButtonState = () => {
-    const { isUsernameValid, isPasswordValid } = this.state;
+    const { isPhoneValid } = this.state;
 
-    if (isUsernameValid && isPasswordValid) {
+    if (isPhoneValid) {
       return true;
     } else {
       return false;
     }
   };
 
-  handleRegistration = () => {
-    return this.props.navigation.navigate('Register');
-  };
-  handleForgetPassword = () => {
-    return this.props.navigation.navigate('ForgetPassword');
+  handleBackPress = () => this.props.navigation.navigate('Register');
+  handleForgetPassword = () => this.props.navigation.navigate('ForgetPassword');
+  showLoadingDialogue = () => this.setState({ showLoading: true });
+  hideLoadingDialogue = () => this.setState({ showLoading: false });
+
+  showNotification = (type, title, message) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   };
 
-  handleSignIn = async () => {
-    const { email, password } = this.state;
-    if (!isEmailValid(email)) {
-      return this.setState({
-        showAlert: true,
-        message: 'Invalid Email Address',
-      });
-    } else if (isEmpty(password)) {
-      return this.setState({
-        showAlert: true,
-        message: 'Enter Valid Password',
-      });
+  formValidation = () => {
+    this.showLoadingDialogue();
+    const { phone } = this.state;
+    if (isEmpty(phone) || !isPhoneValid(phone)) {
+      return this.showNotification(
+        'error',
+        'Message',
+        'Enter valid phone number',
+      );
     }
+    return this.requestLogin(phone);
+  };
 
-    this.setState({
-      showLoading: true,
-    });
+  requestLogin = async phone => {
+    let stripedPhone = phone.substring(1);
+    phone = `${'+234'}${stripedPhone}`;
+    let body = {
+      phone,
+    };
+    const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    };
 
-    let data = await JSON.stringify({
-      password: password,
-      email: email.toLowerCase(),
-    });
-
-    await sendRoute(LoginEndpoint, data).then(res => {
-      if (typeof res.status == 'undefined') {
-        this.props.setProfile(res.payload.profile);
-        if (!res.payload.verified) {
-          saveProfile(res.payload.id, res.payload.name, res.token, false);
-          this.setState({
-            showLoading: false,
-          });
-          return this.resetNavigationStack('Verification');
-        } else if (res.payload.verified) {
-          saveProfile(res.payload.id, res.payload.name, res.token, true);
-          this.setState({
-            showLoading: false,
-          });
-          return this.props.navigation.navigate('OnBoard');
-        }
-      } else {
-        this.setState({
-          showLoading: false,
-          message: res.message,
-          showAlert: true,
-        });
+    try {
+      const response = await fetch(generateOTPEndpoint, settings);
+      const res = await response.json();
+      if (typeof res.data === 'undefined') {
+        return this.showNotification(
+          'error',
+          'Message',
+          res.error[0].phone.isPhoneNumber,
+        );
       }
-    });
+      await saveToLocalStorage(null, null, phone);
+      this.hideLoadingDialogue();
+      return this.props.navigation.navigate('Verification');
+    } catch (error) {
+      return this.showNotification('error', 'Hello', error.toString());
+    }
   };
 
   render() {
     const { showLoading } = this.state;
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle='default' />
+        <DropdownAlert
+          duration={5}
+          defaultContainer={styles.alert}
+          ref={ref => (this.dropDownAlertRef = ref)}
+        />
+        {/* <BackIcon onPress={this.handleBackPress} /> */}
+
         <KeyboardAvoidingView style={styles.wrapper} behavior='padding'>
           <View style={styles.LogoLayout}>
             <Logo />
           </View>
-          <View>
+          <View style={{ paddingBottom: 100 }}>
             <View
               style={[
                 styles.textInputView,
                 {
                   borderColor: this.state.isEmailFocused
-                    ? colors.green
+                    ? colors.blue
                     : colors.whiteShade,
                 },
               ]}
             >
               <Image
-                source={require('../../assets/images/email.png')}
+                source={require('assets/images/email.png')}
                 style={StyleSheet.flatten(styles.iconForm)}
               />
+              {/* <View > */}
               <InputField
-                placeholder={'Email'}
+                placeholder={'Phone'}
                 placeholderTextColor={colors.blackShade}
                 textColor={colors.blackShade}
-                inputType={'email'}
-                keyboardType={'email'}
-                onChangeText={this.handleEmailChange}
+                inputType={'phone'}
+                onChangeText={this.handlePhoneChange}
                 autoCapitalize='none'
+                autoCompleteType='tel'
+                textContentType='telephoneNumber'
                 height={40}
                 width={'90%'}
-                borderWidth={1}
-                blurOnSubmit={false}
-                borderColor={theme.colorAccent}
-                returnKeyType={'next'}
-                blurOnSubmit={false}
-                onFocus={() => this.setState({ isEmailFocused: true })}
-                onBlur={() => this.setState({ isEmailFocused: false })}
-                onSubmitEditing={() => {
-                  this.passwordRef && this.passwordRef.focus();
-                }}
-              />
-            </View>
-            <View
-              style={[
-                styles.textInputView,
-                {
-                  borderColor: this.state.isPasswordFocused
-                    ? colors.green
-                    : colors.whiteShade,
-                },
-              ]}
-            >
-              <Image
-                source={require('../../assets/images/padlock.png')}
-                style={StyleSheet.flatten(styles.iconForm)}
-              />
-              <InputField
-                placeholder={'Password'}
-                placeholderTextColor={colors.blackShade}
-                textColor={colors.blackShade}
-                inputType={'password'}
-                onChangeText={this.handlePasswordChange}
-                autoCapitalize='none'
-                height={40}
-                width={'90%'}
-                borderWidth={1}
                 borderColor={colors.white}
                 refs={input => {
-                  this.passwordRef = input;
+                  this.phone = input;
                 }}
                 returnKeyType={'done'}
                 blurOnSubmit={false}
-                onFocus={() => this.setState({ isPasswordFocused: true })}
-                onBlur={() => this.setState({ isPasswordFocused: false })}
+                onFocus={() => this.setState({ isPhoneFocused: true })}
+                onBlur={() => this.setState({ isPhoneFocused: false })}
                 onSubmitEditing={() => {
-                  this.handleSignIn();
+                  this.formValidation();
                 }}
               />
             </View>
-          </View>
-          <View style={styles.btnView}>
-            <SubmitButton
-              title={'Log in'}
-              disabled={!this.toggleButtonState()}
-              onPress={this.handleSignIn}
-              imgSrc={require('../../assets/images/loginIcon.png')}
-              btnStyle={styles.buttonWithImage}
-              imgStyle={StyleSheet.flatten(styles.iconDoor)}
-              titleStyle={StyleSheet.flatten(styles.buttonTxt)}
-            />
-            <View style={StyleSheet.flatten(styles.signupLinkView)}>
+            <View style={styles.btnView}>
+              <SubmitButton
+                title={'Log in'}
+                disabled={!this.toggleButtonState()}
+                onPress={this.formValidation}
+                imgSrc={require('assets/images/loginIcon.png')}
+                btnStyle={styles.buttonWithImage}
+                imgStyle={styles.iconDoor}
+                titleStyle={styles.buttonTxt}
+              />
+            </View>
+            <View style={styles.signupLinkView}>
               <Paragraph
-                text={'Forgot Password?'}
-                styles={styles.forgotPwd}
-                onPress={this.handleForgetPassword}
+                text={'Dont have an Account? '}
+                styles={styles.signupText}
+                onPress={this.handleLoginRoute}
+              />
+              <Paragraph
+                text={'Signup'}
+                styles={styles.createAccount}
+                onPress={this.handleBackPress}
               />
             </View>
           </View>
-
           <Preloader modalVisible={showLoading} animationType='fade' />
         </KeyboardAvoidingView>
-        {/* </ScrollView> */}
-      </View>
+      </SafeAreaView>
     );
   }
 }

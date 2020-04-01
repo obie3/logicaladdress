@@ -25,7 +25,6 @@ import {
   isEmpty,
 } from 'utils';
 import WomanSvg from './WomanSvg';
-import { NavigationActions, StackActions } from 'react-navigation';
 import DropdownAlert from 'react-native-dropdownalert';
 
 export default class Register extends Component {
@@ -37,7 +36,7 @@ export default class Register extends Component {
       name: '',
       phone: '',
       isEmailValid: false,
-      isPasswordValid: false,
+      //isPasswordValid: false,
       isNameValid: false,
       isPhoneValid: false,
       showLoading: false,
@@ -55,23 +54,7 @@ export default class Register extends Component {
     this.phone = React.createRef();
   }
 
-  resetNavigationStack = () => {
-    const navigateAction = StackActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: 'Login',
-        }),
-      ],
-    });
-    this.props.navigation.dispatch(navigateAction);
-  };
-
   handleLoginRoute = () => this.props.navigation.navigate('Login');
-
-  handleFocus = () => this.setState({ isFocused: true });
-
-  handleBlur = () => this.setState({ isFocused: false });
 
   handleNameChange = name => {
     if (name.length > 0) {
@@ -105,11 +88,11 @@ export default class Register extends Component {
   handlePhoneChange = phone => {
     if (phone.length > 0) {
       this.setState({
-        phone: true,
+        isPhoneValid: true,
         phone: phone,
       });
     } else {
-      if (password.length < 1) {
+      if (phone.length < 1) {
         this.setState({
           isPhoneValid: false,
         });
@@ -117,25 +100,10 @@ export default class Register extends Component {
     }
   };
 
-  handlePasswordChange = password => {
-    if (password.length > 0) {
-      this.setState({
-        isPasswordValid: true,
-        password: password,
-      });
-    } else {
-      if (password.length < 1) {
-        this.setState({
-          isPasswordValid: false,
-        });
-      }
-    }
-  };
-
   toggleButtonState = () => {
-    const { isEmailValid, isPasswordValid, isNameValid } = this.state;
+    const { isEmailValid, isPhoneValid, isNameValid } = this.state;
 
-    if (isEmailValid && isNameValid && isPasswordValid) {
+    if (isEmailValid && isNameValid && isPhoneValid) {
       return true;
     } else {
       return false;
@@ -172,10 +140,7 @@ export default class Register extends Component {
       );
     } else if (!isEmailValid(email)) {
       return this.showNotification('error', 'Message', 'Invalid email address');
-    } else if (isEmpty(password)) {
-      return this.showNotification('error', 'Message', 'Enter valid password');
     } else if (isEmpty(phone) || !isPhoneValid(phone)) {
-      console.log(isPhoneValid(phone));
       return this.showNotification(
         'error',
         'Message',
@@ -201,7 +166,7 @@ export default class Register extends Component {
     try {
       const response = await fetch(generateOTPEndpoint, settings);
       const res = await response.json();
-      if (typeof res.data.id === 'undefined') {
+      if (typeof res.data === 'undefined') {
         return this.showNotification('error', 'Message', res.meta.message);
       }
       await saveToLocalStorage(name, email, phone);
@@ -224,9 +189,8 @@ export default class Register extends Component {
         />
 
         <KeyboardAvoidingView style={styles.wrapper} behavior='padding'>
-          <View style={styles.LogoLayout}>
-            <Logo />
-          </View>
+          <Logo />
+
           <View>
             <View
               style={[
@@ -267,13 +231,13 @@ export default class Register extends Component {
                 styles.textInputView,
                 {
                   borderColor: this.state.isEmailFocused
-                    ? colors.green
+                    ? colors.blue
                     : colors.whiteShade,
                 },
               ]}
             >
               <Image
-                source={require('../../assets/images/email.png')}
+                source={require('assets/images/email.png')}
                 style={StyleSheet.flatten(styles.iconForm)}
               />
               <InputField
@@ -303,13 +267,13 @@ export default class Register extends Component {
                 styles.textInputView,
                 {
                   borderColor: this.state.isEmailFocused
-                    ? colors.green
+                    ? colors.blue
                     : colors.whiteShade,
                 },
               ]}
             >
               <Image
-                source={require('../../assets/images/call.png')}
+                source={require('assets/images/call.png')}
                 style={StyleSheet.flatten(styles.iconForm)}
               />
               <InputField
@@ -327,29 +291,29 @@ export default class Register extends Component {
                 refs={input => {
                   this.phone = input;
                 }}
-                returnKeyType={'next'}
+                returnKeyType={'done'}
                 blurOnSubmit={false}
                 onFocus={() => this.setState({ isPhoneFocused: true })}
                 onBlur={() => this.setState({ isPhoneFocused: false })}
                 onSubmitEditing={() => {
-                  this.password && this.password.focus();
+                  this.formValidation();
                 }}
               />
             </View>
 
-            <View
+            {/* <View
               style={[
                 styles.textInputView,
                 {
                   borderColor: this.state.isPasswordFocused
-                    ? colors.green
+                    ? colors.blue
                     : colors.whiteShade,
                 },
               ]}
-            >
-              <Image
-                source={require('../../assets/images/padlock.png')}
-                style={StyleSheet.flatten(styles.iconForm)}
+            > */}
+            {/* <Image
+                source={require('assets/images/padlock.png')}
+                style={styles.iconForm}
               />
               <InputField
                 placeholder={'Password'}
@@ -373,7 +337,7 @@ export default class Register extends Component {
                   this.formValidation();
                 }}
               />
-            </View>
+            </View> */}
           </View>
 
           <View style={styles.btnView}>
@@ -381,13 +345,13 @@ export default class Register extends Component {
               title={'Sign Up'}
               disabled={!this.toggleButtonState()}
               onPress={this.formValidation}
-              imgSrc={require('../../assets/images/add_peopl.png')}
+              imgSrc={require('assets/images/add_peopl.png')}
               btnStyle={styles.buttonWithImage}
-              imgStyle={StyleSheet.flatten(styles.iconDoor)}
-              titleStyle={StyleSheet.flatten(styles.buttonTxt)}
+              imgStyle={styles.iconDoor}
+              titleStyle={styles.buttonTxt}
             />
 
-            <View style={StyleSheet.flatten(styles.signupLinkView)}>
+            <View style={styles.signupLinkView}>
               <Paragraph
                 text={'Already have an Account? '}
                 styles={styles.signupText}

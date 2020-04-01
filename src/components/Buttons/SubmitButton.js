@@ -2,14 +2,8 @@
 
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import colors from '../../assets/colors';
-import {
-  TouchableHighlight,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Text,
-} from 'react-native';
+import colors from 'assets/colors';
+import { TouchableOpacity, StyleSheet, Image, Text } from 'react-native';
 
 export default class SubmitButton extends Component {
   render() {

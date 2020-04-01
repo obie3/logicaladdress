@@ -1,5 +1,4 @@
-import { StyleSheet, Platform, Dimensions } from 'react-native';
-import Constants from 'expo-constants';
+import { StyleSheet, Platform } from 'react-native';
 import colors from 'assets/colors';
 import theme from 'assets/theme';
 
@@ -42,8 +41,7 @@ const styles = StyleSheet.create({
   // =======================
 
   container: {
-    flex: 1,
-    paddingTop: Constants.statusBarHeight,
+    ...theme.container,
   },
 
   closeView: {
@@ -148,10 +146,7 @@ const styles = StyleSheet.create({
   },
 
   alert: {
-    paddingRight: 20,
-    paddingLeft: 20,
-    paddingTop: Constants.statusBarHeight,
-    flexDirection: 'row',
+    ...theme.alertNotification,
   },
 });
 
