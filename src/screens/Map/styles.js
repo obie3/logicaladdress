@@ -6,7 +6,6 @@ import colors from 'assets/colors';
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'green',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -62,9 +61,12 @@ export default styles = StyleSheet.create({
 
   buttonWithImage: {
     ...theme.button,
-    // marginBottom:25
   },
   panelButtonTitle: {
     ...theme.buttonText,
+  },
+
+  alert: {
+    ...theme.alertNotification,
   },
 });

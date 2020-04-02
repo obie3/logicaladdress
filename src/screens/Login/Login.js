@@ -23,6 +23,7 @@ import {
   saveToLocalStorage,
 } from 'utils';
 import colors from 'assets/colors';
+import WomanSvg from './WomanSvg';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { addProfile } from 'redux/actions/ProfileActions';
@@ -145,11 +146,11 @@ class Login extends Component {
         />
         {/* <BackIcon onPress={this.handleBackPress} /> */}
 
-        <KeyboardAvoidingView style={styles.wrapper} behavior='padding'>
-          <View style={styles.LogoLayout}>
+        <KeyboardAvoidingView style={styles.wrapper}>
+          <View style={styles.LogoLayou}>
             <Logo />
           </View>
-          <View style={{ paddingBottom: 100 }}>
+          <View>
             <View
               style={[
                 styles.textInputView,
@@ -215,6 +216,9 @@ class Login extends Component {
           </View>
           <Preloader modalVisible={showLoading} animationType='fade' />
         </KeyboardAvoidingView>
+        <View style={styles.footerView}>
+          <WomanSvg />
+        </View>
       </SafeAreaView>
     );
   }

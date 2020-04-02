@@ -16,7 +16,7 @@ export default class Pending extends Component {
       >
         <Icon
           name={'exclamationcircle'}
-          color={colors.red}
+          color={colors.errorRed}
           size={iconsize}
           style={styles.icon}
         />

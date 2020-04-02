@@ -94,7 +94,7 @@ export default styles = StyleSheet.create({
   nameText: {
     fontSize: theme.headerFourFont,
     color: colors.headerFontColor,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
 
   fieldLabel: {
@@ -156,5 +156,10 @@ export default styles = StyleSheet.create({
     fontFamily: theme.headerFont,
     color: theme.colorAccent,
     fontSize: theme.SmallFont,
+  },
+  overlay: {
+    flex: 1,
+    opacity: 0.9,
+    backgroundColor: 'rgba(0, 0, 0,0.5)',
   },
 });

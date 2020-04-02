@@ -4,7 +4,7 @@ import theme from 'assets/theme';
 let styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 10,
+    //paddingBottom: 10,
   },
 
   wrapper: {
@@ -31,13 +31,15 @@ let styles = StyleSheet.create({
 
   buttonWithImage: {
     ...theme.button,
+    marginTop: 25,
   },
 
   footerView: {
     width: '100%',
+    height: '20%',
     position: 'absolute',
     bottom: -35,
-    right: 30,
+    right: 0,
   },
 
   signupLinkView: {

@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, SafeAreaView, StatusBar, ScrollView } from 'react-native';
+import { View, SafeAreaView, StatusBar, ScrollView, Modal } from 'react-native';
 import {
   Paragraph,
   SubmitButton,
@@ -88,7 +88,6 @@ class Dashboard extends Component {
     try {
       const response = await fetch(ProfileEndpoint, settings);
       const res = await response.json();
-      console.log({ res });
       if (typeof res.data === 'undefined') {
         return this.showNotification('error', 'Message', res.error);
       }
@@ -144,6 +143,14 @@ class Dashboard extends Component {
               </Placeholder>
             </View>
           </View>
+          <Modal
+            animationType={'fase'}
+            transparent={true}
+            onRequestClose={() => {}}
+            visible={showLoading}
+          >
+            <View style={styles.overlay}></View>
+          </Modal>
         </SafeAreaView>
       );
     }
@@ -199,7 +206,10 @@ class Dashboard extends Component {
                   ) : null}
                 </View>
                 <Line />
-                <Paragraph text={'Personal Details'} styles={styles.nameText} />
+                <Paragraph
+                  text={'Personal Details'}
+                  styles={[styles.nameText, { fontWeight: 'bold' }]}
+                />
 
                 <View style={styles.avatarLayout}>
                   <UserAvatar

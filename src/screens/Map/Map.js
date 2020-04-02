@@ -4,8 +4,9 @@ import MapView, { Marker, ProviderPropType } from 'react-native-maps';
 import BottomSheet from 'reanimated-bottom-sheet';
 import styles from './styles';
 import Icon from './Icon';
-import { Paragraph, SubmitButton } from 'components';
+import { Paragraph, SubmitButton, Preloader } from 'components';
 const { width, height } = Dimensions.get('window');
+import DropdownAlert from 'react-native-dropdownalert';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 9.061965;
@@ -14,17 +15,13 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-function log(eventName, e) {
-  console.log(eventName, e.nativeEvent);
-}
-
 class MarkerTypes extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       home: {},
-      panelHeight: 1,
+      showLoading: false,
       b: {
         latitude: LATITUDE - SPACE,
         longitude: LONGITUDE - SPACE,
@@ -33,11 +30,46 @@ class MarkerTypes extends React.Component {
   }
   handleBackPress = () => this.props.navigation.navigate('Home');
 
+  showLoadingDialogue = () => this.setState({ showLoading: true });
+
+  hideLoadingDialogue = () => this.setState({ showLoading: false });
+
+  showNotification = (type, title, message) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
+  };
+
   handleSetHomeAddress = response => {
     return this.setState({
-      panelHeight: 2,
       home: response.nativeEvent,
     });
+  };
+
+  updateLogicalAddress = async () => {
+    return this.showNotification('info', 'Message', 'Yet to get docs');
+
+    // let { phone, email, name } = params;
+    // const settings = {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ phone }),
+    // };
+
+    // try {
+    //   const response = await fetch(generateOTPEndpoint, settings);
+    //   const res = await response.json();
+    //   if (typeof res.data === 'undefined') {
+    //     return this.showNotification('error', 'Message', res.meta.message);
+    //   }
+    //   await saveToLocalStorage(name, email, phone);
+    //   this.hideLoadingDialogue();
+    //   return this.props.navigation.navigate('Verification', params);
+    // } catch (error) {
+    //   return this.showNotification('error', 'Hello', error.toString());
+    // }
   };
 
   renderInner = () => {
@@ -54,14 +86,10 @@ class MarkerTypes extends React.Component {
     }
     return (
       <View style={styles.panel}>
-        {/* <Paragraph
-          styles={styles.panelSubtitle}
-          text={home.coordinate.latitude.toString()}
-        /> */}
         <View style={styles.panelButton}>
           <SubmitButton
             title={'Confirm'}
-            onPress={() => {}}
+            onPress={() => this.updateLogicalAddress()}
             btnStyle={styles.buttonWithImage}
             titleStyle={styles.panelButtonTitle}
             disabled={false}
@@ -82,6 +110,7 @@ class MarkerTypes extends React.Component {
   bs = React.createRef();
 
   render() {
+    const { showLoading } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <MapView
@@ -96,21 +125,26 @@ class MarkerTypes extends React.Component {
         >
           <Marker
             coordinate={this.state.b}
-            onSelect={e => log('onSelect', e)}
-            onDrag={e => log('onDrag', e)}
-            onDragStart={e => log('onDragStart', e)}
             onDragEnd={e => this.handleSetHomeAddress(e)}
             onPress={e => log('onPress', e)}
             draggable={true}
           />
         </MapView>
+        <DropdownAlert
+          duration={5}
+          defaultContainer={styles.alert}
+          ref={ref => (this.dropDownAlertRef = ref)}
+        />
         <Icon onPress={this.handleBackPress} />
+        <Preloader modalVisible={showLoading} animationType='fade' />
+
         <BottomSheet
           ref={this.bs}
           snapPoints={[100, 100, 30]}
           renderContent={this.renderInner}
           renderHeader={this.renderHeader}
           enabledInnerScrolling={false}
+          enabledContentGestureInteraction={false}
           initialSnap={1}
         />
       </SafeAreaView>

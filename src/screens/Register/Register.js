@@ -180,7 +180,7 @@ export default class Register extends Component {
   render() {
     const { showLoading } = this.state;
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <StatusBar barStyle='default' />
         <DropdownAlert
           duration={5}
@@ -188,7 +188,7 @@ export default class Register extends Component {
           ref={ref => (this.dropDownAlertRef = ref)}
         />
 
-        <KeyboardAvoidingView style={styles.wrapper} behavior='padding'>
+        <KeyboardAvoidingView style={styles.wrapper}>
           <Logo />
 
           <View>
@@ -204,7 +204,7 @@ export default class Register extends Component {
             >
               <Image
                 source={require('assets/images/name.png')}
-                style={StyleSheet.flatten(styles.iconForm)}
+                style={styles.iconForm}
               />
               <InputField
                 placeholder={'Full Name'}
@@ -369,7 +369,7 @@ export default class Register extends Component {
         <View style={styles.footerView}>
           <WomanSvg />
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }

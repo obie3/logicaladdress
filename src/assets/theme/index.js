@@ -48,7 +48,7 @@ export default defaultTheme = {
     borderRadius: 30,
     width: '60%',
     height: 45,
-    marginTop: 25,
+    //marginTop: 25,
   },
 
   inputField: {
@@ -71,7 +71,7 @@ export default defaultTheme = {
   },
 
   wrapper: {
-    flex: 1,
+    height: '80%',
     paddingLeft: Platform.OS === 'ios' ? 30 : 30,
     paddingRight: Platform.OS === 'ios' ? 30 : 30,
     justifyContent: 'center',
@@ -101,6 +101,7 @@ export default defaultTheme = {
   buttonView: {
     alignItems: 'center',
     width: '100%',
+    justifyContent: 'center',
   },
 
   alertNotification: {
