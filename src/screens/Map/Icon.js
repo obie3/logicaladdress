@@ -21,10 +21,7 @@ export default class BackIcon extends Component {
 
 const styles = StyleSheet.create({
   navBar: {
-    flex: 1,
     marginTop: Platform.OS === 'ios' ? 20 : 20,
-    height: 60,
-    width: '100%',
     paddingLeft: 16,
     paddingRight: 16,
     alignItems: 'flex-start',

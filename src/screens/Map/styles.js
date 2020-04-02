@@ -6,7 +6,7 @@ import colors from 'assets/colors';
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: 'green',
+    backgroundColor: 'green',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -43,7 +43,7 @@ export default styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     backgroundColor: '#00000040',
-    marginBottom: 10,
+    //marginBottom: 10,
   },
   panelTitle: {
     fontSize: theme.headerThreeFont,
@@ -62,14 +62,9 @@ export default styles = StyleSheet.create({
 
   buttonWithImage: {
     ...theme.button,
+    // marginBottom:25
   },
   panelButtonTitle: {
     ...theme.buttonText,
   },
-
-  // photo: {
-  //   width: '100%',
-  //   height: 225,
-  //   marginTop: 30,
-  // },
 });

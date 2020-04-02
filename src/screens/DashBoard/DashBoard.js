@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, SafeAreaView, StatusBar } from 'react-native';
+import { View, SafeAreaView, StatusBar, ScrollView } from 'react-native';
 import {
   Paragraph,
   SubmitButton,
@@ -12,17 +12,27 @@ import {
 import styles from './styles';
 import { connect } from 'react-redux';
 import UserAvatar from 'react-native-user-avatar';
-import { fetchProfile } from 'utils';
+import { fetchToken, ProfileEndpoint, saveToLocalStorage } from 'utils';
 import colors from 'assets/colors';
+import {
+  Placeholder,
+  PlaceholderMedia,
+  PlaceholderLine,
+  Shine,
+} from 'rn-placeholder';
+import DropdownAlert from 'react-native-dropdownalert';
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      phone: '',
+      initial: {},
       firstName: '',
       lastName: '',
       middleName: '',
+      params: [],
+      token: '',
+      showLoading: true,
     };
   }
 
@@ -30,98 +40,203 @@ class Dashboard extends Component {
     this.getProfile();
   }
 
+  renderProfileLayout() {
+    const { params, showLoading } = this.state;
+    if (!showLoading) {
+      params.map(profile => (
+        <View key={profile.id} style={styles.profileRowItem}>
+          <View style={styles.profileIconLayout}>
+            <Verified layoutSize={30} size={20} />
+          </View>
+          <View style={styles.profileItem}>
+            <Paragraph text={'firstName'} styles={styles.fieldLabel} />
+            <Paragraph text={'eddie'} styles={styles.nameText} />
+          </View>
+        </View>
+      ));
+    }
+  }
+
   getProfile = async () => {
-    let response = await fetchProfile();
-    if (typeof response.name !== 'undefined') {
-      let phone = response.phone.substring(4);
-      let nPhone = `${'0'}${phone}`;
+    let response = await fetchToken();
+    if (response.token) this.getRemoteProfile(response.token);
+  };
 
-      let names = response.name;
-      let firstName = names.split(' ')[0];
-      let lastNames = names.split(' ')[1];
+  showLoadingDialogue = () => {
+    return this.setState({ showLoading: true });
+  };
 
+  hideLoadingDialogue = () => {
+    return this.setState({ showLoading: false });
+  };
+
+  showNotification = (type, title, message) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
+  };
+
+  getRemoteProfile = async token => {
+    const settings = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    };
+
+    try {
+      const response = await fetch(ProfileEndpoint, settings);
+      const res = await response.json();
+      console.log({ res });
+      if (typeof res.data === 'undefined') {
+        return this.showNotification('error', 'Message', res.error);
+      }
+      let data = res.data.profile;
+      let name = `${data.firstName}${' '}${data.lastName}`;
+      let phone = data.phone[0];
+      await saveToLocalStorage(name, null, phone, data.profilePhoto);
       return this.setState({
-        phone: nPhone,
-        firstName,
-        lastNames,
+        showLoading: false,
+        params: res.data.profileFields,
+        initial: res.data,
       });
+    } catch (error) {
+      return this.showNotification('error', 'Hello', error.toString());
     }
   };
 
   gotoMap = () => this.props.navigation.navigate('Map');
 
   render() {
-    const { phone, firstName, lastNames } = this.state;
+    const { firstName, lastNames, showLoading, params, initial } = this.state;
+    if (showLoading) {
+      return (
+        <SafeAreaView style={styles.container}>
+          <StatusBar barStyle='default' />
+          <Logo />
+          <View style={styles.viewBody}>
+            <View style={{ padding: 25 }}>
+              <Placeholder Left={PlaceholderMedia} Animation={Shine}>
+                <PlaceholderLine width={80} />
+                <PlaceholderLine />
+                <PlaceholderLine width={30} />
+              </Placeholder>
+              <Placeholder Left={PlaceholderMedia} Animation={Shine}>
+                <PlaceholderLine width={80} />
+                <PlaceholderLine />
+                <PlaceholderLine width={30} />
+              </Placeholder>
+              <Placeholder Left={PlaceholderMedia} Animation={Shine}>
+                <PlaceholderLine width={80} />
+                <PlaceholderLine />
+                <PlaceholderLine width={30} />
+              </Placeholder>
+              <Placeholder Left={PlaceholderMedia} Animation={Shine}>
+                <PlaceholderLine width={80} />
+                <PlaceholderLine />
+                <PlaceholderLine width={30} />
+              </Placeholder>
+              <Placeholder Left={PlaceholderMedia} Animation={Shine}>
+                <PlaceholderLine width={80} />
+                <PlaceholderLine />
+                <PlaceholderLine width={30} />
+              </Placeholder>
+            </View>
+          </View>
+        </SafeAreaView>
+      );
+    }
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle='default' />
-
-        <Logo />
-
-        <View style={styles.viewBody}>
-          <View style={styles.cardLayout}>
-            <View style={styles.cardContents}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignContent: 'center',
-                  alignSelf: 'center',
-                }}
-              >
-                <View style={styles.verificationStatusLayout}>
-                  <Paragraph text={phone} styles={styles.phoneText} />
-                  <View style={styles.verificationIndicators}>
+        <DropdownAlert
+          duration={5}
+          defaultContainer={styles.alert}
+          ref={ref => (this.dropDownAlertRef = ref)}
+        />
+        <ScrollView>
+          <Logo />
+          <View style={styles.viewBody}>
+            <View style={styles.cardLayout}>
+              <View style={styles.cardContents}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignContent: 'center',
+                    alignSelf: 'center',
+                    marginTop: '15%',
+                    //backgroundColor: 'green'
+                  }}
+                >
+                  <View style={styles.verificationStatusLayout}>
                     <Paragraph
-                      text={'Verified'}
-                      styles={styles.verificationText}
+                      text={initial.logicalAddress}
+                      styles={styles.addressText}
                     />
-                    <Verified layoutSize={25} size={15} />
+                    <View style={styles.verificationIndicators}>
+                      <Paragraph
+                        text={'Verified'}
+                        styles={styles.verificationText}
+                      />
+                      {params[0].isVerfied ? (
+                        <Verified layoutSize={25} size={15} />
+                      ) : (
+                        <Pending layoutSize={25} size={15} />
+                      )}
+                    </View>
                   </View>
                 </View>
-              </View>
-              <View style={styles.buttonLayout}>
-                <SubmitButton
-                  title={'Set Address'}
-                  onPress={this.gotoMap}
-                  btnStyle={styles.button}
-                  titleStyle={styles.buttonTxt}
-                  disabled={false}
-                />
-              </View>
-              <Line />
-              <Paragraph text={'Personal Details'} styles={styles.nameText} />
+                <View style={styles.buttonLayout}>
+                  {!params[0].isVerfied ? (
+                    <SubmitButton
+                      title={'Set Address'}
+                      onPress={this.gotoMap}
+                      btnStyle={styles.button}
+                      titleStyle={styles.buttonTxt}
+                      disabled={false}
+                    />
+                  ) : null}
+                </View>
+                <Line />
+                <Paragraph text={'Personal Details'} styles={styles.nameText} />
 
-              <View style={styles.avatarLayout}>
-                <UserAvatar
-                  size='80'
-                  name={`${firstName}${' '}${lastNames}`}
-                  color={colors.buttonBlue}
-                />
-              </View>
-              <View>
-                <View style={styles.profileRowItem}>
-                  <View style={styles.profileIconLayout}>
-                    <Verified layoutSize={30} size={20} />
-                  </View>
-                  <View style={styles.profileItem}>
-                    <Paragraph text={'First Name'} styles={styles.fieldLabel} />
-                    <Paragraph text={firstName} styles={styles.nameText} />
-                  </View>
+                <View style={styles.avatarLayout}>
+                  <UserAvatar
+                    size='80'
+                    name={`${firstName}${' '}${lastNames}`}
+                    color={colors.buttonBlue}
+                    src={initial.profile.profilePhoto}
+                  />
                 </View>
-
-                <View style={styles.profileRowItem}>
-                  <View style={styles.profileIconLayout}>
-                    <Verified layoutSize={30} size={20} />
-                  </View>
-                  <View style={styles.profileItem}>
-                    <Paragraph text={'Last Name'} styles={styles.fieldLabel} />
-                    <Paragraph text={lastNames} styles={styles.nameText} />
-                  </View>
-                </View>
+                {params.map(profile => {
+                  if (profile.key !== 'profilePhoto')
+                    return (
+                      <View key={profile.id} style={styles.profileRowItem}>
+                        <View style={styles.profileIconLayout}>
+                          {profile.isVerfied ? (
+                            <Verified layoutSize={30} size={20} />
+                          ) : (
+                            <Pending layoutSize={30} size={20} />
+                          )}
+                        </View>
+                        <View style={styles.profileItem}>
+                          <Paragraph
+                            text={profile.key}
+                            styles={styles.fieldLabel}
+                          />
+                          <Paragraph
+                            text={profile.value.replace(/"/g, '')}
+                            styles={styles.nameText}
+                          />
+                        </View>
+                      </View>
+                    );
+                })}
               </View>
             </View>
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }

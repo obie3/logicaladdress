@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import colors from '../../assets/colors';
 import { TouchableHighlight, StyleSheet } from 'react-native';
-import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import Icon from '@expo/vector-icons/AntDesign';
 
 export default class Pending extends Component {
   render() {
@@ -15,8 +15,8 @@ export default class Pending extends Component {
         style={[styles.button, { height: nHeight, width: nWidth }]}
       >
         <Icon
-          name={'exclamation'}
-          color={'red'}
+          name={'exclamationcircle'}
+          color={colors.red}
           size={iconsize}
           style={styles.icon}
         />
@@ -34,16 +34,11 @@ Pending.propTypes = {
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 50,
-    height: 22,
-    width: 22,
-    marginTop: 5,
-    backgroundColor: colors.white,
+    borderRadius: 2,
   },
-  icon: {
-    marginRight: -2,
-    marginTop: -2,
-  },
+  // icon: {
+  //   marginRight: -2,
+  //   marginTop: -2,
+  // },
 });

@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import { StatusBar, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import styles from './styles';
-import colors from '../../assets/colors';
-import theme from '../../assets/theme';
+import colors from 'assets/colors';
+import theme from 'assets/theme';
 
 import {
   createDrawerNavigator,
@@ -29,10 +29,9 @@ class Navigations extends Component {
         <StatusBar barStyle='default' />
         <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
           {' '}
-          */}
           {/*Donute Button Image */}
           <Image
-            source={require('../../assets/images/menu.png')}
+            source={require('assets/images/menu.png')}
             style={styles.imageLogo}
             onPress={this.toggleDrawer.bind(this)}
           />
@@ -98,7 +97,7 @@ const BottomTab = createBottomTabNavigator(
         // tabBarLabel: 'Bara.ng',
         tabBarIcon: ({ tintColor }) => (
           <Image
-            source={require('../../assets/images/home.png')}
+            source={require('assets/images/home.png')}
             style={{
               height: 20,
               width: 20,
@@ -115,7 +114,7 @@ const BottomTab = createBottomTabNavigator(
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
           <Image
-            source={require('../../assets/images/logout.png')}
+            source={require('assets/images/logout.png')}
             style={{
               height: 20,
               width: 20,

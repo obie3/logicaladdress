@@ -8,7 +8,6 @@ import {
   VerifyOTPEndpoint,
   generateOTPEndpoint,
   RegistrationEndpoint,
-  ProfileEndpoint,
   logout,
 } from 'utils';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -155,7 +154,7 @@ const VerificationScreen = ({ navigation }) => {
       await saveToken(result.token);
       return typeof result.user === 'undefined'
         ? completeRegistration(result.token, params)
-        : navigation.navigate('App'); //getProfile(result.token);
+        : navigation.navigate('App');
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }
@@ -215,33 +214,6 @@ const VerificationScreen = ({ navigation }) => {
       hideLoadingDialogue();
       return navigation.navigate('App');
       //return getProfile(result);
-    } catch (error) {
-      return showNotification('error', 'Hello', error.toString());
-    }
-  };
-
-  let getProfile = async token => {
-    const settings = {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      //body: JSON.stringify(body),
-    };
-
-    try {
-      const response = await fetch(ProfileEndpoint, settings);
-      const res = await response.json();
-      console.log({ 'profile res': token });
-      if (typeof res.data === 'undefined') {
-        return showNotification('error', 'Message', res.error);
-      }
-      //let result = res.data;
-      await saveToLocalStorage(phone);
-      hideLoadingDialogue();
-      return navigation.navigate('App');
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }

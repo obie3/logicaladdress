@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
 
   optView: {
-    marginTop: '20%',
+    //marginTop: '20%',
     justifyContent: 'center',
     padding: 20,
   },

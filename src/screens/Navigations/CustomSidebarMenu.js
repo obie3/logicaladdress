@@ -47,17 +47,19 @@ class CustomSidebarMenu extends Component {
       let names = response.name;
       let firstName = names.split(' ')[0];
       let lastName = names.split(' ')[1];
+      let image = response.imageUrl;
 
       return this.setState({
         phone: nPhone,
         firstName,
         lastName,
+        image,
       });
     }
   };
 
   render() {
-    const { phone, firstName, lastName } = this.state;
+    const { phone, firstName, lastName, image } = this.state;
     return (
       <SafeAreaView style={styles.sideMenuContainer}>
         <View style={styles.drawerImageView}>
@@ -65,8 +67,13 @@ class CustomSidebarMenu extends Component {
             size='80'
             name={`${firstName}${' '}${lastName}`}
             color={colors.buttonBlue}
+            src={image}
           />
           <View style={styles.userDetailView}>
+            <Paragraph
+              text={firstName.toUpperCase()}
+              styles={StyleSheet.flatten(styles.txtuser)}
+            />
             <Paragraph
               text={phone}
               styles={StyleSheet.flatten(styles.txtuser)}

@@ -72,53 +72,46 @@ export const VerificationStack = createStackNavigator({
   },
 });
 
-export const AppStack = createStackNavigator(
-  {
-    Navigations: {
-      screen: Navigations,
-      navigationOptions: {
-        header: null,
-      },
-    },
-    Dashboard: {
-      screen: Dashboard,
-      navigationOptions: {
-        header: null,
-      },
-    },
-
-    Map: {
-      screen: Map,
-      navigationOptions: {
-        header: null,
-      },
-    },
-
-    Settings: {
-      screen: Settings,
-      navigationOptions: {
-        header: null,
-      },
-    },
-    Settings: {
-      screen: Settings,
-      navigationOptions: {
-        header: null,
-      },
-    },
-    Notification: {
-      screen: Notification,
-      navigationOptions: {
-        header: null,
-      },
+export const AppStack = createStackNavigator({
+  Navigations: {
+    screen: Navigations,
+    navigationOptions: {
+      header: null,
     },
   },
-  {
-    mode: 'modal',
-    cardStyle: { paddingTop: StatusBar.currentHeight }, //Setting the tb to go under the sb
-    headerMode: 'none',
+  Dashboard: {
+    screen: Dashboard,
+    navigationOptions: {
+      header: null,
+    },
   },
-);
+
+  Map: {
+    screen: Map,
+    navigationOptions: {
+      header: null,
+    },
+  },
+
+  Settings: {
+    screen: Settings,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  Settings: {
+    screen: Settings,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  Notification: {
+    screen: Notification,
+    navigationOptions: {
+      header: null,
+    },
+  },
+});
 
 const AppSwitchNavigator = createSwitchNavigator(
   {

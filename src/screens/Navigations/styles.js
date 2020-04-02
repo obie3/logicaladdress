@@ -86,7 +86,7 @@ export default styles = StyleSheet.create({
   },
   drawerImageView: {
     flexDirection: 'column',
-    backgroundColor: theme.backgroundColor,
+    backgroundColor: colors.blue,
     alignItems: 'center',
     height: Platform.OS === 'ios' ? '30%' : '25%',
     justifyContent: 'center',
@@ -99,8 +99,9 @@ export default styles = StyleSheet.create({
   },
   txtuser: {
     fontFamily: theme.inputHintFont,
-    color: colors.label,
-    marginTop: 15,
+    fontSize: theme.headerFourFont,
+    color: colors.white,
+    //marginTop: 15,
   },
   sideMenuContainer: {
     width: '100%',

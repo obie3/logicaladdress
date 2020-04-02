@@ -54,17 +54,17 @@ class MarkerTypes extends React.Component {
     }
     return (
       <View style={styles.panel}>
-        <Paragraph
+        {/* <Paragraph
           styles={styles.panelSubtitle}
           text={home.coordinate.latitude.toString()}
-        />
+        /> */}
         <View style={styles.panelButton}>
           <SubmitButton
             title={'Confirm'}
             onPress={() => {}}
             btnStyle={styles.buttonWithImage}
             titleStyle={styles.panelButtonTitle}
-            disabled={true}
+            disabled={false}
           />
         </View>
       </View>
@@ -84,8 +84,6 @@ class MarkerTypes extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle='default' />
-
         <MapView
           provider={this.props.provider}
           style={styles.map}
@@ -109,9 +107,10 @@ class MarkerTypes extends React.Component {
         <Icon onPress={this.handleBackPress} />
         <BottomSheet
           ref={this.bs}
-          snapPoints={[200, 100, 20]}
+          snapPoints={[100, 100, 30]}
           renderContent={this.renderInner}
           renderHeader={this.renderHeader}
+          enabledInnerScrolling={false}
           initialSnap={1}
         />
       </SafeAreaView>

@@ -28,7 +28,7 @@ export default styles = StyleSheet.create({
   viewBody: {
     flex: 1,
     alignContent: 'center',
-    justifyContent: 'space-evenly',
+    //justifyContent: 'space-evenly',
   },
 
   cardLayout: {
@@ -64,10 +64,10 @@ export default styles = StyleSheet.create({
 
   verificationStatusLayout: {
     flexDirection: 'column',
-    padding: 10,
-    justifyContent: 'center',
+    //padding: 10,
+    // justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center',
+    // alignSelf: 'center',
   },
 
   verificationIndicators: {
@@ -77,17 +77,18 @@ export default styles = StyleSheet.create({
   },
 
   verificationText: {
-    fontSize: theme.headerOneFont,
+    fontSize: theme.headerThreeFont,
     color: colors.label,
     fontWeight: 'bold',
     paddingRight: 6,
   },
 
-  phoneText: {
+  addressText: {
     fontFamily: theme.inputHintFont,
     fontSize: theme.headerOneFont,
     color: colors.headerFontColor,
     fontWeight: 'bold',
+    //marginTop: '30%'
   },
 
   nameText: {
@@ -115,7 +116,7 @@ export default styles = StyleSheet.create({
 
   profileRowItem: {
     flexDirection: 'row',
-    marginTop: 25,
+    marginTop: 15,
   },
 
   avatarLayout: {
@@ -124,7 +125,7 @@ export default styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 5,
+    //margin: 5,
   },
 
   iconLayout: {
@@ -147,6 +148,8 @@ export default styles = StyleSheet.create({
   button: {
     ...theme.button,
     width: '50%',
+    height: 40,
+    marginTop: '2%',
   },
 
   buttonTxt: {
