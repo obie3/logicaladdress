@@ -13,9 +13,10 @@ import * as Permissions from 'expo-permissions';
 const ASPECT_RATIO = width / height;
 const LATITUDE = 9.061965;
 const LONGITUDE = 7.489856;
-const LATITUDE_DELTA = 0.0922;
+const LATITUDE_DELTA = 20.9922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
+// let map = null;
 
 export default class Map extends Component {
   constructor(props) {
@@ -23,12 +24,19 @@ export default class Map extends Component {
     this.state = {
       home: {},
       showLoading: false,
-      b: {
+      coordinates: {
         latitude: LATITUDE - SPACE,
         longitude: LONGITUDE - SPACE,
       },
+      region: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      },
     };
   }
+  map = null;
 
   componentDidMount() {
     this.getLocationAsync();
@@ -116,38 +124,56 @@ export default class Map extends Component {
   getLocationAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status === 'granted') {
-      return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+      let location = await Location.getCurrentPositionAsync({
+        enableHighAccuracy: true,
+      });
+      let region = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0992,
+        longitudeDelta: 0.0992 * ASPECT_RATIO,
+      };
+      this.setState({
+        coordinates: {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        },
+        region,
+      });
+      return this.map.animateToRegion(region, 4000);
     } else {
-      throw new Error('Location permission not granted');
+      return this.showNotification(
+        'info',
+        'Message',
+        'Location permission denied',
+      );
     }
-    // if (status === 'granted') {
-    //   return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-    // } else {
-    //   throw new Error('Location permission not granted');
-    // }
   };
 
   bs = React.createRef();
 
   render() {
-    const { showLoading } = this.state;
+    const { showLoading, coordinates, region } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <MapView
+          ref={map => {
+            this.map = map;
+          }}
           provider={this.props.provider}
           style={styles.map}
-          initialRegion={{
-            latitude: LATITUDE,
-            longitude: LONGITUDE,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }}
+          showsPointsOfInterest
+          //onRegionChange={region => this.setState({ region })}
+          loadingEnabled={true}
+          showsUserLocation={true}
+          mapType={'standard'}
+          initialRegion={region}
         >
           <Marker
-            coordinate={this.state.b}
+            coordinate={coordinates}
             onDragEnd={e => this.handleSetHomeAddress(e)}
-            onPress={e => log('onPress', e)}
-            draggable={true}
+            // onPress={e => log('onPress', e)}
+            draggable
           />
         </MapView>
         <DropdownAlert
