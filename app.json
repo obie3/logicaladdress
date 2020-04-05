@@ -30,12 +30,8 @@
       "versionCode": 1,
       "playStoreUrl": "https://play.google.com/store/apps/details?id=",
       "permissions": [
-        "CAMERA",
-        "MANAGE_DOCUMENTS",
-        "com.google.android.c2dm.permission.RECEIVE",
-        "com.google.android.gms.permission.ACTIVITY_RECOGNITION",
-        "com.htc.launcher.permission.READ_SETTINGS",
-        "com.htc.launcher.permission.UPDATE_SHORTCUT"
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
       ]
     },
     
@@ -48,7 +44,23 @@
         "backgroundColor": "#ecf0f1",
         "resizeMode": "contain",
         "image": "./src/assets/images/logicallogo.png"
+      },
+
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription":
+        "LogicalAddress needs access to your location to let you set your home address"
       }
+    },
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": [
+        "js",
+        "jsx",
+        "svg",
+        "ts",
+        "tsx"
+      ]
     }
+    
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Dimensions, StatusBar, SafeAreaView } from 'react-native';
 import MapView, { Marker, ProviderPropType } from 'react-native-maps';
 import BottomSheet from 'reanimated-bottom-sheet';
@@ -7,6 +7,8 @@ import Icon from './Icon';
 import { Paragraph, SubmitButton, Preloader } from 'components';
 const { width, height } = Dimensions.get('window');
 import DropdownAlert from 'react-native-dropdownalert';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 9.061965;
@@ -15,10 +17,9 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-class MarkerTypes extends React.Component {
+export default class Map extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       home: {},
       showLoading: false,
@@ -28,7 +29,12 @@ class MarkerTypes extends React.Component {
       },
     };
   }
-  handleBackPress = () => this.props.navigation.navigate('Home');
+
+  componentDidMount() {
+    this.getLocationAsync();
+  }
+
+  handleBackPress = () => this.props.navigation.navigate('OnBoarding');
 
   showLoadingDialogue = () => this.setState({ showLoading: true });
 
@@ -107,6 +113,20 @@ class MarkerTypes extends React.Component {
     </View>
   );
 
+  getLocationAsync = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status === 'granted') {
+      return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+    } else {
+      throw new Error('Location permission not granted');
+    }
+    // if (status === 'granted') {
+    //   return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+    // } else {
+    //   throw new Error('Location permission not granted');
+    // }
+  };
+
   bs = React.createRef();
 
   render() {
@@ -152,8 +172,6 @@ class MarkerTypes extends React.Component {
   }
 }
 
-MarkerTypes.propTypes = {
+Map.propTypes = {
   provider: ProviderPropType,
 };
-
-export default MarkerTypes;

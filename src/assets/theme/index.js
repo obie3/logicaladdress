@@ -66,15 +66,15 @@ export default defaultTheme = {
 
   container: {
     flex: 1,
-    paddingBottom: 10,
-    paddingTop: Constants.statusBarHeight,
+    backgroundColor: colors.backgroundColor,
   },
 
   wrapper: {
     height: '80%',
     paddingLeft: Platform.OS === 'ios' ? 30 : 30,
     paddingRight: Platform.OS === 'ios' ? 30 : 30,
-    justifyContent: 'center',
+    // justifyContent: 'flex-end',
+    //backgroundColor: 'green'
   },
 
   formIcon: {

@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import colors from '../../assets/colors';
-import theme from '../../assets/theme';
+import colors from 'assets/colors';
+import theme from 'assets/theme';
 import {
   View,
   Text,

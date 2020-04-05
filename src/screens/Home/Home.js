@@ -13,25 +13,26 @@ import { addProfile } from 'redux/actions/ProfileActions';
 const slides = [
   {
     key: 'somethun',
-    title: 'Check the Conference \nCalendar',
-    text: "Pick out talks You'd love to attend and \nset reminder",
-    image: require('assets/images/people.png'),
+    title: 'ONE Global Address',
+    text:
+      'Your address doesn’t have to change \n everytime you move physically',
+    image: require('assets/images/icon1.png'),
     backgroundColor: '#59b2ab',
   },
   {
     key: 'somethun-dos',
-    title: 'Network!',
+    title: 'Better Emergency Service!',
     text:
-      'Learn more about the organizers, speakers \nand other delegates and connect with \nthem easily via the app',
-    image: require('assets/images/man.png'),
+      'LogicalAddresses provide accurate location  \ninformation enabling care to find you \n no matter the situation',
+    image: require('assets/images/icon2a.png'),
     backgroundColor: '#febe29',
   },
   {
     key: 'somethun1',
-    title: '\n\n\n\nQuick Help',
+    title: '\nPrivacy!',
     text:
-      'Cant find a meeting room, not sure \nabout the weather? Like we said, \n"Everything in one place"',
-    image: require('assets/images/woman.png'),
+      'Your personal information is a valuable commodity With LogicalAddress \nnobody has access to this Information \nwithout your permission,',
+    image: require('assets/images/icon3.png'),
     backgroundColor: '#22bcb5',
   },
 ];
@@ -105,7 +106,7 @@ class BoardingScreen extends Component {
     if (typeof profile.token == 'undefined') {
       return this.getProfile();
     }
-    return this.props.navigation.navigate('App');
+    return this.props.navigation.navigate('OnBoarding');
   };
 
   getProfile = async () => {
@@ -115,10 +116,6 @@ class BoardingScreen extends Component {
     }
     return this.setState({ restoring: false });
   };
-
-  handleLogin = () => this.props.navigation.navigate('Login');
-
-  handleRegistration = () => this.props.navigation.navigate('Register');
 
   render() {
     const { restoring } = this.state;

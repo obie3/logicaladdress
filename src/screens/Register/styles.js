@@ -1,14 +1,18 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import theme from 'assets/theme';
+const window = Dimensions.get('window');
+
+export const IMAGE_HEIGHT = window.width / 3;
+export const IMAGE_HEIGHT_SMALL = window.width / 10;
 
 let styles = StyleSheet.create({
   container: {
-    flex: 1,
-    //paddingBottom: 10,
+    ...theme.container,
   },
 
   wrapper: {
     ...theme.wrapper,
+    //backgroundColor: 'green'
   },
 
   iconForm: {
@@ -38,7 +42,7 @@ let styles = StyleSheet.create({
     width: '100%',
     height: '20%',
     position: 'absolute',
-    bottom: -35,
+    bottom: 0,
     right: 0,
   },
 
@@ -113,6 +117,15 @@ let styles = StyleSheet.create({
 
   alert: {
     ...theme.alertNotification,
+  },
+
+  logo: {
+    height: IMAGE_HEIGHT,
+    resizeMode: 'contain',
+    marginBottom: 20,
+    padding: 10,
+    marginTop: '20%',
+    width: '100%',
   },
 });
 

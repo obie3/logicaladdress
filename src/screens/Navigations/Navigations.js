@@ -29,7 +29,7 @@ class Navigations extends Component {
         <StatusBar barStyle='default' />
         <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
           {' '}
-          {/*Donute Button Image */}
+          {/*Button Image */}
           <Image
             source={require('assets/images/menu.png')}
             style={styles.imageLogo}
@@ -49,6 +49,12 @@ const DashBoard_StackNavigator = createStackNavigator({
       header: null,
     },
   },
+  // Loading: {
+  //   screen: Loading,
+  //   navigationOptions: {
+  //     header: null,
+  //   },
+  // },
 });
 
 const Logout_StackNavigator = createStackNavigator({

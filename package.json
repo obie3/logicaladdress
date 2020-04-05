@@ -36,6 +36,7 @@
     "react-native-app-intro-slider": "^2.0.1",
     "react-native-check-box": "^2.1.7",
     "react-native-confirmation-code-field": "^5.1.0",
+    "react-native-countdown-component": "^2.7.1",
     "react-native-dropdownalert": "^4.2.1",
     "react-native-gesture-handler": "~1.5.0",
     "react-native-maps": "0.26.1",
@@ -45,11 +46,13 @@
     "react-native-user-avatar": "^1.0.4",
     "react-native-web": "^0.11.7",
     "react-navigation": "^3.11.0",
+    "react-navigation-transitions": "^1.0.12",
     "react-redux": "^7.1.0",
     "reanimated-bottom-sheet": "^1.0.0-alpha.19",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "rn-placeholder": "^3.0.0"
+    "rn-placeholder": "^3.0.0",
+    "expo-location": "~8.0.0"
   },
   "husky": {
     "hooks": {

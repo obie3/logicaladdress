@@ -96,6 +96,7 @@ export default styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 15,
   },
   txtuser: {
     fontFamily: theme.inputHintFont,

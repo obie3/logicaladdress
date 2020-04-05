@@ -3,7 +3,13 @@ import {
   createStackNavigator,
   createAppContainer,
 } from 'react-navigation';
-import { StatusBar } from 'react-native';
+import {
+  fromLeft,
+  fromRight,
+  fadeIn,
+  zoomIn,
+  zoomOut,
+} from 'react-navigation-transitions';
 import Home from '../screens/Home';
 import Register from '../screens/Register';
 import ForgetPassword from '../screens/ForgetPassword';
@@ -13,55 +19,61 @@ import LinkExpire from '../screens/LinkExpire';
 import ResetPassword from '../screens/ResetPassword';
 import VerificationScreen from '../screens/Verification/VerificationScreen';
 import Dashboard from '../screens/DashBoard';
-import LastPage from '../screens/LastPage';
 import Navigations from '../screens/Navigations/Navigations';
 import Settings from '../screens/Settings/Settings';
 import Notification from '../screens/Notification/Notification';
-import About from '../screens/About/About';
 import Map from '../screens/Map/Map';
+import Loader from '../screens/Loader/Loader';
 
-const AuthStack = createStackNavigator({
-  Home: {
-    screen: Home,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  Register: {
-    screen: Register,
-    navigationOptions: {
-      header: null,
-    },
-  },
+const handleCustomTransition = ({ scenes }) => {
+  const prevScene = scenes[scenes.length - 2];
+  const nextScene = scenes[scenes.length - 1];
+  // console.log({prevScene})
+  // Custom transitions go there
+  if (
+    prevScene &&
+    prevScene.route.routeName === 'Home' &&
+    nextScene.route.routeName === 'Register'
+  ) {
+    return zoomIn();
+  }
+  return fromLeft();
+};
 
-  Login: {
-    screen: Login,
-    navigationOptions: {
-      header: null,
+const AuthStack = createStackNavigator(
+  {
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        header: null,
+      },
     },
-  },
+    Register: {
+      screen: Register,
+      navigationOptions: {
+        header: null,
+      },
+    },
 
-  ForgetPassword: {
-    screen: ForgetPassword,
-    navigationOptions: {
-      header: null,
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        header: null,
+      },
     },
-  },
 
-  Logout: {
-    screen: Logout,
-    navigationOptions: {
-      header: null,
+    Logout: {
+      screen: Logout,
+      navigationOptions: {
+        header: null,
+      },
     },
   },
-
-  ResetPassword: {
-    screen: ResetPassword,
-    navigationOptions: {
-      header: null,
-    },
+  {
+    transitionConfig: () => fromLeft(1000),
+    //transitionConfig: (nav) => handleCustomTransition(nav)
   },
-});
+);
 
 export const VerificationStack = createStackNavigator({
   VerificationScreen: {
@@ -72,46 +84,58 @@ export const VerificationStack = createStackNavigator({
   },
 });
 
-export const AppStack = createStackNavigator({
-  Navigations: {
-    screen: Navigations,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  Dashboard: {
-    screen: Dashboard,
-    navigationOptions: {
-      header: null,
-    },
-  },
-
-  Map: {
-    screen: Map,
-    navigationOptions: {
-      header: null,
-    },
-  },
-
-  Settings: {
-    screen: Settings,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  Settings: {
-    screen: Settings,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  Notification: {
-    screen: Notification,
+export const OnBoardingStack = createStackNavigator({
+  Loader: {
+    screen: Loader,
     navigationOptions: {
       header: null,
     },
   },
 });
+
+export const AppStack = createStackNavigator(
+  {
+    Navigations: {
+      screen: Navigations,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    Dashboard: {
+      screen: Dashboard,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    Map: {
+      screen: Map,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    Settings: {
+      screen: Settings,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    Notification: {
+      screen: Notification,
+      navigationOptions: {
+        header: null,
+      },
+    },
+  },
+
+  {
+    transitionConfig: () => fromLeft(1000),
+    //transitionConfig: (nav) => handleCustomTransition(nav)
+  },
+);
 
 const AppSwitchNavigator = createSwitchNavigator(
   {
@@ -119,11 +143,12 @@ const AppSwitchNavigator = createSwitchNavigator(
     Auth: AuthStack,
     Verification: VerificationStack,
     App: AppStack,
-    // OnBoard:OnBoardingStack,
+    OnBoarding: OnBoardingStack,
     // Menu:MenuStack,
   },
   {
     initialRouteName: 'AuthLoading',
+    //transitionConfig: (nav) => handleCustomTransition(nav)
   },
 );
 

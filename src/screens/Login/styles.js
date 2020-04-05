@@ -1,10 +1,10 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
+import colors from 'assets/colors';
+import theme from 'assets/theme';
 const window = Dimensions.get('window');
 
 export const IMAGE_HEIGHT = window.width / 3;
-export const IMAGE_HEIGHT_SMALL = window.width / 6;
-import colors from 'assets/colors';
-import theme from 'assets/theme';
+export const IMAGE_HEIGHT_SMALL = window.width / 10;
 
 export default styles = StyleSheet.create({
   container: {
@@ -42,7 +42,7 @@ export default styles = StyleSheet.create({
     resizeMode: 'contain',
     marginBottom: 20,
     padding: 10,
-    marginTop: 20,
+    marginTop: 30,
     alignSelf: 'center',
   },
   backgroundImage: {
@@ -128,12 +128,21 @@ export default styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 
-  imageView: {
-    width: '90%',
-    height: '30%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 30,
+  logo: {
+    height: IMAGE_HEIGHT,
+    resizeMode: 'contain',
+    marginBottom: 20,
+    padding: 10,
+    marginTop: '20%',
+    width: '100%',
+  },
+
+  footerView: {
+    width: '100%',
+    height: '20%',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
   },
 
   termCondition: {
@@ -144,14 +153,6 @@ export default styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     right: Platform.OS === 'ios' ? 75 : 65,
-  },
-
-  LogoLayout: {
-    height: 100,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 30,
   },
 
   alert: {

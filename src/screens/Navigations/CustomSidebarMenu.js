@@ -41,16 +41,18 @@ class CustomSidebarMenu extends Component {
   getProfile = async () => {
     let response = await fetchProfile();
     if (typeof response.name !== 'undefined') {
-      let phone = response.phone.substring(4);
-      let nPhone = `${'0'}${phone}`;
+      // let phone = response.phone.substring(4);
+      // let nPhone = `${'0'}${phone}`;
 
       let names = response.name;
       let firstName = names.split(' ')[0];
       let lastName = names.split(' ')[1];
+      let phone = response.phone;
+
       let image = response.imageUrl;
 
       return this.setState({
-        phone: nPhone,
+        phone,
         firstName,
         lastName,
         image,

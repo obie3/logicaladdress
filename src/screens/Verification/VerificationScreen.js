@@ -1,7 +1,9 @@
 import { Animated, SafeAreaView, View, StatusBar } from 'react-native';
 import React, { useState, memo, useEffect } from 'react';
 import { Paragraph, SubmitButton, Preloader, BackIcon } from 'components';
-
+import CountDown from 'react-native-countdown-component';
+import colors from 'assets/colors';
+import WomanSvg from './WomanSvg';
 import {
   fetchProfile,
   saveToken,
@@ -51,6 +53,8 @@ const VerificationScreen = ({ navigation }) => {
   const [nPhone, setnPhone] = useState('');
   const [showLoading, setShowLoading] = useState(false);
   const [params, setParams] = useState({});
+  const [enabledRequest, setEnabledRequest] = useState(true);
+  const [startTimer, setStartTimer] = useState(false);
 
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -154,7 +158,7 @@ const VerificationScreen = ({ navigation }) => {
       await saveToken(result.token);
       return typeof result.user === 'undefined'
         ? completeRegistration(result.token, params)
-        : navigation.navigate('App');
+        : navigation.navigate('OnBoarding');
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }
@@ -177,14 +181,28 @@ const VerificationScreen = ({ navigation }) => {
       if (typeof res.data === 'undefined') {
         return showNotification('error', 'Message', res.error.message);
       }
-      return showNotification('success', 'Message', 'OTP sent successfully');
+      setEnabledRequest(false);
+      setStartTimer(true);
+      return showNotification(
+        'success',
+        'Message',
+        'OTP sent, wait for 15 secs before retrying',
+      );
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }
   };
 
+  let activateResentLink = () => {
+    setEnabledRequest(true);
+    return setStartTimer(false);
+  };
+
   let completeRegistration = async (token, params) => {
-    let name = params.name.split(' ');
+    let nName = params.name.replace(/\b./g, function(m) {
+      return m.toUpperCase();
+    });
+    let name = nName.split(' ');
     let defaultParams = {
       firstName: name[0],
       email: params.email ? params.email : '',
@@ -212,7 +230,7 @@ const VerificationScreen = ({ navigation }) => {
       }
       await saveToken(res.data.token);
       hideLoadingDialogue();
-      return navigation.navigate('App');
+      return navigation.navigate('OnBoarding');
       //return getProfile(result);
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
@@ -241,6 +259,19 @@ const VerificationScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.optView}>
+        {!enabledRequest ? (
+          <CountDown
+            until={15}
+            onFinish={activateResentLink}
+            digitStyle={{ backgroundColor: colors.blue }}
+            timeToShow={['S']}
+            timeLabels={{ s: 'Secs' }}
+            running={startTimer}
+            digitTxtStyle={styles.buttonTxt}
+            size={20}
+          />
+        ) : null}
+
         <CodeField
           ref={ref}
           {...props}
@@ -261,17 +292,21 @@ const VerificationScreen = ({ navigation }) => {
             titleStyle={styles.buttonTxt}
             disabled={false}
           />
-
-          <View style={styles.textView}>
-            <Paragraph text={"Didn't get code?"} styles={styles.msgText} />
-            <Paragraph
-              text={'Resend'}
-              styles={styles.resend}
-              onPress={requestNewToken}
-            />
-          </View>
+          {enabledRequest ? (
+            <View style={styles.textView}>
+              <Paragraph text={"Didn't get code?"} styles={styles.msgText} />
+              <Paragraph
+                text={'Resend'}
+                styles={styles.resend}
+                onPress={requestNewToken}
+              />
+            </View>
+          ) : null}
           <Preloader modalVisible={showLoading} animationType='fade' />
         </View>
+      </View>
+      <View style={styles.footerView}>
+        <WomanSvg />
       </View>
     </SafeAreaView>
   );

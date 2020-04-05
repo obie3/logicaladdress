@@ -1,33 +1,18 @@
 import { StyleSheet } from 'react-native';
 import theme from 'assets/theme';
 import colors from 'assets/colors';
+import Constants from 'expo-constants';
 
 export default styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.backgroundColor,
-  },
-
-  navBar: {
-    flexDirection: 'row',
-    height: 60,
-    backgroundColor: theme.toolBarColor,
-    width: '100%',
-    alignItems: 'center',
-    paddingBottom: 4,
-    shadowColor: theme.secondaryTextColor,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 3,
+    ...theme.container,
+    paddingTop: 20 + Constants.statusBarHeight,
   },
 
   viewBody: {
-    flex: 1,
-    alignContent: 'center',
+    // flex: 1,
+    // alignContent: 'center',
+    //backgroundColor: 'green'
     //justifyContent: 'space-evenly',
   },
 
