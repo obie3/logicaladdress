@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { View, Dimensions, StatusBar, SafeAreaView } from 'react-native';
+import {
+  View,
+  Dimensions,
+  StatusBar,
+  SafeAreaView,
+  Platform,
+} from 'react-native';
 import MapView, { Marker, ProviderPropType } from 'react-native-maps';
 import BottomSheet from 'reanimated-bottom-sheet';
 import styles from './styles';
@@ -9,6 +15,7 @@ const { width, height } = Dimensions.get('window');
 import DropdownAlert from 'react-native-dropdownalert';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import colors from '../../assets/colors';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 9.061965;
@@ -156,6 +163,13 @@ export default class Map extends Component {
     const { showLoading, coordinates, region } = this.state;
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          hidden={false}
+          backgroundColor={colors.blue}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />
         <MapView
           ref={map => {
             this.map = map;

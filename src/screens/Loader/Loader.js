@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, SafeAreaView, StatusBar, Modal } from 'react-native';
+import { View, SafeAreaView, StatusBar, Platform } from 'react-native';
 import { Logo } from 'components';
 import styles from './styles';
 import { fetchToken, ProfileEndpoint, saveToLocalStorage } from 'utils';
@@ -65,7 +65,13 @@ export default class Loader extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle='default' />
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          hidden={false}
+          backgroundColor={colors.blue}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />{' '}
         <DropdownAlert
           duration={5}
           defaultContainer={styles.alert}

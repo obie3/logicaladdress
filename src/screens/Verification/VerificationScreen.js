@@ -1,4 +1,10 @@
-import { Animated, SafeAreaView, View, StatusBar } from 'react-native';
+import {
+  Animated,
+  SafeAreaView,
+  View,
+  StatusBar,
+  Platform,
+} from 'react-native';
 import React, { useState, memo, useEffect } from 'react';
 import { Paragraph, SubmitButton, Preloader, BackIcon } from 'components';
 import CountDown from 'react-native-countdown-component';
@@ -239,7 +245,13 @@ const VerificationScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle='default' />
+      <StatusBar
+        barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+        hidden={false}
+        backgroundColor={colors.blue}
+        translucent={false}
+        networkActivityIndicatorVisible={true}
+      />{' '}
       <DropdownAlert
         duration={5}
         defaultContainer={styles.alert}
@@ -257,7 +269,6 @@ const VerificationScreen = ({ navigation }) => {
         />
         <Paragraph text={nPhone} styles={styles.msgText2} />
       </View>
-
       <View style={styles.optView}>
         {!enabledRequest ? (
           <CountDown

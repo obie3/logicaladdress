@@ -1,6 +1,12 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, SafeAreaView, StatusBar, ScrollView } from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  StatusBar,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import {
   Paragraph,
   SubmitButton,
@@ -45,8 +51,13 @@ class Dashboard extends Component {
     const { firstName, params, initial } = this.state;
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle='default' />
-
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          hidden={false}
+          backgroundColor={colors.blue}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />
         <ScrollView>
           <Logo />
 

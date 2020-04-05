@@ -195,14 +195,19 @@ class Login extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle='default' />
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          hidden={false}
+          backgroundColor={colors.blue}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />{' '}
         <DropdownAlert
           duration={5}
           defaultContainer={styles.alert}
           ref={ref => (this.dropDownAlertRef = ref)}
         />
         {/* <BackIcon onPress={this.handleBackPress} /> */}
-
         <KeyboardAvoidingView style={styles.wrapper}>
           <Animated.Image
             source={logicallogo}

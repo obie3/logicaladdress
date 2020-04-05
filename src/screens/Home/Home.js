@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, Image, StatusBar, SafeAreaView } from 'react-native';
+import { View, Image, StatusBar, SafeAreaView, Platform } from 'react-native';
 import { Paragraph, Logo } from 'components';
 import styles from './styles';
 import { fetchProfile, fetchToken } from 'utils';
@@ -128,8 +128,13 @@ class BoardingScreen extends Component {
     }
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle='default' />
-
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          hidden={false}
+          backgroundColor={colors.blue}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />
         <AppIntroSlider
           renderItem={this._renderItem}
           slides={slides}
