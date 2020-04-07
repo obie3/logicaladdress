@@ -15,7 +15,8 @@ const { width, height } = Dimensions.get('window');
 import DropdownAlert from 'react-native-dropdownalert';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import colors from '../../assets/colors';
+import colors from 'assets/colors';
+import { UpdateProfileEndpoint, fetchToken } from 'utils';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 9.061965;
@@ -29,12 +30,12 @@ export default class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      home: {},
       showLoading: false,
       coordinates: {
         latitude: LATITUDE - SPACE,
         longitude: LONGITUDE - SPACE,
       },
+      token: '',
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -62,40 +63,42 @@ export default class Map extends Component {
 
   handleSetHomeAddress = response => {
     return this.setState({
-      home: response.nativeEvent,
+      coordinates: response.nativeEvent.coordinate,
     });
   };
 
   updateLogicalAddress = async () => {
-    return this.showNotification('info', 'Message', 'Yet to get docs');
+    this.showLoadingDialogue();
+    const { token, coordinates } = this.state;
+    const settings = {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify({ value: coordinates }),
+    };
 
-    // let { phone, email, name } = params;
-    // const settings = {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ phone }),
-    // };
-
-    // try {
-    //   const response = await fetch(generateOTPEndpoint, settings);
-    //   const res = await response.json();
-    //   if (typeof res.data === 'undefined') {
-    //     return this.showNotification('error', 'Message', res.meta.message);
-    //   }
-    //   await saveToLocalStorage(name, email, phone);
-    //   this.hideLoadingDialogue();
-    //   return this.props.navigation.navigate('Verification', params);
-    // } catch (error) {
-    //   return this.showNotification('error', 'Hello', error.toString());
-    // }
+    try {
+      const response = await fetch(
+        `${UpdateProfileEndpoint}${'homeLocation'}`,
+        settings,
+      );
+      const res = await response.json();
+      if (typeof res.data === 'undefined') {
+        return this.showNotification('error', 'Message', res.meta.message);
+      }
+      this.hideLoadingDialogue();
+      return this.props.navigation.navigate('Loading');
+    } catch (error) {
+      return this.showNotification('error', 'Hello', error.toString());
+    }
   };
 
   renderInner = () => {
-    const { home } = this.state;
-    if (typeof home.coordinate == 'undefined') {
+    const { coordinates } = this.state;
+    if (typeof coordinates.latitude == 'undefined') {
       return (
         <View style={[styles.panel]}>
           <Paragraph
@@ -107,6 +110,10 @@ export default class Map extends Component {
     }
     return (
       <View style={styles.panel}>
+        <Paragraph
+          styles={styles.panelTitle}
+          text={'Drag Marker to Set Address'}
+        />
         <View style={styles.panelButton}>
           <SubmitButton
             title={'Confirm'}
@@ -130,22 +137,25 @@ export default class Map extends Component {
 
   getLocationAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    let res = await fetchToken();
     if (status === 'granted') {
-      let location = await Location.getCurrentPositionAsync({
+      let { coords } = await Location.getCurrentPositionAsync({
         enableHighAccuracy: true,
       });
       let region = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: coords.latitude,
+        longitude: coords.longitude,
         latitudeDelta: 0.0992,
         longitudeDelta: 0.0992 * ASPECT_RATIO,
       };
       this.setState({
         coordinates: {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
+          latitude: coords.latitude,
+          longitude: coords.longitude,
         },
+
         region,
+        token: res.token,
       });
       return this.map.animateToRegion(region, 4000);
     } else {
@@ -177,16 +187,13 @@ export default class Map extends Component {
           provider={this.props.provider}
           style={styles.map}
           showsPointsOfInterest
-          //onRegionChange={region => this.setState({ region })}
           loadingEnabled={true}
           showsUserLocation={true}
-          mapType={'standard'}
           initialRegion={region}
         >
           <Marker
             coordinate={coordinates}
             onDragEnd={e => this.handleSetHomeAddress(e)}
-            // onPress={e => log('onPress', e)}
             draggable
           />
         </MapView>
@@ -200,7 +207,7 @@ export default class Map extends Component {
 
         <BottomSheet
           ref={this.bs}
-          snapPoints={[100, 100, 30]}
+          snapPoints={[150, 100, 30]}
           renderContent={this.renderInner}
           renderHeader={this.renderHeader}
           enabledInnerScrolling={false}

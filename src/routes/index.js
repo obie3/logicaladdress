@@ -11,19 +11,18 @@ import {
   zoomOut,
 } from 'react-navigation-transitions';
 import Home from '../screens/Home';
-import Register from '../screens/Register';
-import ForgetPassword from '../screens/ForgetPassword';
-import Logout from '../screens/Logout';
+import Register from 'screens/Register';
+import Logout from 'screens/Logout';
 import Login from '../screens/Login';
-import LinkExpire from '../screens/LinkExpire';
-import ResetPassword from '../screens/ResetPassword';
-import VerificationScreen from '../screens/Verification/VerificationScreen';
-import Dashboard from '../screens/DashBoard';
-import Navigations from '../screens/Navigations/Navigations';
-import Settings from '../screens/Settings/Settings';
-import Notification from '../screens/Notification/Notification';
-import Map from '../screens/Map/Map';
-import Loader from '../screens/Loader/Loader';
+import LinkExpire from 'screens/LinkExpire';
+import LocationService from 'screens/LocationService';
+import VerificationScreen from 'screens/Verification/VerificationScreen';
+import Dashboard from 'screens/Dashboard';
+import Navigations from 'screens/Navigations/Navigations';
+import Settings from 'screens/Settings/Settings';
+import Notification from 'screens/Notification/Notification';
+import Map from 'screens/Map/Map';
+import Loader from 'screens/Loader/Loader';
 
 const handleCustomTransition = ({ scenes }) => {
   const prevScene = scenes[scenes.length - 2];
@@ -129,6 +128,13 @@ export const AppStack = createStackNavigator(
         header: null,
       },
     },
+
+    LocationService: {
+      screen: LocationService,
+      navigationOptions: {
+        header: null,
+      },
+    },
   },
 
   {
@@ -144,11 +150,9 @@ const AppSwitchNavigator = createSwitchNavigator(
     Verification: VerificationStack,
     App: AppStack,
     OnBoarding: OnBoardingStack,
-    // Menu:MenuStack,
   },
   {
     initialRouteName: 'AuthLoading',
-    //transitionConfig: (nav) => handleCustomTransition(nav)
   },
 );
 

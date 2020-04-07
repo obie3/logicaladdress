@@ -251,7 +251,7 @@ const VerificationScreen = ({ navigation }) => {
         backgroundColor={colors.blue}
         translucent={false}
         networkActivityIndicatorVisible={true}
-      />{' '}
+      />
       <DropdownAlert
         duration={5}
         defaultContainer={styles.alert}

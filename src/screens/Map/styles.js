@@ -22,7 +22,7 @@ export default styles = StyleSheet.create({
     right: 0,
   },
   panel: {
-    height: 200,
+    height: 100,
     padding: 20,
     backgroundColor: '#f7f5eee8',
     alignItems: 'center',
@@ -47,7 +47,7 @@ export default styles = StyleSheet.create({
   panelTitle: {
     fontSize: theme.headerThreeFont,
     color: colors.blue, //colors.headerFontColor,
-    fontWeight: 'bold',
+    //fontWeight: 'bold',
   },
   panelSubtitle: {
     fontSize: 14,

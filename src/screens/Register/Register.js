@@ -236,7 +236,7 @@ export default class Register extends Component {
           backgroundColor={colors.blue}
           translucent={false}
           networkActivityIndicatorVisible={true}
-        />{' '}
+        />
         <DropdownAlert
           duration={5}
           defaultContainer={styles.alert}

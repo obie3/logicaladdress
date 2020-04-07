@@ -48,7 +48,11 @@
 
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription":
-        "LogicalAddress needs access to your location to let you set your home address"
+        "LogicalAddress needs access to your location to let you set your home address",
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
       }
     },
     "packagerOpts": {

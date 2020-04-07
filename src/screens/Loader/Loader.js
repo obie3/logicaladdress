@@ -11,6 +11,7 @@ import {
   Shine,
 } from 'rn-placeholder';
 import DropdownAlert from 'react-native-dropdownalert';
+import colors from 'assets/colors';
 
 export default class Loader extends Component {
   constructor(props) {
@@ -71,7 +72,7 @@ export default class Loader extends Component {
           backgroundColor={colors.blue}
           translucent={false}
           networkActivityIndicatorVisible={true}
-        />{' '}
+        />
         <DropdownAlert
           duration={5}
           defaultContainer={styles.alert}

@@ -4,12 +4,14 @@ const generateOTPEndpoint = `${ENDPOINT}otp/generate`;
 const RegistrationEndpoint = `${ENDPOINT}auth/register`;
 const VerifyOTPEndpoint = `${ENDPOINT}otp/verify`;
 const ProfileEndpoint = `${ENDPOINT}auth/profile`;
+const UpdateProfileEndpoint = `${ENDPOINT}auth/profile/`;
 
 export {
   generateOTPEndpoint,
   RegistrationEndpoint,
   VerifyOTPEndpoint,
   ProfileEndpoint,
+  UpdateProfileEndpoint,
 };
 
 export const isEmailValid = email => {
@@ -75,83 +77,6 @@ export const logout = async () => {
   return await AsyncStorage.multiRemove(keys, err => {});
 };
 
-export const sendRoute = async (endpoint, body) => {
-  try {
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body,
-    });
-    const res_1 = await res.json();
-    return res_1;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const post = async (endpoint, body, token) => {
-  try {
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        access_token: `JWT ${token}`,
-      },
-      body: body,
-    });
-    const res_1 = await res.json();
-    return res_1;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const getRoute = async (endpoint, token) => {
-  try {
-    const res = await fetch(endpoint, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-access-token': token,
-      },
-    });
-    const res_1 = await res.json();
-    return res_1;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const putRoute = async (endpoint, body, token) => {
-  try {
-    const res = await fetch(endpoint, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        access_token: `JWT ${token}`,
-      },
-      body: body,
-    });
-    const res_1 = await res.json();
-    return res_1;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const saveProfile = async (id, name, sessionToken, status) => {
-  let profile = {
-    id,
-    name,
-    sessionToken,
-  };
-
-  await AsyncStorage.setItem('isAccountVerified', JSON.stringify(status));
-  return await AsyncStorage.setItem('profile', JSON.stringify(profile));
-};
-
 export const getProfile = async () => {
   return await AsyncStorage.getItem('profile').then(value => {
     if (value) {
@@ -174,36 +99,6 @@ export const getExpoToken = async () => {
       return false;
     }
   });
-};
-
-export const getVerification = async () => {
-  return await AsyncStorage.getItem('isAccountVerified').then(value => {
-    if (value) {
-      return JSON.parse(value);
-    } else {
-      return false;
-    }
-  });
-};
-
-export const updateVerification = async () => {
-  return await AsyncStorage.setItem('isAccountVerified', JSON.stringify(true));
-};
-
-export const updateOnBoarding = async () => {
-  return await AsyncStorage.setItem('completed', JSON.stringify(true));
-};
-
-export const getOnBoardingStatus = async () => {
-  return await AsyncStorage.getItem('completed')
-    .then(value => {
-      if (value) {
-        return JSON.parse(value);
-      } else {
-        return false;
-      }
-    })
-    .catch(error => error);
 };
 
 /// fix splash screen for dashboard

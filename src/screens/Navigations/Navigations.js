@@ -4,17 +4,16 @@ import { StatusBar, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import colors from 'assets/colors';
 import theme from 'assets/theme';
-
+import Dashboard from '../Dashboard';
+import Logout from '../Logout';
+import LocationService from '../LocationService';
+import CustomSidebarMenu from './CustomSidebarMenu';
 import {
   createDrawerNavigator,
   createAppContainer,
   createStackNavigator,
   createBottomTabNavigator,
 } from 'react-navigation';
-
-import DashBoard from '../DashBoard/DashBoard';
-import Logout from '../Logout/Logout';
-import CustomSidebarMenu from './CustomSidebarMenu';
 
 class Navigations extends Component {
   //Structure for the navigatin Drawer
@@ -41,20 +40,23 @@ class Navigations extends Component {
   }
 }
 
-const DashBoard_StackNavigator = createStackNavigator({
-  //All the screen from the DashBoard will be indexed here
-  DashBoard: {
-    screen: DashBoard,
+const Dashboard_StackNavigator = createStackNavigator({
+  Dashboard: {
+    screen: Dashboard,
     navigationOptions: {
       header: null,
     },
   },
-  // Loading: {
-  //   screen: Loading,
-  //   navigationOptions: {
-  //     header: null,
-  //   },
-  // },
+});
+
+const LocationService_StackNavigator = createStackNavigator({
+  //All the screen from the Referral will be indexed here
+  LocationService: {
+    screen: LocationService,
+    navigationOptions: {
+      header: null,
+    },
+  },
 });
 
 const Logout_StackNavigator = createStackNavigator({
@@ -69,10 +71,16 @@ const Logout_StackNavigator = createStackNavigator({
 
 const DrawerNavigator = createDrawerNavigator(
   {
-    DashBoard: {
-      screen: DashBoard_StackNavigator,
+    Dashboard: {
+      screen: Dashboard_StackNavigator,
       navigationOptions: {
-        // drawerLabel: "DashBoard"
+        header: null,
+      },
+    },
+
+    LocationService: {
+      screen: LocationService_StackNavigator,
+      navigationOptions: {
         header: null,
       },
     },

@@ -1,16 +1,17 @@
 'use strict';
 import React, { Component } from 'react';
 import { View, SafeAreaView, Image, Text, StyleSheet } from 'react-native';
-import colors from '../../assets/colors';
+import colors from 'assets/colors';
 import styles from './styles';
-import theme from '../../assets/theme';
+import theme from 'assets/theme';
 import { connect } from 'react-redux';
-import { Paragraph } from '../../components';
+import { Paragraph } from 'components';
 import UserAvatar from 'react-native-user-avatar';
-import { fetchProfile } from '../../utils';
+import { fetchProfile } from 'utils';
 
-const dashboard = require('../../assets/images/home.png'),
-  logout = require('../../assets/images/logout.png');
+const dashboard = require('assets/images/home.png'),
+  locationservice = require('assets/images/home.png'),
+  logout = require('assets/images/logout.png');
 
 class CustomSidebarMenu extends Component {
   constructor() {
@@ -24,7 +25,12 @@ class CustomSidebarMenu extends Component {
       {
         navOptionThumb: dashboard,
         navOptionName: 'Dashboard',
-        screenToNavigate: 'DashBoard',
+        screenToNavigate: 'Dashboard',
+      },
+      {
+        navOptionThumb: locationservice,
+        navOptionName: 'LocationService',
+        screenToNavigate: 'LocationService',
       },
       {
         navOptionThumb: logout,
