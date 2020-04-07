@@ -1,42 +1,65 @@
 import { StyleSheet } from 'react-native';
+import colors from 'assets/colors';
+import theme from 'assets/theme';
 export default styles = StyleSheet.create({
-  screen: {
-    flex: 1,
+  container: {
+    ...theme.container,
+    paddingTop: 15,
   },
-  mapView: {
-    flex: 1,
+
+  wrapper: {
+    ...theme.wrapper,
+    // flex: 1,
+    // justifyContent: 'center',
+    // height:'50%',
+    //  //alignContent: 'center',
+    //  alignItems: 'center',
   },
-  buttons: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    padding: 10,
+
+  image: {
+    width: 250,
+    height: 250,
+  },
+  footerImage: {
+    height: '20%',
+    width: '100%',
     position: 'absolute',
-    top: 0,
-    right: 0,
     bottom: 0,
-    left: 0,
-  },
-  topButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  bottomButtons: {
-    flexDirection: 'column',
+    marginBottom: 0,
     alignItems: 'flex-end',
+    height: '20%',
   },
-  buttonsColumn: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
+
+  messageText: {
+    fontSize: theme.SmallFont,
+    color: theme.primaryTextColor,
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    fontFamily: theme.secondaryFont,
+    paddingRight: 10,
+    paddingLeft: 10,
+    marginTop: '5%',
   },
-  button: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    marginVertical: 5,
+  greenButton: {
+    ...theme.button,
+    width: '50%',
+    height: 40,
+    backgroundColor: colors.green,
   },
-  errorText: {
-    fontSize: 15,
-    color: 'rgba(0,0,0,0.7)',
-    margin: 20,
+
+  redButton: {
+    ...theme.button,
+    width: '50%',
+    height: 40,
+    backgroundColor: colors.errorRed,
+  },
+
+  buttonTxt: {
+    ...theme.buttonText,
+    fontSize: theme.SmallFont,
+  },
+
+  btnView: {
+    ...theme.buttonView,
   },
 });

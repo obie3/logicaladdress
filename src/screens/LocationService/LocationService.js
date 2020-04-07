@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import { EventEmitter } from 'fbemitter';
 import { NavigationEvents } from 'react-navigation';
-import { AppState, AsyncStorage, Platform, Text, View } from 'react-native';
-import MapView, { Marker, ProviderPropType } from 'react-native-maps';
+import {
+  AppState,
+  AsyncStorage,
+  Platform,
+  Image,
+  View,
+  SafeAreaView,
+  StatusBar,
+} from 'react-native';
 import * as TaskManager from 'expo-task-manager';
 import * as Permissions from 'expo-permissions';
 import styles from './styles';
 import * as Location from 'expo-location';
-import { SubmitButton } from 'components';
+import { SubmitButton, Paragraph, Logo } from 'components';
 import colors from 'assets/colors';
 import moment from 'moment';
+import DropdownAlert from 'react-native-dropdownalert';
 
 const STORAGE_KEY = 'expo-home-locations';
 const LOCATION_UPDATES_TASK = 'location-updates';
@@ -20,8 +28,6 @@ export default class LocationService extends Component {
   static navigationOptions = {
     title: 'Background location',
   };
-
-  mapViewRef = React.createRef();
 
   state = {
     accuracy: Location.Accuracy.High,
@@ -34,7 +40,6 @@ export default class LocationService extends Component {
 
   didFocus = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-
     if (status !== 'granted') {
       AppState.addEventListener('change', this.handleAppStateChange);
       this.setState({
@@ -107,11 +112,11 @@ export default class LocationService extends Component {
       showsBackgroundLocationIndicator: this.state
         .showsBackgroundLocationIndicator,
       distanceInterval: 5,
-      timeInterval: 2500,
+      timeInterval: 1800000,
       foregroundService: {
         notificationTitle: 'LogicalAddress LocationService',
         notificationBody:
-          'Ogbeni we re traking your location in the background',
+          'LogicalAddress LocationService is tracking your location at the background',
         notificationColor: '#27ae60',
       },
     });
@@ -168,103 +173,59 @@ export default class LocationService extends Component {
     });
   };
 
-  onCenterMap = async () => {
-    const { coords } = await Location.getCurrentPositionAsync();
-    const mapView = this.mapViewRef.current;
-
-    if (mapView) {
-      mapView.animateToRegion({
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-        latitudeDelta: 0.004,
-        longitudeDelta: 0.002,
-      });
-    }
-  };
-
-  renderPolyline() {
-    const { savedLocations } = this.state;
-
-    if (savedLocations.length === 0) {
-      return null;
-    }
-    return (
-      <MapView.Polyline
-        coordinates={savedLocations}
-        strokeWidth={3}
-        strokeColor={colors.blue}
-      />
-    );
-  }
-
   render() {
-    if (this.state.error) {
-      return <Text style={styles.errorText}>{this.state.error}</Text>;
-    }
-
-    if (!this.state.initialRegion) {
-      return <NavigationEvents onDidFocus={this.didFocus} />;
-    }
-
+    const { isTracking } = this.state;
     return (
-      <View style={styles.screen}>
-        <MapView
-          ref={this.mapViewRef}
-          style={styles.mapView}
-          initialRegion={this.state.initialRegion}
-          showsUserLocation
-        >
-          {this.renderPolyline()}
-        </MapView>
-        <View style={styles.buttons} pointerEvents='box-none'>
-          <View style={styles.topButtons}>
-            <View style={styles.buttonsColumn}>
-              {Platform.OS === 'android' ? null : (
+      <SafeAreaView style={styles.container}>
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          hidden={false}
+          backgroundColor={colors.blue}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />
+        <DropdownAlert
+          duration={5}
+          defaultContainer={styles.alert}
+          ref={ref => (this.dropDownAlertRef = ref)}
+        />
+
+        <View style={styles.wrapper}>
+          <View style={{ height: '80%', justifyContent: 'space-evenly' }}>
+            <Logo />
+            <View style={{ marginTop: 20 }}>
+              <Paragraph
+                text={
+                  isTracking
+                    ? 'LogicalAddress is tracking your location click `Stop tracking` to stop location updates'
+                    : 'LogicalAddress is not tracking your location click `Start tracking` to start location updates'
+                }
+                styles={styles.messageText}
+              />
+              <View style={styles.btnView}>
                 <SubmitButton
-                  title={
-                    this.state.showsBackgroundLocationIndicator
-                      ? 'Hide'
-                      : 'Show'
-                  }
-                  style={styles.button}
-                  onPress={this.toggleLocationIndicator}
+                  title={isTracking ? 'Stop tracking' : 'Start tracking'}
+                  btnStyle={isTracking ? styles.redButton : styles.greenButton}
+                  titleStyle={styles.buttonTxt}
+                  onPress={this.toggleTracking}
                   disabled={false}
                 />
-              )}
-              <SubmitButton
-                title={Location.Accuracy[this.state.accuracy]}
-                style={styles.button}
-                onPress={this.onAccuracyChange}
-                disabled={false}
-              />
-            </View>
-            <View style={styles.buttonsColumn}>
-              <SubmitButton
-                title='Hello'
-                styles={styles.button}
-                onPress={this.onCenterMap}
-                disabled={false}
-              />
+              </View>
             </View>
           </View>
 
-          <View style={styles.bottomButtons}>
-            <SubmitButton
-              title={'Clear Location'}
-              style={styles.button}
-              onPress={this.clearLocations}
-              disabled={false}
-            />
-
-            <SubmitButton
-              title={this.state.isTracking ? 'Stop tracking' : 'Start tracking'}
-              styles={styles.button}
-              onPress={this.toggleTracking}
-              disabled={false}
+          <View style={styles.footerImage}>
+            <Image
+              style={styles.image}
+              source={
+                isTracking
+                  ? require('assets/images/active.gif')
+                  : require('assets/images/stopped.png')
+              }
             />
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -296,10 +257,10 @@ TaskManager.defineTask(
         timestamp: moment().format('HH:mm'),
         date: moment().format('DD-MM-YYYY'),
       }));
-
-      savedLocations.push(...newLocations);
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(savedLocations));
-
+      if (newLocations) {
+        savedLocations.push(...newLocations);
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(savedLocations));
+      }
       locationEventsEmitter.emit('update', savedLocations);
     }
   },

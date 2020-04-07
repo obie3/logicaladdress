@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { addProfile } from 'redux/actions/ProfileActions';
+import colors from 'assets/colors';
 
 const slides = [
   {
