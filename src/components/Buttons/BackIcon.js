@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
   },
   navBar: {
     flexDirection: 'row',
-    // marginTop: Platform.OS === 'ios' ? 20 : 20,
     height: 60,
     backgroundColor: 'transparent',
     width: '100%',

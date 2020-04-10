@@ -46,34 +46,28 @@ class CustomSidebarMenu extends Component {
 
   getProfile = async () => {
     let response = await fetchProfile();
-    if (typeof response.name !== 'undefined') {
-      // let phone = response.phone.substring(4);
-      // let nPhone = `${'0'}${phone}`;
-
-      let names = response.name;
-      let firstName = names.split(' ')[0];
-      let lastName = names.split(' ')[1];
-      let phone = response.phone;
-
-      let image = response.imageUrl;
+    let data = response.data.params;
+    if (typeof data.firstName !== 'undefined') {
+      let firstName = data.firstName;
+      let phone = data.phone;
+      let image = data.profilePhoto;
 
       return this.setState({
         phone,
         firstName,
-        lastName,
         image,
       });
     }
   };
 
   render() {
-    const { phone, firstName, lastName, image } = this.state;
+    const { phone, firstName, image } = this.state;
     return (
       <SafeAreaView style={styles.sideMenuContainer}>
         <View style={styles.drawerImageView}>
           <UserAvatar
             size='80'
-            name={`${firstName}${' '}${lastName}`}
+            name={`${'Eddie'}`}
             color={colors.buttonBlue}
             src={image}
           />
@@ -103,7 +97,7 @@ class CustomSidebarMenu extends Component {
                     ? colors.field_color
                     : colors.white,
                 borderLeftWidth: global.currentScreenIndex === key ? 4 : 0,
-                borderColor: colors.green_background,
+                borderColor: colors.blue,
               }}
             >
               <View style={{ marginRight: 10, marginLeft: 20 }}>
@@ -114,9 +108,7 @@ class CustomSidebarMenu extends Component {
                   fontSize: 15,
                   fontFamily: theme.subHeaderFont,
                   color:
-                    global.currentScreenIndex === key
-                      ? '#ABABAB'
-                      : colors.darkSilver,
+                    global.currentScreenIndex === key ? '#ABABAB' : colors.blue,
                 }}
                 key={key}
                 onPress={() => {

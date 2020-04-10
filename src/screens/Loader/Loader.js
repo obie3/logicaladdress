@@ -48,15 +48,21 @@ export default class Loader extends Component {
 
     try {
       const response = await fetch(ProfileEndpoint, settings);
+
       const res = await response.json();
       if (typeof res.data === 'undefined') {
         return this.showNotification('error', 'Message', res.error);
       }
-      let data = res.data.profile,
-        name = `${data.firstName}${' '}${data.lastName}`,
-        phone = data.phone[0],
-        profileFields = { params: res.data.profileFields, initial: res.data };
-      await saveToLocalStorage(name, profileFields, phone, data.profilePhoto);
+      let data = { params: {} };
+      data.params['LogicalAddress'] = res.data.logicalAddress;
+      data.params['isVerified'] = res.data.profileFields[0].isVerified;
+      data.params['profileData'] = res.data.profileFields;
+      data.params['userId'] = res.data.id;
+
+      res.data.profileFields.map(profile => {
+        data.params[profile.key] = profile.value;
+      });
+      await saveToLocalStorage(null, null, null, data);
       return this.props.navigation.navigate('App');
     } catch (error) {
       return this.showNotification('error', 'Hello', error.toString());

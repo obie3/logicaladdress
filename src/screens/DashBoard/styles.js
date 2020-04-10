@@ -6,14 +6,8 @@ import Constants from 'expo-constants';
 export default styles = StyleSheet.create({
   container: {
     ...theme.container,
-    paddingTop: 20 + Constants.statusBarHeight,
-  },
-
-  viewBody: {
-    // flex: 1,
-    // alignContent: 'center',
-    //backgroundColor: 'green'
-    //justifyContent: 'space-evenly',
+    marginTop: 20 + Constants.statusBarHeight,
+    //paddingBottom: Constants.statusBarHeight,
   },
 
   cardLayout: {
@@ -59,12 +53,13 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignContent: 'center',
+    //justifyContent: 'space-around',
   },
 
   verificationText: {
     fontSize: theme.headerThreeFont,
     color: colors.label,
-    fontWeight: 'bold',
+    fontWeight: '500',
     paddingRight: 6,
   },
 
@@ -73,6 +68,8 @@ export default styles = StyleSheet.create({
     fontSize: theme.headerOneFont,
     color: colors.headerFontColor,
     fontWeight: 'bold',
+    paddingLeft: '2%',
+    paddingRight: '2%',
     //marginTop: '30%'
   },
 
@@ -146,5 +143,13 @@ export default styles = StyleSheet.create({
     flex: 1,
     opacity: 0.9,
     backgroundColor: 'rgba(0, 0, 0,0.5)',
+  },
+
+  profileHeader: {
+    //backgroundColor: 'green',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingTop: 5,
+    paddingBottom: 5,
   },
 });

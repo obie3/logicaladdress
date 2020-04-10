@@ -21,6 +21,7 @@ import Dashboard from 'screens/Dashboard';
 import Navigations from 'screens/Navigations/Navigations';
 import Settings from 'screens/Settings/Settings';
 import Notification from 'screens/Notification/Notification';
+import Profile from 'screens/Profile/Profile';
 import Map from 'screens/Map/Map';
 import Loader from 'screens/Loader/Loader';
 
@@ -131,6 +132,12 @@ export const AppStack = createStackNavigator(
 
     LocationService: {
       screen: LocationService,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    Profile: {
+      screen: Profile,
       navigationOptions: {
         header: null,
       },

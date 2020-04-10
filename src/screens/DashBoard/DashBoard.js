@@ -25,9 +25,9 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      initial: {},
       firstName: 'LogicalAddress',
-      params: [],
+      params: {},
+      profileData: [],
       token: '',
     };
   }
@@ -38,17 +38,18 @@ class Dashboard extends Component {
 
   getProfile = async () => {
     let payload = await getProfile();
-    let res = payload.email;
+    let res = payload.data;
     return this.setState({
       params: res.params,
-      initial: res.initial,
+      profileData: res.params.profileData,
     });
   };
 
   gotoMap = () => this.props.navigation.navigate('Map');
+  showEdit = () => this.props.navigation.navigate('Profile');
 
   render() {
-    const { firstName, params, initial } = this.state;
+    const { params, firstName, profileData } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -58,7 +59,7 @@ class Dashboard extends Component {
           translucent={false}
           networkActivityIndicatorVisible={true}
         />
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Logo />
 
           <View style={styles.cardLayout}>
@@ -72,25 +73,42 @@ class Dashboard extends Component {
                 }}
               >
                 <View style={styles.verificationStatusLayout}>
-                  <Paragraph
-                    text={initial.logicalAddress}
-                    styles={styles.addressText}
-                  />
                   <View style={styles.verificationIndicators}>
                     <Paragraph
-                      text={'Verified'}
-                      styles={styles.verificationText}
+                      text={params.LogicalAddress}
+                      styles={styles.addressText}
                     />
-                    {params.length && params[0].isVerfied ? (
+                    {params.isVerfied ? (
                       <Verified layoutSize={25} size={15} />
                     ) : (
                       <Pending layoutSize={25} size={15} />
                     )}
                   </View>
+                  <Paragraph
+                    text={'LogicalAddress'}
+                    styles={styles.verificationText}
+                  />
                 </View>
+                {/* <View style={styles.verificationStatusLayout}>
+                  <Paragraph
+                    text={params.LogicalAddress}
+                    styles={styles.addressText}
+                  /> 
+                  <View style={styles.verificationIndicators}>
+                    <Paragraph
+                      text={'LogicalAddress'}
+                      styles={styles.verificationText}
+                    />
+                    {params.isVerfied ? (
+                      <Verified layoutSize={25} size={15} />
+                    ) : (
+                      <Pending layoutSize={25} size={15} />
+                    )}
+                  </View>
+                </View> */}
               </View>
               <View style={styles.buttonLayout}>
-                {params.length && !params[0].isVerfied ? (
+                {!params.isVerfied ? (
                   <SubmitButton
                     title={'Set Address'}
                     onPress={this.gotoMap}
@@ -101,26 +119,41 @@ class Dashboard extends Component {
                 ) : null}
               </View>
               <Line />
-              <Paragraph
+              <View style={styles.profileHeader}>
+                {/* <Paragraph
                 text={'Personal Details'}
                 styles={[styles.nameText, { fontWeight: 'bold' }]}
-              />
-              {typeof initial.profile !== 'undefined' ? (
-                <View style={styles.avatarLayout}>
-                  <UserAvatar
-                    size='80'
-                    name={`${firstName}`}
-                    color={colors.buttonBlue}
-                    src={initial.profile.profilePhoto}
-                  />
-                </View>
-              ) : null}
-              {params.map(profile => {
+              /> */}
+                <Paragraph
+                  text={'Edit'}
+                  styles={[
+                    styles.nameText,
+                    {
+                      justifyContent: 'flex-end',
+                      width: '100%',
+                      color: colors.blue,
+                    },
+                  ]}
+                  onPress={this.showEdit}
+                />
+              </View>
+
+              <View style={styles.avatarLayout}>
+                <UserAvatar
+                  size='80'
+                  name={firstName}
+                  color={colors.buttonBlue}
+                  src={params.profilePhoto}
+                />
+              </View>
+              {profileData.map(profile => {
                 let nLabel =
                   profile.key.charAt(0).toUpperCase() + profile.key.slice(1);
                 let label = nLabel.replace(/([a-z])([A-Z])/g, '$1 $2');
-
-                if (profile.key !== 'profilePhoto')
+                if (
+                  profile.key !== 'profilePhoto' &&
+                  profile.key !== 'homeLocation'
+                ) {
                   return (
                     <View key={profile.id} style={styles.profileRowItem}>
                       <View style={styles.profileIconLayout}>
@@ -133,12 +166,13 @@ class Dashboard extends Component {
                       <View style={styles.profileItem}>
                         <Paragraph text={label} styles={styles.fieldLabel} />
                         <Paragraph
-                          text={profile.value.replace(/"/g, '')}
+                          text={profile.value}
                           styles={styles.nameText}
                         />
                       </View>
                     </View>
                   );
+                }
               })}
             </View>
           </View>

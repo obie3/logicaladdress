@@ -1,7 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { StatusBar, Image, SafeAreaView, TouchableOpacity } from 'react-native';
-import styles from './styles';
+import { Image } from 'react-native';
 import colors from 'assets/colors';
 import theme from 'assets/theme';
 import Dashboard from '../Dashboard';
@@ -15,31 +14,6 @@ import {
   createBottomTabNavigator,
 } from 'react-navigation';
 
-class Navigations extends Component {
-  //Structure for the navigatin Drawer
-  toggleDrawer = () => {
-    //Props to open/close the drawer
-    this.props.navigationProps.toggleDrawer();
-  };
-
-  render() {
-    return (
-      <SafeAreaView style={{ flexDirection: 'row' }}>
-        <StatusBar barStyle='default' />
-        <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
-          {' '}
-          {/*Button Image */}
-          <Image
-            source={require('assets/images/menu.png')}
-            style={styles.imageLogo}
-            onPress={this.toggleDrawer.bind(this)}
-          />
-        </TouchableOpacity>
-      </SafeAreaView>
-    );
-  }
-}
-
 const Dashboard_StackNavigator = createStackNavigator({
   Dashboard: {
     screen: Dashboard,
@@ -50,7 +24,6 @@ const Dashboard_StackNavigator = createStackNavigator({
 });
 
 const LocationService_StackNavigator = createStackNavigator({
-  //All the screen from the Referral will be indexed here
   LocationService: {
     screen: LocationService,
     navigationOptions: {
@@ -60,7 +33,6 @@ const LocationService_StackNavigator = createStackNavigator({
 });
 
 const Logout_StackNavigator = createStackNavigator({
-  //All the screen from the Referral will be indexed here
   Logout: {
     screen: Logout,
     navigationOptions: {
@@ -71,33 +43,17 @@ const Logout_StackNavigator = createStackNavigator({
 
 const DrawerNavigator = createDrawerNavigator(
   {
-    Dashboard: {
-      screen: Dashboard_StackNavigator,
-      navigationOptions: {
-        header: null,
-      },
-    },
-
-    LocationService: {
-      screen: LocationService_StackNavigator,
-      navigationOptions: {
-        header: null,
-      },
-    },
-
-    Logout: {
-      screen: Logout_StackNavigator,
-      navigationOptions: {
-        drawerLabel: 'Logout',
-      },
-      tab: {},
-    },
+    Dashboard: Dashboard_StackNavigator,
+    LocationService: LocationService_StackNavigator,
+    Logout: Logout_StackNavigator,
   },
   {
     contentComponent: CustomSidebarMenu,
     drawerWidth: 250,
+    overlayColor: 'rgba(0,0,0,0.6)',
     contentOptions: {
-      activeTintColor: theme.backgroundColor,
+      activeTintColor: colors.blue,
+      activeBackgroundColor: '#6b52ae',
     },
   },
 );

@@ -5,6 +5,7 @@ import {
   StatusBar,
   SafeAreaView,
   Platform,
+  BackHandler,
 } from 'react-native';
 import MapView, { Marker, ProviderPropType } from 'react-native-maps';
 import BottomSheet from 'reanimated-bottom-sheet';
@@ -16,7 +17,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import colors from 'assets/colors';
-import { UpdateProfileEndpoint, fetchToken } from 'utils';
+import { LocationUpdateEndpoint, fetchToken } from 'utils';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 9.061965;
@@ -48,6 +49,11 @@ export default class Map extends Component {
 
   componentDidMount() {
     this.getLocationAsync();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
   }
 
   handleBackPress = () => this.props.navigation.navigate('OnBoarding');
@@ -70,6 +76,8 @@ export default class Map extends Component {
   updateLogicalAddress = async () => {
     this.showLoadingDialogue();
     const { token, coordinates } = this.state;
+    let body = { fieldName: 'homeLocation', position: coordinates };
+
     const settings = {
       method: 'PUT',
       headers: {
@@ -77,20 +85,22 @@ export default class Map extends Component {
         'Content-Type': 'application/json',
         Authorization: token,
       },
-      body: JSON.stringify({ value: coordinates }),
+      body: JSON.stringify(body),
     };
 
     try {
-      const response = await fetch(
-        `${UpdateProfileEndpoint}${'homeLocation'}`,
-        settings,
-      );
+      const response = await fetch(LocationUpdateEndpoint, settings);
       const res = await response.json();
+      console.log({ res });
       if (typeof res.data === 'undefined') {
-        return this.showNotification('error', 'Message', res.meta.message);
+        return this.showNotification('error', 'Message', res.error);
       }
       this.hideLoadingDialogue();
-      return this.props.navigation.navigate('Loading');
+      return this.showNotification(
+        'success',
+        'Message',
+        'Location update successful, verification pending ',
+      );
     } catch (error) {
       return this.showNotification('error', 'Hello', error.toString());
     }
@@ -153,7 +163,6 @@ export default class Map extends Component {
           latitude: coords.latitude,
           longitude: coords.longitude,
         },
-
         region,
         token: res.token,
       });

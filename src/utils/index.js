@@ -3,8 +3,9 @@ const ENDPOINT = 'https://logicaladdress-api.herokuapp.com/api/v1/';
 const generateOTPEndpoint = `${ENDPOINT}otp/generate`;
 const RegistrationEndpoint = `${ENDPOINT}auth/register`;
 const VerifyOTPEndpoint = `${ENDPOINT}otp/verify`;
-const ProfileEndpoint = `${ENDPOINT}auth/profile`;
-const UpdateProfileEndpoint = `${ENDPOINT}auth/profile/`;
+const ProfileEndpoint = `${ENDPOINT}auth/me`;
+const UpdateProfileEndpoint = `${ENDPOINT}profile/`;
+const LocationUpdateEndpoint = `${ENDPOINT}profile/location`;
 
 export {
   generateOTPEndpoint,
@@ -12,6 +13,7 @@ export {
   VerifyOTPEndpoint,
   ProfileEndpoint,
   UpdateProfileEndpoint,
+  LocationUpdateEndpoint,
 };
 
 export const isEmailValid = email => {
@@ -35,13 +37,13 @@ export const saveToLocalStorage = async (
   name = null,
   email = null,
   phone = null,
-  imageUrl = null,
+  data = null,
 ) => {
   const profile = {
     name,
     email,
     phone,
-    imageUrl,
+    data,
   };
   await AsyncStorage.setItem('profile', JSON.stringify(profile));
   return true;
