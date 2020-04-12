@@ -239,6 +239,7 @@ class Login extends Component {
                 autoCapitalize='none'
                 autoCompleteType='tel'
                 textContentType='telephoneNumber'
+                keyboardType='phone-pad'
                 height={40}
                 width={'90%'}
                 borderColor={colors.white}

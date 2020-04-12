@@ -8,8 +8,13 @@ import {
   Platform,
   BackHandler,
 } from 'react-native';
-import { Paragraph, SubmitButton, Line, BackIcon, Preloader } from 'components';
-import { getProfile, UpdateProfileEndpoint, fetchToken } from 'utils';
+import { SubmitButton, Line, BackIcon, Preloader } from 'components';
+import {
+  getProfile,
+  UpdateProfileEndpoint,
+  fetchToken,
+  isEmailValid,
+} from 'utils';
 import styles from './styles';
 import { connect } from 'react-redux';
 import UserAvatar from 'react-native-user-avatar';
@@ -29,11 +34,13 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       firstName: 'LogicalAddress',
+      fullname: '',
       params: {},
       profileData: [],
       token: '',
       showLoading: false,
       photo: null,
+      profileItemIds: {},
     };
 
     this.nameRef = this.updateRef.bind(this, 'name');
@@ -53,12 +60,22 @@ class Dashboard extends Component {
   getProfile = async () => {
     let payload = await getProfile();
     let response = await fetchToken();
-    let res = payload.data;
+    let res = payload.data.params;
+    let data = {};
+    let fullname =
+      typeof res.middleName === 'undefined'
+        ? `${res.firstName}${' '}${res.lastName}`
+        : `${res.firstName}${' '}${res.middleName}${' '}${res.lastName}`;
+    res.profileData.map(profile => {
+      data[profile.key] = profile.id;
+    });
     return this.setState({
-      params: res.params,
-      profileData: res.params.profileData,
+      params: res,
+      profileData: res.profileData,
       token: response.token,
-      photo: res.params.profilePhoto,
+      photo: res.profilePhoto,
+      fullname: fullname,
+      profileItemIds: data,
     });
   };
 
@@ -113,12 +130,13 @@ class Dashboard extends Component {
   }
 
   onSubmit = () => {
+    const { profileItemIds } = this.state;
     this.showLoadingDialogue();
     let errors = {},
-      body = {};
+      fields = [];
     ['name', 'phone', 'email'].forEach(name => {
       let value = this[name].value();
-      if (!value) {
+      if (value !== 'email' && !value) {
         errors[name] = 'should not be empty';
       } else {
         if ('name' === name) {
@@ -127,12 +145,39 @@ class Dashboard extends Component {
             errors[name] = 'enter atleast 2 names';
           } else {
             if (ulteredName.length === 2) {
-              body['firstName'] = ulteredName[0];
-              body['lastName'] = ulteredName[1];
+              //body['firstName'] = ulteredName[0];
+              value = {
+                fieldId: profileItemIds.firstName,
+                value: ulteredName[0],
+              };
+              fields.push(value);
+              // body['lastName'] = ulteredName[1];
+              value = {
+                fieldId: profileItemIds.lastName,
+                value: ulteredName[1],
+              };
+              fields.push(value);
             } else {
-              body['firstName'] = ulteredName[0];
-              body['middleName'] = ulteredName[1];
-              body['lastName'] = ulteredName[2];
+              value = {
+                fieldId: profileItemIds.firstName,
+                value: ulteredName[0],
+              };
+              fields.push(value);
+
+              value = {
+                fieldId: profileItemIds.middleName,
+                value: ulteredName[1],
+              };
+              fields.push(value);
+              // body['lastName'] = ulteredName[1];
+              value = {
+                fieldId: profileItemIds.lastName,
+                value: ulteredName[2],
+              };
+              fields.push(value);
+              // body['firstName'] = ulteredName[0];
+              // body['middleName'] = ulteredName[1];
+              // body['lastName'] = ulteredName[2];
             }
           }
         } else if ('phone' === name) {
@@ -141,7 +186,25 @@ class Dashboard extends Component {
             errors[name] = 'phone number is invalid';
           } else {
             let nPhone = value.substring(1);
-            body['phone'] = `${'+234'}${nPhone}`;
+            //body['phone'] = `${'+234'}${nPhone}`;
+            value = {
+              fieldId: profileItemIds.phone,
+              value: `${'+234'}${nPhone}`,
+            };
+            fields.push(value);
+          }
+        } else if ('email' === name) {
+          // console.log({ name });
+          if (value) {
+            if (!isEmailValid(value)) {
+              errors[name] = 'is not a valid email address';
+            } else {
+              value = {
+                fieldId: profileItemIds.email,
+                value,
+              };
+              fields.push(value);
+            }
           }
         }
       }
@@ -150,12 +213,12 @@ class Dashboard extends Component {
       this.hideLoadingDialogue();
       return this.setState({ errors });
     } else {
-      return this.updateProfile(body);
+      return this.updateProfile(fields);
     }
   };
 
   updateProfile = async body => {
-    const { token, params } = this.state;
+    const { token } = this.state;
     const settings = {
       method: 'PUT',
       headers: {
@@ -163,11 +226,14 @@ class Dashboard extends Component {
         'Content-Type': 'application/json',
         Authorization: token,
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify({ fields: [...body] }),
     };
+
+    console.log({ settings });
     try {
-      const response = await fetch(`${UpdateProfileEndpoint}${19}`, settings);
+      const response = await fetch(`${UpdateProfileEndpoint}`, settings);
       const res = await response.json();
+      console.log({ res });
       if (typeof res.data === 'undefined') {
         return this.showNotification('error', 'Message', res.error);
       }
@@ -195,6 +261,7 @@ class Dashboard extends Component {
   };
 
   uploadImage = async (uri, base64) => {
+    const { profileItemIds } = this.state;
     const uriArr = uri.split('.');
     const fileType = uriArr[uriArr.length - 1];
     const file = `data:${fileType};base64,${base64}`;
@@ -220,17 +287,28 @@ class Dashboard extends Component {
       if (typeof res.secure_url === 'undefined') {
         return this.showNotification('error', 'Message', res.error.message);
       }
-      let data = { value: res.secure_url };
-      this.setState({ photo: res.secure_url });
-      return this.updateProfile(data);
+      let data = {
+        fieldId: profileItemIds.profilePhoto,
+        value: res.secure_url,
+      };
+      this.updateProfile(data);
+      return this.setState({ photo: res.secure_url });
     } catch (error) {
       return this.showNotification('error', 'Hello', error.toString());
     }
   };
 
   render() {
-    let { params, firstName, errors = {}, showLoading, photo } = this.state;
-
+    let {
+      params,
+      firstName,
+      errors = {},
+      showLoading,
+      photo,
+      fullname,
+    } = this.state;
+    let phone = params.phone ? params.phone.substring('4') : null;
+    phone = `${0}${phone}`;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -288,8 +366,7 @@ class Dashboard extends Component {
 
               <TextField
                 ref={this.nameRef}
-                defaultValue={params.firstName}
-                value={params.firstName}
+                defaultValue={fullname}
                 autoCorrect={false}
                 enablesReturnKeyAutomatically={true}
                 onFocus={this.onFocus}
@@ -323,7 +400,7 @@ class Dashboard extends Component {
 
               <TextField
                 ref={this.phoneRef}
-                defaultValue={params.phone}
+                defaultValue={phone}
                 value={params.phone}
                 autoCorrect={false}
                 enablesReturnKeyAutomatically={true}
@@ -331,6 +408,7 @@ class Dashboard extends Component {
                 onChangeText={this.onChangeText}
                 onSubmitEditing={this.onSubmitPhone}
                 returnKeyType='done'
+                keyboardType='phone-pad'
                 label='Phone Number'
                 title='use format: 08161730129'
                 style={styles.nameText}

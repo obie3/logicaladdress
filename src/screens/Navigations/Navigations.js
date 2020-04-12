@@ -5,7 +5,7 @@ import colors from 'assets/colors';
 import theme from 'assets/theme';
 import Dashboard from '../Dashboard';
 import Logout from '../Logout';
-import LocationService from '../LocationService';
+import ContactTracing from '../ContactTracing';
 import CustomSidebarMenu from './CustomSidebarMenu';
 import {
   createDrawerNavigator,
@@ -23,9 +23,9 @@ const Dashboard_StackNavigator = createStackNavigator({
   },
 });
 
-const LocationService_StackNavigator = createStackNavigator({
-  LocationService: {
-    screen: LocationService,
+const ContactTracing_StackNavigator = createStackNavigator({
+  ContactTracing: {
+    screen: ContactTracing,
     navigationOptions: {
       header: null,
     },
@@ -44,7 +44,7 @@ const Logout_StackNavigator = createStackNavigator({
 const DrawerNavigator = createDrawerNavigator(
   {
     Dashboard: Dashboard_StackNavigator,
-    LocationService: LocationService_StackNavigator,
+    ContactTracing: ContactTracing_StackNavigator,
     Logout: Logout_StackNavigator,
   },
   {

@@ -5,7 +5,7 @@ import styles from './styles';
 const Logo = () => (
   <View style={styles.LogoLayout}>
     <Image
-      source={require('assets/images/logo.png')}
+      source={require('assets/images/androidIcon.png')}
       resizeMode={'cover'}
       style={styles.image}
     />

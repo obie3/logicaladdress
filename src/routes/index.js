@@ -15,7 +15,7 @@ import Register from 'screens/Register';
 import Logout from 'screens/Logout';
 import Login from '../screens/Login';
 import LinkExpire from 'screens/LinkExpire';
-import LocationService from 'screens/LocationService';
+import ContactTracing from 'screens/ContactTracing';
 import VerificationScreen from 'screens/Verification/VerificationScreen';
 import Dashboard from 'screens/Dashboard';
 import Navigations from 'screens/Navigations/Navigations';
@@ -130,8 +130,8 @@ export const AppStack = createStackNavigator(
       },
     },
 
-    LocationService: {
-      screen: LocationService,
+    ContactTracing: {
+      screen: ContactTracing,
       navigationOptions: {
         header: null,
       },

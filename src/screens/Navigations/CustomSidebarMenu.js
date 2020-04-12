@@ -10,7 +10,7 @@ import UserAvatar from 'react-native-user-avatar';
 import { fetchProfile } from 'utils';
 
 const dashboard = require('assets/images/home.png'),
-  locationservice = require('assets/images/home.png'),
+  contacttracing = require('assets/images/home.png'),
   logout = require('assets/images/logout.png');
 
 class CustomSidebarMenu extends Component {
@@ -28,9 +28,9 @@ class CustomSidebarMenu extends Component {
         screenToNavigate: 'Dashboard',
       },
       {
-        navOptionThumb: locationservice,
-        navOptionName: 'LocationService',
-        screenToNavigate: 'LocationService',
+        navOptionThumb: contacttracing,
+        navOptionName: 'Contact Tracing',
+        screenToNavigate: 'ContactTracing',
       },
       {
         navOptionThumb: logout,

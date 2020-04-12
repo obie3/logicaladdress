@@ -11,7 +11,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/icon.png",
+    "icon": "./src/assets/images/androidIcon.png",
     "splash": {
       "image": "./src/assets/images/logicallogo.png",
       "resizeMode": "contain",
@@ -39,7 +39,7 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.logicaladdress.mobile",
       "buildNumber": "1.0.0",
-      "icon": "./src/assets/images/icon.png",
+      "icon": "./src/assets/images/iosIcon.png",
       "splash": {
         "backgroundColor": "#ecf0f1",
         "resizeMode": "contain",

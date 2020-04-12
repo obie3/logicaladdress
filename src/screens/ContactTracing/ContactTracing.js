@@ -24,7 +24,7 @@ const LOCATION_UPDATES_TASK = 'location-updates';
 
 const locationEventsEmitter = new EventEmitter();
 
-export default class LocationService extends Component {
+export default class ContactTracing extends Component {
   static navigationOptions = {
     title: 'Background location',
   };
@@ -191,14 +191,31 @@ export default class LocationService extends Component {
         />
 
         <View style={styles.wrapper}>
-          <View style={{ height: '80%', justifyContent: 'space-evenly' }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'space-evenly',
+              alignItems: 'center',
+            }}
+          >
             <Logo />
-            <View style={{ marginTop: 20 }}>
+
+            <View style={styles.imageLayout}>
+              <Image
+                style={styles.image}
+                source={
+                  isTracking
+                    ? require('assets/images/active.gif')
+                    : require('assets/images/stop.png')
+                }
+              />
+            </View>
+            <View>
               <Paragraph
                 text={
                   isTracking
-                    ? 'LogicalAddress is tracking your location click `Stop tracking` to stop location updates'
-                    : 'LogicalAddress is not tracking your location click `Start tracking` to start location updates'
+                    ? 'LogicalAddress contact tracing in on  `Stop tracking` to stop contact tracing'
+                    : 'LogicalAddress contact tracing is off `Start tracking` to start contact tracing'
                 }
                 styles={styles.messageText}
               />
@@ -212,17 +229,6 @@ export default class LocationService extends Component {
                 />
               </View>
             </View>
-          </View>
-
-          <View style={styles.footerImage}>
-            <Image
-              style={styles.image}
-              source={
-                isTracking
-                  ? require('assets/images/active.gif')
-                  : require('assets/images/stopped.png')
-              }
-            />
           </View>
         </View>
       </SafeAreaView>
@@ -241,28 +247,28 @@ async function getSavedLocations() {
 }
 
 //if (Platform.OS !== 'android') {
-TaskManager.defineTask(
-  LOCATION_UPDATES_TASK,
-  async ({ data: { locations }, error }) => {
-    if (error) {
-      // check `error.message` for more details.
-      console.log({ 'taskmanager error ': error });
-      return;
-    }
-    if (locations && locations.length > 0) {
-      const savedLocations = await getSavedLocations();
-      const newLocations = locations.map(({ coords }) => ({
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-        timestamp: moment().format('HH:mm'),
-        date: moment().format('DD-MM-YYYY'),
-      }));
-      if (newLocations) {
-        savedLocations.push(...newLocations);
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(savedLocations));
-      }
-      locationEventsEmitter.emit('update', savedLocations);
-    }
-  },
-);
+// TaskManager.defineTask(
+//   LOCATION_UPDATES_TASK,
+//   async ({ data: { locations }, error }) => {
+//     if (error) {
+//       // check `error.message` for more details.
+//       console.log({ 'taskmanager error ': error });
+//       return;
+//     }
+//     if (locations && locations.length > 0) {
+//       const savedLocations = await getSavedLocations();
+//       const newLocations = locations.map(({ coords }) => ({
+//         latitude: coords.latitude,
+//         longitude: coords.longitude,
+//         timestamp: moment().format('HH:mm'),
+//         date: moment().format('DD-MM-YYYY'),
+//       }));
+//       if (newLocations) {
+//         savedLocations.push(...newLocations);
+//         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(savedLocations));
+//       }
+//       locationEventsEmitter.emit('update', savedLocations);
+//     }
+//   },
+// );
 //}

@@ -1,24 +1,32 @@
 import { StyleSheet } from 'react-native';
 import colors from 'assets/colors';
 import theme from 'assets/theme';
+
 export default styles = StyleSheet.create({
   container: {
     ...theme.container,
-    paddingTop: 15,
+    //marginTop: Constants.statusBarHeight,
   },
 
   wrapper: {
-    ...theme.wrapper,
-    // flex: 1,
-    // justifyContent: 'center',
-    // height:'50%',
-    //  //alignContent: 'center',
-    //  alignItems: 'center',
+    flex: 1,
+    justifyContent: 'space-evenly',
+    paddingLeft: Platform.OS === 'ios' ? 30 : 30,
+    paddingRight: Platform.OS === 'ios' ? 30 : 30,
   },
 
   image: {
-    width: 250,
-    height: 250,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+
+  imageLayout: {
+    width: '100%',
+    height: '30%',
+    //backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   footerImage: {
     height: '20%',
@@ -60,6 +68,7 @@ export default styles = StyleSheet.create({
   },
 
   btnView: {
-    ...theme.buttonView,
+    //...theme.buttonView,
+    alignItems: 'center',
   },
 });

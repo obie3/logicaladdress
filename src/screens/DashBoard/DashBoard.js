@@ -60,7 +60,15 @@ class Dashboard extends Component {
           networkActivityIndicatorVisible={true}
         />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Logo />
+          {/* <Logo /> */}
+          <View style={styles.avatarLayout}>
+            <UserAvatar
+              size='120'
+              name={firstName}
+              color={colors.buttonBlue}
+              src={params.profilePhoto}
+            />
+          </View>
 
           <View style={styles.cardLayout}>
             <View style={styles.cardContents}>
