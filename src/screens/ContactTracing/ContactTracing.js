@@ -69,7 +69,7 @@ export default class ContactTracing extends Component {
     );
 
     if (!isTracking) {
-      alert('Click `Start tracking` to start getting location updates.');
+      //alert('Click `Start tracking` to start getting location updates.');
     }
 
     this.setState({
@@ -113,19 +113,19 @@ export default class ContactTracing extends Component {
         .showsBackgroundLocationIndicator,
       distanceInterval: 5,
       timeInterval: 1800000,
-      foregroundService: {
-        notificationTitle: 'LogicalAddress LocationService',
-        notificationBody:
-          'LogicalAddress LocationService is tracking your location at the background',
-        notificationColor: '#27ae60',
-      },
+      // foregroundService: {
+      //   notificationTitle: 'LogicalAddress LocationService',
+      //   notificationBody:
+      //     'LogicalAddress LocationService is tracking your location at the background',
+      //   notificationColor: '#27ae60',
+      // },
     });
 
-    if (!this.state.isTracking) {
-      alert(
-        'Now you can send app to the background, go somewhere and come back here! You can even terminate the app and it will be woken up when the new significant location change comes out.',
-      );
-    }
+    // if (!this.state.isTracking) {
+    //   alert(
+    //     'Now you can send app to the background, go somewhere and come back here! You can even terminate the app and it will be woken up when the new significant location change comes out.',
+    //   );
+    // }
     this.setState({ isTracking: true });
   }
 
@@ -194,18 +194,18 @@ export default class ContactTracing extends Component {
           <View
             style={{
               flex: 1,
-              justifyContent: 'space-evenly',
+              justifyContent: 'center', //'space-evenly'
               alignItems: 'center',
             }}
           >
-            <Logo />
+            {/* <Logo /> */}
 
             <View style={styles.imageLayout}>
               <Image
                 style={styles.image}
                 source={
                   isTracking
-                    ? require('assets/images/active.gif')
+                    ? require('assets/images/active2.gif')
                     : require('assets/images/stop.png')
                 }
               />
@@ -214,14 +214,14 @@ export default class ContactTracing extends Component {
               <Paragraph
                 text={
                   isTracking
-                    ? 'LogicalAddress contact tracing in on  `Stop tracking` to stop contact tracing'
-                    : 'LogicalAddress contact tracing is off `Start tracking` to start contact tracing'
+                    ? 'Contact tracing in enabled, click  `Disable` to disable'
+                    : 'Contact tracing is disabled click `Enable` to enable'
                 }
                 styles={styles.messageText}
               />
               <View style={styles.btnView}>
                 <SubmitButton
-                  title={isTracking ? 'Stop tracking' : 'Start tracking'}
+                  title={isTracking ? 'Disable' : 'Enable'}
                   btnStyle={isTracking ? styles.redButton : styles.greenButton}
                   titleStyle={styles.buttonTxt}
                   onPress={this.toggleTracking}
@@ -247,28 +247,28 @@ async function getSavedLocations() {
 }
 
 //if (Platform.OS !== 'android') {
-// TaskManager.defineTask(
-//   LOCATION_UPDATES_TASK,
-//   async ({ data: { locations }, error }) => {
-//     if (error) {
-//       // check `error.message` for more details.
-//       console.log({ 'taskmanager error ': error });
-//       return;
-//     }
-//     if (locations && locations.length > 0) {
-//       const savedLocations = await getSavedLocations();
-//       const newLocations = locations.map(({ coords }) => ({
-//         latitude: coords.latitude,
-//         longitude: coords.longitude,
-//         timestamp: moment().format('HH:mm'),
-//         date: moment().format('DD-MM-YYYY'),
-//       }));
-//       if (newLocations) {
-//         savedLocations.push(...newLocations);
-//         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(savedLocations));
-//       }
-//       locationEventsEmitter.emit('update', savedLocations);
-//     }
-//   },
-// );
+TaskManager.defineTask(
+  LOCATION_UPDATES_TASK,
+  async ({ data: { locations }, error }) => {
+    if (error) {
+      // check `error.message` for more details.
+      console.log({ 'taskmanager error ': error });
+      return;
+    }
+    if (locations && locations.length > 0) {
+      const savedLocations = await getSavedLocations();
+      const newLocations = locations.map(({ coords }) => ({
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        timestamp: moment().format('HH:mm'),
+        date: moment().format('DD-MM-YYYY'),
+      }));
+      if (newLocations) {
+        savedLocations.push(...newLocations);
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(savedLocations));
+      }
+      locationEventsEmitter.emit('update', savedLocations);
+    }
+  },
+);
 //}

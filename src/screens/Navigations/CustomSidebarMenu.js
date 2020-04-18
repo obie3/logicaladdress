@@ -1,18 +1,18 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, SafeAreaView, Image, Text, StyleSheet } from 'react-native';
+import { View, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
 import colors from 'assets/colors';
 import styles from './styles';
-import theme from 'assets/theme';
 import { connect } from 'react-redux';
-import { Paragraph } from 'components';
+import { Paragraph, Icons } from 'components';
 import UserAvatar from 'react-native-user-avatar';
 import { fetchProfile } from 'utils';
 
-const dashboard = require('assets/images/home.png'),
-  contacttracing = require('assets/images/home.png'),
-  logout = require('assets/images/logout.png');
-
+const dashboard = 'home', //require('assets/images/home.png'),
+  documentupload = 'id-card',
+  contacttracing = 'location-arrow', //require('assets/images/home.png'),
+  logout = 'sign-out'; //require('assets/images/logout.png');
+let currentScreenIndex = 0;
 class CustomSidebarMenu extends Component {
   constructor() {
     super();
@@ -26,6 +26,11 @@ class CustomSidebarMenu extends Component {
         navOptionThumb: dashboard,
         navOptionName: 'Dashboard',
         screenToNavigate: 'Dashboard',
+      },
+      {
+        navOptionThumb: documentupload,
+        navOptionName: 'Verify Me',
+        screenToNavigate: 'DocumentUpload',
       },
       {
         navOptionThumb: contacttracing,
@@ -67,7 +72,7 @@ class CustomSidebarMenu extends Component {
         <View style={styles.drawerImageView}>
           <UserAvatar
             size='80'
-            name={`${'Eddie'}`}
+            name={`${'LogicalAddress'}`}
             color={colors.buttonBlue}
             src={image}
           />
@@ -85,40 +90,56 @@ class CustomSidebarMenu extends Component {
         <View style={styles.divider} />
         <View style={{ width: '100%' }}>
           {this.items.map((item, key) => (
-            <View
+            <TouchableOpacity
               key={key}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingTop: 10,
-                paddingBottom: 10,
-                backgroundColor:
-                  global.currentScreenIndex === key
-                    ? colors.field_color
-                    : colors.white,
-                borderLeftWidth: global.currentScreenIndex === key ? 4 : 0,
-                borderColor: colors.blue,
+              style={[
+                styles.sidebarText,
+                { color: currentScreenIndex === key ? '#ABABAB' : colors.blue },
+              ]}
+              onPress={() => {
+                currentScreenIndex = key;
+                this.props.navigation.navigate(item.screenToNavigate);
               }}
             >
-              <View style={{ marginRight: 10, marginLeft: 20 }}>
-                <Image source={item.navOptionThumb} style={styles.draweIcon} />
-              </View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontFamily: theme.subHeaderFont,
-                  color:
-                    global.currentScreenIndex === key ? '#ABABAB' : colors.blue,
-                }}
+              <View
                 key={key}
-                onPress={() => {
-                  global.currentScreenIndex = key;
-                  this.props.navigation.navigate(item.screenToNavigate);
-                }}
+                style={[
+                  styles.sidebarView,
+                  {
+                    backgroundColor:
+                      currentScreenIndex === key ? colors.blue : colors.white,
+                    borderLeftWidth: currentScreenIndex === key ? 4 : 0,
+                    borderColor: colors.blue,
+                  },
+                ]}
               >
-                {item.navOptionName}
-              </Text>
-            </View>
+                <View style={{ marginRight: 10, marginLeft: 20 }}>
+                  <Icons
+                    name={item.navOptionThumb}
+                    iconSize={20}
+                    iconStyle={styles.draweIcon}
+                    iconColor={
+                      currentScreenIndex === key ? '#ABABAB' : colors.blue
+                    }
+                  />
+                </View>
+                <Paragraph
+                  key={key}
+                  styles={[
+                    styles.sidebarText,
+                    {
+                      color:
+                        currentScreenIndex === key ? '#ABABAB' : colors.blue,
+                    },
+                  ]}
+                  text={item.navOptionName}
+                  onPress={() => {
+                    currentScreenIndex = key;
+                    this.props.navigation.navigate(item.screenToNavigate);
+                  }}
+                />
+              </View>
+            </TouchableOpacity>
           ))}
         </View>
       </SafeAreaView>

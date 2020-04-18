@@ -17,10 +17,12 @@ import logicallogo from 'assets/images/logo.png';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL } from './styles';
 import {
   isEmailValid,
-  generateOTPEndpoint,
+  RegistrationEndpoint,
   isPhoneValid,
   saveToLocalStorage,
   isEmpty,
+  fetchToken,
+  saveToken,
 } from 'utils';
 import WomanSvg from './WomanSvg';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -29,7 +31,6 @@ export default class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      password: '',
       email: '',
       name: '',
       phone: '',
@@ -46,7 +47,6 @@ export default class Register extends Component {
     this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
     this.fullname = React.createRef();
     this.email = React.createRef();
-    this.password = React.createRef();
     this.phone = React.createRef();
   }
 
@@ -168,13 +168,13 @@ export default class Register extends Component {
     }).start();
   };
 
-  formValidation = () => {
+  formValidation = async () => {
     this.showLoadingDialogue();
-    const { email, name, password, phone } = this.state;
+    let res = await fetchToken();
+    const { email, name, phone } = this.state;
     let params = {
       email,
       name,
-      password,
       phone,
     };
     if (isEmpty(name)) {
@@ -189,41 +189,84 @@ export default class Register extends Component {
       );
     } else if (!isEmailValid(email)) {
       return this.showNotification('error', 'Message', 'Invalid email address');
-    } else if (isEmpty(phone) || !isPhoneValid(phone)) {
+    } else if (!isEmpty(phone) && !isPhoneValid(phone)) {
       return this.showNotification(
         'error',
         'Message',
         'Enter valid phone number',
       );
     }
-    return this.phoneVerification(params);
+    return this.completeRegistration(params, res.token);
   };
 
-  phoneVerification = async params => {
+  completeRegistration = async (params, token) => {
     let { phone, email, name } = params;
     let stripedPhone = phone.substring(1);
     phone = `${'+234'}${stripedPhone}`;
+
+    let nName = name.replace(/\b./g, function(m) {
+      return m.toUpperCase();
+    });
+
+    name = nName.split(' ');
+    let defaultParams = {
+      firstName: name[0],
+      email: email ? email : '',
+    };
+    let body =
+      name.length == 2
+        ? { ...defaultParams, lastName: name[1] }
+        : { ...defaultParams, lastName: name[2], middleName: name[1] };
+
     const settings = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        TempAuthorization: token,
       },
-      body: JSON.stringify({ phone }),
+      body: JSON.stringify(body),
     };
 
     try {
-      const response = await fetch(generateOTPEndpoint, settings);
+      const response = await fetch(RegistrationEndpoint, settings);
       const res = await response.json();
       if (typeof res.data === 'undefined') {
-        return this.showNotification('error', 'Message', res.meta.message);
+        return this.showNotification('error', 'Message', res.error.message);
       }
+      await saveToken(res.data.token);
       await saveToLocalStorage(name, email, phone);
       this.hideLoadingDialogue();
-      return this.props.navigation.navigate('Verification', params);
+      return this.props.navigation.navigate('OnBoarding');
     } catch (error) {
       return this.showNotification('error', 'Hello', error.toString());
     }
+
+    // let body = {
+    //   action: 'auth',
+    //   contact: phone,
+    // }
+    // const settings = {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(body),
+    // };
+
+    // try {
+    //   const response = await fetch(generateOTPEndpoint, settings);
+    //   const res = await response.json();
+    //   if (typeof res.data === 'undefined') {
+    //     return this.showNotification('error', 'Message', res.meta.message);
+    //   }
+    //   await saveToLocalStorage(name, email, phone);
+    //   this.hideLoadingDialogue();
+    //   return this.props.navigation.navigate('OnBoarding');
+    // } catch (error) {
+    //   return this.showNotification('error', 'Hello', error.toString());
+    // }
   };
 
   render() {
@@ -358,7 +401,7 @@ export default class Register extends Component {
 
           <View style={styles.btnView}>
             <SubmitButton
-              title={'Sign Up'}
+              title={'Submit'}
               disabled={!this.toggleButtonState()}
               onPress={this.formValidation}
               imgSrc={require('assets/images/add_peopl.png')}
@@ -367,7 +410,7 @@ export default class Register extends Component {
               titleStyle={styles.buttonTxt}
             />
 
-            <View style={styles.signupLinkView}>
+            {/* <View style={styles.signupLinkView}>
               <Paragraph
                 text={'Already have an Account? '}
                 styles={styles.signupText}
@@ -378,7 +421,7 @@ export default class Register extends Component {
                 styles={styles.createAccount}
                 onPress={this.handleLoginRoute}
               />
-            </View>
+            </View> */}
             <Preloader modalVisible={showLoading} animationType='fade' />
           </View>
         </KeyboardAvoidingView>

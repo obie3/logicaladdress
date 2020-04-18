@@ -10,6 +10,7 @@ import { Paragraph, SubmitButton, Preloader, BackIcon } from 'components';
 import CountDown from 'react-native-countdown-component';
 import colors from 'assets/colors';
 import WomanSvg from './WomanSvg';
+import { NavigationActions, StackActions } from 'react-navigation';
 import {
   fetchProfile,
   saveToken,
@@ -71,6 +72,18 @@ const VerificationScreen = ({ navigation }) => {
   useEffect(() => {
     getParams();
   }, []);
+
+  let resetNavigationStack = () => {
+    const navigateAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: 'Register',
+        }),
+      ],
+    });
+    navigation.dispatch(navigateAction);
+  };
 
   const renderCell = ({ index, symbol, isFocused }) => {
     const hasValue = Boolean(symbol);
@@ -145,13 +158,18 @@ const VerificationScreen = ({ navigation }) => {
   let phoneVerification = async () => {
     showLoadingDialogue();
     let otp = value;
+    let body = {
+      action: 'auth',
+      contact: phone,
+      otp,
+    };
     const settings = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ phone, otp }),
+      body: JSON.stringify(body),
     };
 
     try {
@@ -163,7 +181,7 @@ const VerificationScreen = ({ navigation }) => {
       let result = res.data;
       await saveToken(result.token);
       return typeof result.user === 'undefined'
-        ? completeRegistration(result.token, params)
+        ? resetNavigationStack() //completeRegistration(result.token)
         : navigation.navigate('OnBoarding');
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
@@ -178,7 +196,7 @@ const VerificationScreen = ({ navigation }) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ phone }),
+      body: JSON.stringify({ contact: phone }),
     };
 
     try {
@@ -204,7 +222,7 @@ const VerificationScreen = ({ navigation }) => {
     return setStartTimer(false);
   };
 
-  let completeRegistration = async (token, params) => {
+  let completeRegistration = async token => {
     let nName = params.name.replace(/\b./g, function(m) {
       return m.toUpperCase();
     });

@@ -10,14 +10,13 @@ import {
 import MapView, { Marker, ProviderPropType } from 'react-native-maps';
 import BottomSheet from 'reanimated-bottom-sheet';
 import styles from './styles';
-import Icon from './Icon';
-import { Paragraph, SubmitButton, Preloader } from 'components';
+import { Paragraph, SubmitButton, Preloader, Icons } from 'components';
 const { width, height } = Dimensions.get('window');
 import DropdownAlert from 'react-native-dropdownalert';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import colors from 'assets/colors';
-import { LocationUpdateEndpoint, fetchToken } from 'utils';
+import { UpdateProfileEndpoint, fetchToken, getProfile } from 'utils';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 9.061965;
@@ -37,6 +36,7 @@ export default class Map extends Component {
         longitude: LONGITUDE - SPACE,
       },
       token: '',
+      fieldId: '',
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -75,8 +75,11 @@ export default class Map extends Component {
 
   updateLogicalAddress = async () => {
     this.showLoadingDialogue();
-    const { token, coordinates } = this.state;
-    let body = { fieldName: 'homeLocation', position: coordinates };
+    const { token, coordinates, fieldId } = this.state;
+    let data = {
+      fieldId,
+      value: coordinates,
+    };
 
     const settings = {
       method: 'PUT',
@@ -85,13 +88,12 @@ export default class Map extends Component {
         'Content-Type': 'application/json',
         Authorization: token,
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify({ fields: [data] }),
     };
 
     try {
-      const response = await fetch(LocationUpdateEndpoint, settings);
+      const response = await fetch(UpdateProfileEndpoint, settings);
       const res = await response.json();
-      console.log({ res });
       if (typeof res.data === 'undefined') {
         return this.showNotification('error', 'Message', res.error);
       }
@@ -110,7 +112,7 @@ export default class Map extends Component {
     const { coordinates } = this.state;
     if (typeof coordinates.latitude == 'undefined') {
       return (
-        <View style={[styles.panel]}>
+        <View style={styles.panel}>
           <Paragraph
             styles={styles.panelTitle}
             text={'Drag Marker to Set Address'}
@@ -148,6 +150,10 @@ export default class Map extends Component {
   getLocationAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
     let res = await fetchToken();
+    let profile = await getProfile();
+    let filteredArray = profile.data.params.profileData.filter(record => {
+      return record.key == 'homeLocation';
+    });
     if (status === 'granted') {
       let { coords } = await Location.getCurrentPositionAsync({
         enableHighAccuracy: true,
@@ -165,6 +171,7 @@ export default class Map extends Component {
         },
         region,
         token: res.token,
+        fieldId: filteredArray[0].id,
       });
       return this.map.animateToRegion(region, 4000);
     } else {
@@ -211,7 +218,15 @@ export default class Map extends Component {
           defaultContainer={styles.alert}
           ref={ref => (this.dropDownAlertRef = ref)}
         />
-        <Icon onPress={this.handleBackPress} />
+        <View style={styles.navBar}>
+          <Icons
+            name={Platform.OS === 'ios' ? 'angle-left' : 'long-arrow-left'}
+            iconStyle={styles.backView}
+            iconColor={colors.blue}
+            iconSize={20}
+            onPress={this.handleBackPress}
+          />
+        </View>
         <Preloader modalVisible={showLoading} animationType='fade' />
 
         <BottomSheet

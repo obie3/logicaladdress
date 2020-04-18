@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types';
 import colors from 'assets/colors';
 import { TouchableHighlight, StyleSheet } from 'react-native';
 import Icon from '@expo/vector-icons/AntDesign';
+
 export default class Icons extends Component {
   render() {
     const { size, layoutSize } = this.props;

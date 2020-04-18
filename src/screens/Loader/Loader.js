@@ -46,10 +46,13 @@ export default class Loader extends Component {
       },
     };
 
+    //console.log({token})
+
     try {
       const response = await fetch(ProfileEndpoint, settings);
 
       const res = await response.json();
+      //console.log({res})
       if (typeof res.data === 'undefined') {
         return this.showNotification('error', 'Message', res.error);
       }
@@ -60,7 +63,12 @@ export default class Loader extends Component {
       data.params['userId'] = res.data.id;
 
       res.data.profileFields.map(profile => {
-        data.params[profile.key] = profile.value;
+        let value = profile.value;
+        if (profile.key === 'phone') {
+          let phone = profile.value.substring(4);
+          value = `${'0'}${phone}`;
+        }
+        data.params[profile.key] = value;
       });
       await saveToLocalStorage(null, null, null, data);
       return this.props.navigation.navigate('App');

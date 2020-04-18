@@ -12,6 +12,7 @@ import LastPage from './LastPage';
 import Settings from './Settings';
 import Map from './Map';
 import LocationService from './LocationService';
+import DocumentUpload from './DocumentUpload';
 export default {
   ForgetPassword,
   VerificationScreen,
@@ -27,4 +28,5 @@ export default {
   Settings,
   Map,
   LocationService,
+  DocumentUpload,
 };

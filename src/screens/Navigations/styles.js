@@ -1,7 +1,6 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
-const window = Dimensions.get('window');
-import colors from '../../assets/colors';
-import theme from '../../assets/theme';
+import { StyleSheet, Platform } from 'react-native';
+import colors from 'assets/colors';
+import theme from 'assets/theme';
 
 export default styles = StyleSheet.create({
   drawerImageView: {
@@ -29,7 +28,7 @@ export default styles = StyleSheet.create({
   sideMenuContainer: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: colors.backgroundColor,
   },
 
   draweIcon: {
@@ -37,5 +36,21 @@ export default styles = StyleSheet.create({
     height: 25,
     resizeMode: 'cover',
     tintColor: theme.primaryColor,
+  },
+
+  sidebarView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginLeft: 15,
+    marginRight: 15,
+    borderRadius: 4,
+  },
+
+  sidebarText: {
+    fontSize: 15,
+    fontFamily: theme.headerFont,
   },
 });

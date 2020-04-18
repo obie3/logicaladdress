@@ -181,12 +181,10 @@ class Dashboard extends Component {
             }
           }
         } else if ('phone' === name) {
-          // console.log({ name });
           if (value.length !== 11) {
             errors[name] = 'phone number is invalid';
           } else {
             let nPhone = value.substring(1);
-            //body['phone'] = `${'+234'}${nPhone}`;
             value = {
               fieldId: profileItemIds.phone,
               value: `${'+234'}${nPhone}`,
@@ -194,7 +192,6 @@ class Dashboard extends Component {
             fields.push(value);
           }
         } else if ('email' === name) {
-          // console.log({ name });
           if (value) {
             if (!isEmailValid(value)) {
               errors[name] = 'is not a valid email address';
@@ -229,7 +226,6 @@ class Dashboard extends Component {
       body: JSON.stringify({ fields: [...body] }),
     };
 
-    console.log({ settings });
     try {
       const response = await fetch(`${UpdateProfileEndpoint}`, settings);
       const res = await response.json();
@@ -238,13 +234,22 @@ class Dashboard extends Component {
         return this.showNotification('error', 'Message', res.error);
       }
       this.hideLoadingDialogue();
-      return this.showNotification('success', 'Message', 'Success');
+      this.showNotification('success', 'Message', 'Success');
+      return true;
     } catch (error) {
       return this.showNotification('error', 'Hello', error.toString());
     }
   };
 
   getImage = async () => {
+    let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+    if (permissionResult.granted === false) {
+      return this.showNotification(
+        'info',
+        'Message',
+        'Permission to access camera is required',
+      );
+    }
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -287,12 +292,18 @@ class Dashboard extends Component {
       if (typeof res.secure_url === 'undefined') {
         return this.showNotification('error', 'Message', res.error.message);
       }
-      let data = {
+      let photo = res.secure_url;
+      let record = {
         fieldId: profileItemIds.profilePhoto,
-        value: res.secure_url,
+        value: photo,
       };
-      this.updateProfile(data);
-      return this.setState({ photo: res.secure_url });
+
+      return this.updateProfile([record]).then(res => {
+        if (res) {
+          return this.setState({ photo });
+        }
+        return;
+      });
     } catch (error) {
       return this.showNotification('error', 'Hello', error.toString());
     }
@@ -307,8 +318,8 @@ class Dashboard extends Component {
       photo,
       fullname,
     } = this.state;
-    let phone = params.phone ? params.phone.substring('4') : null;
-    phone = `${0}${phone}`;
+    let phone = params.phone; //? params.phone.substring('4') : null;
+    //phone = `${0}${phone}`;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -401,7 +412,7 @@ class Dashboard extends Component {
               <TextField
                 ref={this.phoneRef}
                 defaultValue={phone}
-                value={params.phone}
+                value={phone}
                 autoCorrect={false}
                 enablesReturnKeyAutomatically={true}
                 onFocus={this.onFocus}

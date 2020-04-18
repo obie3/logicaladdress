@@ -56,9 +56,10 @@ let styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  image: {
-    width: 320,
-    height: 320,
+  bgImage: {
+    flex: 1,
+    resizeMode: 'contain',
+    justifyContent: 'center',
   },
 });
 

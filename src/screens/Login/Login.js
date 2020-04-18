@@ -161,7 +161,8 @@ class Login extends Component {
     let stripedPhone = phone.substring(1);
     phone = `${'+234'}${stripedPhone}`;
     let body = {
-      phone,
+      contact: phone,
+      action: 'auth',
     };
     const settings = {
       method: 'POST',
@@ -266,7 +267,7 @@ class Login extends Component {
                 titleStyle={styles.buttonTxt}
               />
             </View>
-            <View style={styles.signupLinkView}>
+            {/* <View style={styles.signupLinkView}>
               <Paragraph
                 text={'Dont have an Account? '}
                 styles={styles.signupText}
@@ -277,7 +278,7 @@ class Login extends Component {
                 styles={styles.createAccount}
                 onPress={this.handleBackPress}
               />
-            </View>
+            </View> */}
           </View>
           <Preloader modalVisible={showLoading} animationType='fade' />
         </KeyboardAvoidingView>

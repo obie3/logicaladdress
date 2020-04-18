@@ -14,7 +14,6 @@ import Home from '../screens/Home';
 import Register from 'screens/Register';
 import Logout from 'screens/Logout';
 import Login from '../screens/Login';
-import LinkExpire from 'screens/LinkExpire';
 import ContactTracing from 'screens/ContactTracing';
 import VerificationScreen from 'screens/Verification/VerificationScreen';
 import Dashboard from 'screens/Dashboard';
@@ -24,6 +23,7 @@ import Notification from 'screens/Notification/Notification';
 import Profile from 'screens/Profile/Profile';
 import Map from 'screens/Map/Map';
 import Loader from 'screens/Loader/Loader';
+import DocumentUpload from 'screens/DocumentUpload/DocumentUpload';
 
 const handleCustomTransition = ({ scenes }) => {
   const prevScene = scenes[scenes.length - 2];
@@ -44,12 +44,6 @@ const AuthStack = createStackNavigator(
   {
     Home: {
       screen: Home,
-      navigationOptions: {
-        header: null,
-      },
-    },
-    Register: {
-      screen: Register,
       navigationOptions: {
         header: null,
       },
@@ -82,6 +76,12 @@ export const VerificationStack = createStackNavigator({
       header: null,
     },
   },
+  Register: {
+    screen: Register,
+    navigationOptions: {
+      header: null,
+    },
+  },
 });
 
 export const OnBoardingStack = createStackNavigator({
@@ -104,9 +104,9 @@ export const AppStack = createStackNavigator(
 
     Dashboard: {
       screen: Dashboard,
-      navigationOptions: {
-        header: null,
-      },
+      // navigationOptions: {
+      //   header: null,
+      // },
     },
 
     Map: {
@@ -138,6 +138,13 @@ export const AppStack = createStackNavigator(
     },
     Profile: {
       screen: Profile,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    DocumentUpload: {
+      screen: DocumentUpload,
       navigationOptions: {
         header: null,
       },

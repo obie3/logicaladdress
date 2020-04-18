@@ -5,7 +5,7 @@ const RegistrationEndpoint = `${ENDPOINT}auth/register`;
 const VerifyOTPEndpoint = `${ENDPOINT}otp/verify`;
 const ProfileEndpoint = `${ENDPOINT}auth/me`;
 const UpdateProfileEndpoint = `${ENDPOINT}profile/`;
-const LocationUpdateEndpoint = `${ENDPOINT}profile/location`;
+const AddProfileFieldEndpoint = `${ENDPOINT}profile/`;
 
 export {
   generateOTPEndpoint,
@@ -13,7 +13,7 @@ export {
   VerifyOTPEndpoint,
   ProfileEndpoint,
   UpdateProfileEndpoint,
-  LocationUpdateEndpoint,
+  AddProfileFieldEndpoint,
 };
 
 export const isEmailValid = email => {

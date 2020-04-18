@@ -1,9 +1,16 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, Image, StatusBar, SafeAreaView, Platform } from 'react-native';
+import {
+  View,
+  Image,
+  StatusBar,
+  SafeAreaView,
+  Platform,
+  ImageBackground,
+} from 'react-native';
 import { Paragraph, Logo } from 'components';
 import styles from './styles';
-import { fetchProfile, fetchToken } from 'utils';
+import { fetchProfile, fetchToken, logout } from 'utils';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -119,11 +126,15 @@ class BoardingScreen extends Component {
   };
 
   render() {
+    const image = require('assets/images/splash.png');
     const { restoring } = this.state;
     if (restoring) {
       return (
-        <View>
-          <Logo />
+        <View style={{ flex: 1 }}>
+          <ImageBackground
+            source={image}
+            style={styles.bgImage}
+          ></ImageBackground>
         </View>
       );
     }
@@ -142,8 +153,8 @@ class BoardingScreen extends Component {
           onDone={this._onDone}
           showSkipButton={true}
           showNextButton={true}
-          onSkip={() => this.props.navigation.navigate('Register')}
-          onDone={() => this.props.navigation.navigate('Register')}
+          onSkip={() => this.props.navigation.navigate('Login')}
+          onDone={() => this.props.navigation.navigate('Login')}
           dotStyle={styles.sliderDots}
           activeDotStyle={styles.activeDotStyle}
           renderDoneButton={this._renderDoneButton}

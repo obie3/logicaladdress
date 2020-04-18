@@ -69,4 +69,21 @@ export default styles = StyleSheet.create({
   alert: {
     ...theme.alertNotification,
   },
+
+  backView: {
+    height: 35,
+    width: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+    backgroundColor: colors.label,
+  },
+
+  navBar: {
+    marginTop: 20,
+    paddingLeft: 16,
+    paddingRight: 16,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
 });

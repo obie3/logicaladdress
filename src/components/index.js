@@ -2,7 +2,7 @@ import { Alert, SingleButtonAlert, SuccessAlert, ErrorAlert } from './Alert';
 import { SubmitButton, BackIcon } from './Buttons';
 import { InputField } from './TextInput';
 import { Paragraph } from './Text';
-import { Icons } from './Icons/Icons';
+import { Icons } from './Icons';
 import { Preloader } from './Preloader';
 import { Line } from './Line';
 import { Verified } from './Verified';
