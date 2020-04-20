@@ -1,8 +1,12 @@
-import { StyleSheet, StatusBar } from 'react-native';
+import { StyleSheet, StatusBar, Platform, Dimensions } from 'react-native';
 import theme from 'assets/theme';
 import colors from 'assets/colors';
-import Constants from 'expo-constants';
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+const { width, height } = Dimensions.get('window');
+import Constants from 'expo';
 export default styles = StyleSheet.create({
   container: {
     ...theme.container,
@@ -51,6 +55,7 @@ export default styles = StyleSheet.create({
 
   nameText: {
     fontSize: theme.headerFourFont,
+    fontFamily: theme.headerFont,
     color: colors.blue, //colors.headerFontColor,
   },
 
@@ -83,12 +88,6 @@ export default styles = StyleSheet.create({
     width: '50%',
     height: 40,
     marginTop: '2%',
-  },
-
-  buttonTxt: {
-    fontFamily: theme.headerFont,
-    color: theme.colorAccent,
-    fontSize: theme.SmallFont,
   },
 
   tabsContainerStyle: {
@@ -194,17 +193,11 @@ export default styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
 
-  statusBar: {
-    backgroundColor: '#3343BD',
-    justifyContent: 'space-around',
-  },
-  navBar: {
-    //backgroundColor: '#fff',
-  },
   title: {
     color: colors.blue,
     fontFamily: theme.headerFont,
     fontSize: theme.SmallFont,
+    padding: 10,
   },
   buttonText: {
     color: 'rgba(231, 37, 156, 0.5)',
@@ -222,19 +215,76 @@ export default styles = StyleSheet.create({
 
   tabView: {
     flex: 1,
-    padding: 10,
-    height: 20,
+    //padding: 10,
+    //height: 20,
     backgroundColor: 'rgba(0,0,0,0.01)',
   },
   card: {
     flex: 1,
     borderWidth: 1,
     backgroundColor: '#fff',
-    shadowColor: '#ccc',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-    marginBottom: 20,
+    // shadowColor: '#ccc',
+    // shadowOffset: { width: 2, height: 2 },
+    // shadowOpacity: 0.5,
+    // shadowRadius: 3,
     borderWidth: 0,
+    justifyContent: 'center',
+  },
+
+  navBar: {
+    borderTopWidth: 0,
+    borderBottomColor: 'rgba(0, 0, 0, 0.1)',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    // default iOS styles:
+    backgroundColor: '#f5f5f5',
+    height: Platform.OS === 'ios' ? StatusBar.currentHeight : null,
+    paddingLeft: 8,
+    paddingRight: 8,
+    // default Android styles:
+    // backgroundColor: 'white',
+    // height: ANDROID_NAV_BAR_HEIGHT,
+    //padding: 16,
+  },
+
+  contactsImage: {
+    height: hp('50%'),
+    width: wp('90%'),
+    //resizeMode: 'cover',
+  },
+
+  connectMessage: {
+    textAlign: 'center',
+    fontFamily: theme.headerFont,
+    fontSize: theme.SmallFont,
+    color: colors.blue,
+  },
+
+  btnView: {
+    ...theme.buttonView,
+  },
+
+  buttonWithImage: {
+    ...theme.button,
+    borderRadius: 10,
+    width: '60%',
+    height: hp('7%'),
+    marginTop: hp('2%'),
+  },
+
+  buttonTxt: {
+    ...theme.buttonText,
+    fontFamily: theme.headerFont,
+    color: theme.colorAccent,
+    fontSize: theme.SmallFont,
+  },
+
+  iconDoor: {
+    height: 18,
+    width: 18,
+    resizeMode: 'contain',
+    marginLeft: 24,
   },
 });

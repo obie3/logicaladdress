@@ -1,14 +1,13 @@
 'use strict';
 import React, { Component } from 'react';
+import { View, SafeAreaView, StatusBar, Platform, Image } from 'react-native';
 import {
-  View,
-  SafeAreaView,
-  StatusBar,
-  Platform,
-  Image,
-  ScrollView,
-} from 'react-native';
-import { Paragraph, SubmitButton, Preloader, Icons, Navbar } from 'components';
+  Paragraph,
+  SubmitButton,
+  Verified,
+  Preloader,
+  Icons,
+} from 'components';
 import {
   getProfile,
   fetchToken,
@@ -21,19 +20,14 @@ import colors from 'assets/colors';
 import DropdownAlert from 'react-native-dropdownalert';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-import CustomTabBar from './CustomTabBar';
+
 import {
   CLOUDINARY_UPLOAD_URL,
   CLOUDINARY_UPLOAD_PRESET,
   CLOUDINARY_FOLDER,
   CLOUDINARY_ACCOUNT_NAME,
+  GOOGLE_CLOUD_VISION_API_KEY,
 } from 'react-native-dotenv';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-
 class DocumentUpload extends Component {
   constructor(props) {
     super(props);
@@ -283,79 +277,57 @@ class DocumentUpload extends Component {
           defaultContainer={styles.alert}
           ref={ref => (this.dropDownAlertRef = ref)}
         />
-        <Navbar
-          size={hp('5%')}
-          layoutSize={3}
-          leftIconName={'ios-settings'}
-          rightIconName={'ios-notifications-outline'}
-          rightIconColor={'#bdc3c7'}
-          leftIconColor={'#bdc3c7'}
-          headerTitle={'Profile'}
-          leftIconOnPress={() => {
-            console.log('hello...');
-          }}
-          rightIconOnPress={() => {
-            console.log('hello...');
-          }}
-        />
+        <View style={styles.editIconWrapper}>
+          <Icons
+            name={Platform.OS === 'ios' ? 'angle-left' : 'long-arrow-left'}
+            iconColor={colors.blue}
+            iconSize={25}
+            onPress={this.handleProfileLink}
+            iconStyle={styles.editIcon}
+          />
+        </View>
+        <View style={styles.wrapper}>
+          <View style={styles.uploadLayout}>
+            <Image style={styles.imageLayout} source={image} />
 
-        <ScrollableTabView
-          style={{ marginTop: hp('0%'), backgroundColor: 'blue' }}
-          initialPage={0}
-          renderTabBar={() => <CustomTabBar title={['Profile', 'Documents']} />}
-        >
-          {/* <ScrollView tabLabel='ios-contacts' style={styles.tabView}>
-            <View style={styles.card}>
-              <Paragraph text={'coming soon'} />
-              <Preloader modalVisible={showLoading} animationType='fade' />
-            </View>
-          </ScrollView> */}
+            <View style={styles.documentMsgLayout}>
+              <Paragraph
+                styles={[styles.headerText, { paddingBottom: '6%' }]}
+                text={
+                  'Upload a non expired goverment issued identity card or passport.'
+                }
+              />
 
-          <ScrollView tabLabel='ios-people' style={styles.tabView}>
-            <View style={styles.wrapper}>
-              <View style={styles.uploadLayout}>
-                <Image style={styles.imageLayout} source={image} />
-
-                <View style={styles.documentMsgLayout}>
-                  <Paragraph
-                    styles={[styles.headerText, { paddingBottom: '0%' }]}
-                    text={
-                      'Upload a non expired goverment issued identity card or passport.'
-                    }
-                  />
-
-                  <View style={styles.btnView}>
-                    <SubmitButton
-                      title={'Use Camera'}
-                      onPress={this.launchCamera}
-                      // imgSrc={require('assets/images/loginIcon.png')}
-                      btnStyle={styles.button}
-                      // imgStyle={styles.btnIcon}
-                      titleStyle={[styles.buttonTxt, { color: colors.blue }]}
-                    />
-                  </View>
-                </View>
-              </View>
-
-              <View style={{ flex: 0, paddingLeft: 20, paddingRight: 20 }}>
-                <View style={styles.altLinkLayout}>
-                  <View style={styles.horizontalRule} />
-                  <Paragraph text={'or'} styles={styles.headerText} />
-                  <View style={styles.horizontalRule} />
-                </View>
-
+              <View style={styles.btnView}>
                 <SubmitButton
-                  title={'Use Gallery'}
-                  onPress={this.getImage}
+                  title={'Use Camera'}
+                  onPress={this.launchCamera}
+                  // imgSrc={require('assets/images/loginIcon.png')}
                   btnStyle={styles.button}
-                  titleStyle={styles.buttonTxt}
-                  disabled={false}
+                  // imgStyle={styles.btnIcon}
+                  titleStyle={[styles.buttonTxt, { color: colors.blue }]}
                 />
               </View>
-              <Preloader modalVisible={showLoading} animationType='fade' />
             </View>
-          </ScrollView>
-        </ScrollableTabView>
+          </View>
+
+          <View style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}>
+            <View style={styles.altLinkLayout}>
+              <View style={styles.horizontalRule} />
+              <Paragraph text={'or'} styles={styles.headerText} />
+              <View style={styles.horizontalRule} />
+            </View>
+
+            <SubmitButton
+              title={'Use Gallery'}
+              onPress={this.getImage}
+              btnStyle={styles.button2}
+              titleStyle={styles.buttonTxt}
+              disabled={false}
+            />
+          </View>
+          <Preloader modalVisible={showLoading} animationType='fade' />
+        </View>
       </SafeAreaView>
     );
   }

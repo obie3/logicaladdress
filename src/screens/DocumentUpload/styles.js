@@ -16,6 +16,7 @@ export default styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     justifyContent: 'center',
+    backgroundColor: 'green',
   },
 
   uploadLayout: {
@@ -37,12 +38,6 @@ export default styles = StyleSheet.create({
   documentMsgLayout: {
     height: '40%',
     justifyContent: 'flex-end',
-  },
-
-  editIconLayout: {
-    justifyContent: 'flex-end',
-    flex: 1,
-    alignItems: 'flex-end',
   },
 
   headerText: {
@@ -131,5 +126,24 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
+  },
+
+  tabView: {
+    flex: 1,
+    //padding: 10,
+    //height: 20,
+    backgroundColor: 'rgba(0,0,0,0.01)',
+  },
+
+  card: {
+    flex: 1,
+    borderWidth: 1,
+    backgroundColor: 'black',
+    // shadowColor: '#ccc',
+    // shadowOffset: { width: 2, height: 2 },
+    // shadowOpacity: 0.5,
+    // shadowRadius: 3,
+    borderWidth: 0,
+    justifyContent: 'center',
   },
 });

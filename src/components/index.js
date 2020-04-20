@@ -8,6 +8,7 @@ import { Line } from './Line';
 import { Verified } from './Verified';
 import { Pending } from './Pending';
 import { Logo } from './Logo';
+import { Navbar } from './Navbar';
 
 export {
   Alert,
@@ -24,4 +25,5 @@ export {
   Pending,
   Logo,
   BackIcon,
+  Navbar,
 };

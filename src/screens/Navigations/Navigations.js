@@ -4,71 +4,18 @@ import { Image } from 'react-native';
 import colors from 'assets/colors';
 import theme from 'assets/theme';
 import Dashboard from '../Dashboard';
-import Logout from '../Logout';
-import DocumentUpload from '../DocumentUpload';
-import ContactTracing from '../ContactTracing';
-import CustomSidebarMenu from './CustomSidebarMenu';
+import Profile from '../Profile';
+import { Icons } from 'components';
 import {
   createDrawerNavigator,
   createAppContainer,
   createStackNavigator,
   createBottomTabNavigator,
 } from 'react-navigation';
-
-// const Dashboard_StackNavigator = createStackNavigator({
-//   Dashboard: {
-//     screen: Dashboard,
-//     navigationOptions: {
-//       header: null,
-//     },
-//   },
-// });
-
-// const ContactTracing_StackNavigator = createStackNavigator({
-//   ContactTracing: {
-//     screen: ContactTracing,
-//     navigationOptions: {
-//       header: null,
-//     },
-//   },
-// });
-
-// const DocumentUpload_StackNavigator = createStackNavigator({
-//   DocumentUpload: {
-//     screen: DocumentUpload,
-//     navigationOptions: {
-//       header: null,
-//     },
-//   },
-// });
-
-// const Logout_StackNavigator = createStackNavigator({
-//   Logout: {
-//     screen: Logout,
-//     navigationOptions: {
-//       header: null,
-//     },
-//   },
-// });
-
-// const DrawerNavigator = createDrawerNavigator(
-//   {
-//     Dashboard: Dashboard_StackNavigator,
-//     DocumentUpload: DocumentUpload_StackNavigator,
-//     ContactTracing: ContactTracing_StackNavigator,
-//     Logout: Logout_StackNavigator,
-//   },
-//   {
-//     contentComponent: CustomSidebarMenu,
-//     drawerWidth: 250,
-//     overlayColor: 'rgba(0,0,0,0.6)',
-//     contentOptions: {
-//       activeTintColor: colors.blue,
-//       activeBackgroundColor: '#6b52ae',
-//     },
-//   },
-// );
-// const AppDrawer = createAppContainer(DrawerNavigator);
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const BottomTab = createBottomTabNavigator(
   {
@@ -76,31 +23,25 @@ const BottomTab = createBottomTabNavigator(
       screen: Dashboard,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
-          <Image
-            source={require('assets/images/home.png')}
-            style={{
-              height: 20,
-              width: 20,
-              tintColor: tintColor,
-              resizeMode: 'contain',
-            }}
+          <Icons
+            name={'ios-home'}
+            color={tintColor}
+            iconSize={hp('4%')}
+            iconStyle={{}}
           />
         ),
       },
     },
 
     Profile: {
-      screen: Dashboard,
+      screen: Profile,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
-          <Image
-            source={require('assets/images/home.png')}
-            style={{
-              height: 20,
-              width: 20,
-              tintColor: tintColor,
-              resizeMode: 'contain',
-            }}
+          <Icons
+            name={'md-person'}
+            color={tintColor}
+            iconSize={hp('4%')}
+            iconStyle={{}}
           />
         ),
       },
@@ -110,14 +51,11 @@ const BottomTab = createBottomTabNavigator(
       screen: Dashboard,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
-          <Image
-            source={require('assets/images/home.png')}
-            style={{
-              height: 20,
-              width: 20,
-              tintColor: tintColor,
-              resizeMode: 'contain',
-            }}
+          <Icons
+            name={'ios-notifications'}
+            color={tintColor}
+            iconSize={hp('4%')}
+            iconStyle={{}}
           />
         ),
       },
@@ -134,7 +72,7 @@ const BottomTab = createBottomTabNavigator(
         shadowColor: 'gray',
         shadowOpacity: 0.2,
         elevation: 4,
-        height: 50,
+        height: hp('7%'),
       },
     },
   },

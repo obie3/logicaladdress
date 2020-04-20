@@ -24,6 +24,8 @@ import Profile from 'screens/Profile/Profile';
 import Map from 'screens/Map/Map';
 import Loader from 'screens/Loader/Loader';
 import DocumentUpload from 'screens/DocumentUpload/DocumentUpload';
+import Dialer from 'screens/Dialer/Dialer';
+import SelectFields from 'screens/SelectFields/SelectFields';
 
 const handleCustomTransition = ({ scenes }) => {
   const prevScene = scenes[scenes.length - 2];
@@ -104,9 +106,9 @@ export const AppStack = createStackNavigator(
 
     Dashboard: {
       screen: Dashboard,
-      // navigationOptions: {
-      //   header: null,
-      // },
+      navigationOptions: {
+        header: null,
+      },
     },
 
     Map: {
@@ -145,6 +147,20 @@ export const AppStack = createStackNavigator(
 
     DocumentUpload: {
       screen: DocumentUpload,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    Dialer: {
+      screen: Dialer,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    SelectFields: {
+      screen: SelectFields,
       navigationOptions: {
         header: null,
       },

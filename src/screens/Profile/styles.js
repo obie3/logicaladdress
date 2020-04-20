@@ -6,8 +6,92 @@ import Constants from 'expo-constants';
 export default styles = StyleSheet.create({
   container: {
     ...theme.container,
+    justifyContent: 'flex-start',
+    alignContent: 'center',
     //marginTop: Constants.statusBarHeight,
     //paddingBottom: Constants.statusBarHeight,
+  },
+
+  wrapper: {
+    //flex: 1,
+    height: '100%',
+    paddingLeft: 20,
+    paddingRight: 20,
+    //justifyContent: 'center',
+    backgroundColor: 'green',
+  },
+
+  uploadLayout: {
+    //flex:1,
+    height: '100%',
+    paddingLeft: 20,
+    paddingRight: 20,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+
+  imageLayout: {
+    width: '100%',
+    height: '50%',
+    justifyContent: 'center',
+    alignContent: 'center',
+    resizeMode: 'contain',
+  },
+
+  documentMsgLayout: {
+    marginTop: '30%',
+    height: '40%',
+    justifyContent: 'flex-end',
+  },
+
+  headerText: {
+    fontFamily: theme.inputHintFont,
+    color: colors.blue, //colors.headerFontColor,
+    fontWeight: 'bold',
+    paddingLeft: '2%',
+    paddingRight: '2%',
+    //paddingBottom : '4%',
+    textAlign: 'center',
+    fontSize: theme.headerThreeFont,
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+  },
+
+  btnView: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '35%',
+  },
+
+  btnIcon: {
+    ...theme.buttonIcon,
+    marginLeft: 4,
+  },
+
+  altLinkLayout: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+
+  tabView: {
+    flex: 1,
+    //padding: 10,
+    //height: 20,
+    backgroundColor: 'black', //'rgba(0,0,0,0.01)',
+  },
+
+  card: {
+    flex: 1,
+    borderWidth: 1,
+    backgroundColor: 'black',
+    // shadowColor: '#ccc',
+    // shadowOffset: { width: 2, height: 2 },
+    // shadowOpacity: 0.5,
+    // shadowRadius: 3,
+    borderWidth: 0,
+    justifyContent: 'center',
   },
 
   cardLayout: {
@@ -138,10 +222,6 @@ export default styles = StyleSheet.create({
     paddingBottom: 5,
   },
 
-  btnView: {
-    ...theme.buttonView,
-  },
-
   imageButton: {
     // ...theme.button,
     marginTop: 25,
@@ -168,10 +248,10 @@ export default styles = StyleSheet.create({
     ...theme.buttonIcon,
   },
 
-  headerText: {
-    fontSize: theme.headerOneFont,
-    color: colors.headerFontColor,
-    padding: 25,
-    //paddingLeft: 25,
-  },
+  // headerText: {
+  //   fontSize: theme.headerOneFont,
+  //   color: colors.headerFontColor,
+  //   padding: 25,
+  //   //paddingLeft: 25,
+  // },
 });

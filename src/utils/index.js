@@ -6,6 +6,7 @@ const VerifyOTPEndpoint = `${ENDPOINT}otp/verify`;
 const ProfileEndpoint = `${ENDPOINT}auth/me`;
 const UpdateProfileEndpoint = `${ENDPOINT}profile/`;
 const AddProfileFieldEndpoint = `${ENDPOINT}profile/`;
+const FetchProfileFiled = `${ENDPOINT}profile/fields`;
 
 export {
   generateOTPEndpoint,
@@ -14,6 +15,7 @@ export {
   ProfileEndpoint,
   UpdateProfileEndpoint,
   AddProfileFieldEndpoint,
+  FetchProfileFiled,
 };
 
 export const isEmailValid = email => {
