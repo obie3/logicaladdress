@@ -10,6 +10,7 @@ import {
   GetDocumentsEndpoint,
   FetchProfileField,
   ConnectionRequestEndpoint,
+  logout,
 } from 'utils';
 import {
   Placeholder,
@@ -73,7 +74,6 @@ class Loader extends Component {
           documentsResponse = serverResponse[1],
           profileFieldNameResponse = serverResponse[2].data,
           connectionsRequestResponse = serverResponse[3];
-        //console.log(token);
 
         let data = { params: {} };
         data.params['LogicalAddress'] = profileResponse.logicalAddress;
