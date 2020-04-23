@@ -1,127 +1,61 @@
 'use strict';
-import React, { Component } from 'react';
-import { StatusBar, Image, SafeAreaView, TouchableOpacity } from 'react-native';
-import styles from './styles';
-import colors from '../../assets/colors';
-import theme from '../../assets/theme';
-
+import React from 'react';
+import { Image } from 'react-native';
+import colors from 'assets/colors';
+import theme from 'assets/theme';
+import Dashboard from '../Dashboard';
+import Profile from '../Profile';
+import { Icons } from 'components';
 import {
   createDrawerNavigator,
   createAppContainer,
   createStackNavigator,
   createBottomTabNavigator,
 } from 'react-navigation';
-
-import DashBoard from '../DashBoard/DashBoard';
-import Logout from '../Logout/Logout';
-import CustomSidebarMenu from './CustomSidebarMenu';
-
-class Navigations extends Component {
-  //Structure for the navigatin Drawer
-  toggleDrawer = () => {
-    //Props to open/close the drawer
-    this.props.navigationProps.toggleDrawer();
-  };
-
-  render() {
-    return (
-      <SafeAreaView style={{ flexDirection: 'row' }}>
-        <StatusBar barStyle='default' />
-        <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
-          {' '}
-          */}
-          {/*Donute Button Image */}
-          <Image
-            source={require('../../assets/images/menu.png')}
-            style={styles.imageLogo}
-            onPress={this.toggleDrawer.bind(this)}
-          />
-        </TouchableOpacity>
-      </SafeAreaView>
-    );
-  }
-}
-
-const DashBoard_StackNavigator = createStackNavigator({
-  //All the screen from the DashBoard will be indexed here
-  DashBoard: {
-    screen: DashBoard,
-    navigationOptions: {
-      header: null,
-    },
-  },
-});
-
-const Logout_StackNavigator = createStackNavigator({
-  //All the screen from the Referral will be indexed here
-  Logout: {
-    screen: Logout,
-    navigationOptions: {
-      header: null,
-    },
-  },
-});
-
-const DrawerNavigator = createDrawerNavigator(
-  {
-    DashBoard: {
-      screen: DashBoard_StackNavigator,
-      navigationOptions: {
-        // drawerLabel: "DashBoard"
-        header: null,
-      },
-    },
-
-    Logout: {
-      screen: Logout_StackNavigator,
-      navigationOptions: {
-        drawerLabel: 'Logout',
-      },
-      tab: {},
-    },
-  },
-  {
-    contentComponent: CustomSidebarMenu,
-    drawerWidth: 250,
-    contentOptions: {
-      activeTintColor: theme.backgroundColor,
-    },
-  },
-);
-const AppDrawer = createAppContainer(DrawerNavigator);
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const BottomTab = createBottomTabNavigator(
   {
-    DashBoard: {
-      screen: AppDrawer,
+    Dashboard: {
+      screen: Dashboard,
       navigationOptions: {
-        // tabBarLabel: 'Bara.ng',
         tabBarIcon: ({ tintColor }) => (
-          <Image
-            source={require('../../assets/images/home.png')}
-            style={{
-              height: 20,
-              width: 20,
-              tintColor: tintColor,
-              resizeMode: 'contain',
-            }}
+          <Icons
+            name={'ios-home'}
+            color={tintColor}
+            iconSize={hp('4%')}
+            iconStyle={{}}
           />
         ),
       },
     },
 
-    Logout: {
-      screen: Logout,
+    Profile: {
+      screen: Profile,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
-          <Image
-            source={require('../../assets/images/logout.png')}
-            style={{
-              height: 20,
-              width: 20,
-              tintColor: tintColor,
-              resizeMode: 'contain',
-            }}
+          <Icons
+            name={'md-person'}
+            color={tintColor}
+            iconSize={hp('4%')}
+            iconStyle={{}}
+          />
+        ),
+      },
+    },
+
+    Notification: {
+      screen: Dashboard,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Icons
+            name={'ios-notifications'}
+            color={tintColor}
+            iconSize={hp('4%')}
+            iconStyle={{}}
           />
         ),
       },
@@ -129,7 +63,7 @@ const BottomTab = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      activeTintColor: theme.primaryColor,
+      activeTintColor: theme.primaryTextColor,
       inactiveTintColor: theme.secondaryTextColor,
       style: {
         backgroundColor: colors.white,
@@ -138,13 +72,13 @@ const BottomTab = createBottomTabNavigator(
         shadowColor: 'gray',
         shadowOpacity: 0.2,
         elevation: 4,
-        height: 60,
+        height: hp('7%'),
       },
     },
   },
 );
 
-//const App = createAppContainer(BottomTab);
-//export default App;
+const App = createAppContainer(BottomTab);
+export default App;
 
-export default AppDrawer;
+// export default AppDrawer;

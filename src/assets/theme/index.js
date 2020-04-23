@@ -30,6 +30,9 @@ export default defaultTheme = {
   tintColor: colors.buttonBlue,
   formBorderColor: colors.gray,
   textGray: colors.textGray,
+  iconColor: colors.iconColor,
+  activeIconColor: colors.activeIconColor,
+  disabledIconColor: colors.disabledIconColor,
 
   // Font Type
   primaryFont: 'Poppins-Bold',
@@ -48,7 +51,7 @@ export default defaultTheme = {
     borderRadius: 30,
     width: '60%',
     height: 45,
-    marginTop: 25,
+    //marginTop: 25,
   },
 
   inputField: {
@@ -66,15 +69,15 @@ export default defaultTheme = {
 
   container: {
     flex: 1,
-    paddingBottom: 10,
-    paddingTop: Constants.statusBarHeight,
+    backgroundColor: colors.backgroundColor,
   },
 
   wrapper: {
-    flex: 1,
+    height: '80%',
     paddingLeft: Platform.OS === 'ios' ? 30 : 30,
     paddingRight: Platform.OS === 'ios' ? 30 : 30,
-    justifyContent: 'center',
+    // justifyContent: 'flex-end',
+    //backgroundColor: 'green'
   },
 
   formIcon: {
@@ -101,6 +104,7 @@ export default defaultTheme = {
   buttonView: {
     alignItems: 'center',
     width: '100%',
+    justifyContent: 'center',
   },
 
   alertNotification: {

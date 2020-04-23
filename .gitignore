@@ -13,3 +13,4 @@ web-report/
 .package-lock.json
 .yarn.lock
 .DS_Store
+.env

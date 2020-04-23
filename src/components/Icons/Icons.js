@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import colors from 'assets/colors';
-import { TouchableHighlight, StyleSheet } from 'react-native';
-import Icon from '@expo/vector-icons/FontAwesome';
-//import Icon from 'react-native-vector-icons/FontAwesome';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import Icon from '@expo/vector-icons/Ionicons';
 
 export default class Icons extends Component {
   render() {
@@ -11,15 +10,15 @@ export default class Icons extends Component {
       disabled,
       onPress,
       name,
-      btnstyle,
+      iconStyle,
       iconColor,
       iconSize,
     } = this.props;
     const opacityStyle = disabled ? 0.2 : null;
-    const style = btnstyle || styles.button;
+    const style = iconStyle || styles.button;
 
     return (
-      <TouchableHighlight
+      <TouchableOpacity
         style={[{ opacity: opacityStyle }, style]}
         disabled={disabled}
         onPress={onPress}
@@ -30,7 +29,7 @@ export default class Icons extends Component {
           size={iconSize}
           style={styles.icon}
         />
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 }
@@ -38,7 +37,6 @@ export default class Icons extends Component {
 Icons.propTypes = {
   disabled: PropTypes.bool,
   handleNextButton: PropTypes.func,
-  onPress: PropTypes.func.isRequired,
   style: PropTypes.object,
 };
 
@@ -50,7 +48,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     marginTop: 16,
-    backgroundColor: colors.gold,
+    backgroundColor: colors.white,
   },
 
   icon: {

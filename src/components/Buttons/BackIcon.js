@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, StyleSheet, View, Image } from 'react-native';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import theme from 'assets/theme';
 import colors from 'assets/colors';
+import Icon from '@expo/vector-icons/Ionicons';
 
 export default class BackIcon extends Component {
   render() {
-    const { onPress } = this.props;
+    const { onPress, name, iconStyle, iconColor, iconSize } = this.props;
     return (
       <View style={styles.navBar}>
         <TouchableOpacity onPress={onPress} style={styles.backView}>
-          <Image
-            onPress={onPress}
-            source={require('assets/images/back.png')}
-            style={styles.backIcon}
+          <Icon
+            name={name}
+            color={iconColor}
+            size={iconSize}
+            style={styles.icon}
           />
         </TouchableOpacity>
       </View>
@@ -27,7 +29,6 @@ const styles = StyleSheet.create({
   },
   navBar: {
     flexDirection: 'row',
-    // marginTop: Platform.OS === 'ios' ? 20 : 20,
     height: 60,
     backgroundColor: 'transparent',
     width: '100%',

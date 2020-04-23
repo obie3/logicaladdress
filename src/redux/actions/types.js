@@ -1,13 +1,11 @@
-export const SET_EXPO_TOKEN = 'SET_EXPO_TOKEN';
-export const SET_SESSION_TOKEN = 'SET_SESSION_TOKEN';
-export const SET_PROFILE = 'SET_PROFILE';
-export const ADD_PROFILE = 'ADD_PROFILE';
-export const REGISTRATION_STATUS = 'REGISTRATION_STATUS';
 export const LOGIN = 'LOGIN';
 export const LOG_OUT = 'LOG_OUT';
-export const SET_EVENT_DETAILS = 'EVENT_DETAILS';
-export const SET_SPONSOR_DETAILS = 'SPONSOR_DETAILS';
-export const SET_PROGRAM_DETAILS = 'PROGRAM_DETAILS';
-export const SET_RESOURCES = 'RESOURCES';
-export const SET_SPEAKERS = 'SPEAKERS';
-export const SET_ATTENDEES = 'ATTENDEES';
+
+///////////////
+export const SET_DOCUMENT = 'SET_DOCUMENT';
+export const ADD_DOCUMENT = 'ADD_DOCUMENT';
+export const SET_CONTACT = 'SET_CONTACT';
+export const ADD_CONTACT = 'ADD_CONTACT';
+export const SET_PROFILE = 'SET_PROFILE';
+export const ADD_PROFILE = 'ADD_PROFILE';
+export const SET_PROFILE_FIELD_NAMES = 'SET_PROFILE_FIELD_NAMES';

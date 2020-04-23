@@ -1,37 +1,46 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, Image, StatusBar, SafeAreaView } from 'react-native';
+import {
+  View,
+  Image,
+  StatusBar,
+  SafeAreaView,
+  Platform,
+  ImageBackground,
+} from 'react-native';
 import { Paragraph, Logo } from 'components';
 import styles from './styles';
-import { fetchProfile, fetchToken } from 'utils';
+import { fetchProfile, fetchToken, logout } from 'utils';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { addProfile } from 'redux/actions/ProfileActions';
+import colors from 'assets/colors';
 
 const slides = [
   {
     key: 'somethun',
-    title: 'Check the Conference \nCalendar',
-    text: "Pick out talks You'd love to attend and \nset reminder",
-    image: require('assets/images/people.png'),
+    title: 'ONE Global Address',
+    text:
+      'Your address doesn’t have to change \n everytime you move physically',
+    image: require('assets/images/icon1.png'),
     backgroundColor: '#59b2ab',
   },
   {
     key: 'somethun-dos',
-    title: 'Network!',
+    title: 'Better Emergency Service!',
     text:
-      'Learn more about the organizers, speakers \nand other delegates and connect with \nthem easily via the app',
-    image: require('assets/images/man.png'),
+      'LogicalAddresses provide accurate location  \ninformation enabling care to find you \n no matter the situation',
+    image: require('assets/images/icon2a.png'),
     backgroundColor: '#febe29',
   },
   {
     key: 'somethun1',
-    title: '\n\n\n\nQuick Help',
+    title: '\nPrivacy!',
     text:
-      'Cant find a meeting room, not sure \nabout the weather? Like we said, \n"Everything in one place"',
-    image: require('assets/images/woman.png'),
+      'Your personal information is a valuable commodity With LogicalAddress \nnobody has access to this Information \nwithout your permission,',
+    image: require('assets/images/icon3.png'),
     backgroundColor: '#22bcb5',
   },
 ];
@@ -105,7 +114,7 @@ class BoardingScreen extends Component {
     if (typeof profile.token == 'undefined') {
       return this.getProfile();
     }
-    return this.props.navigation.navigate('App');
+    return this.props.navigation.navigate('OnBoarding');
   };
 
   getProfile = async () => {
@@ -116,31 +125,36 @@ class BoardingScreen extends Component {
     return this.setState({ restoring: false });
   };
 
-  handleLogin = () => this.props.navigation.navigate('Login');
-
-  handleRegistration = () => this.props.navigation.navigate('Register');
-
   render() {
+    const image = require('assets/images/splash.png');
     const { restoring } = this.state;
     if (restoring) {
       return (
-        <View>
-          <Logo />
+        <View style={{ flex: 1 }}>
+          <ImageBackground
+            source={image}
+            style={styles.bgImage}
+          ></ImageBackground>
         </View>
       );
     }
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle='default' />
-
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          hidden={false}
+          backgroundColor={colors.blue}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />
         <AppIntroSlider
           renderItem={this._renderItem}
           slides={slides}
           onDone={this._onDone}
           showSkipButton={true}
           showNextButton={true}
-          onSkip={() => this.props.navigation.navigate('Register')}
-          onDone={() => this.props.navigation.navigate('Register')}
+          onSkip={() => this.props.navigation.navigate('Login')}
+          onDone={() => this.props.navigation.navigate('Login')}
           dotStyle={styles.sliderDots}
           activeDotStyle={styles.activeDotStyle}
           renderDoneButton={this._renderDoneButton}

@@ -9,8 +9,8 @@ export default function Line() {
         alignSelf: 'stretch',
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#bdc3c7',
-        marginTop: 15,
-        marginBottom: 10,
+        //marginTop: 15,
+        //marginBottom: 10,
       }}
     />
   );

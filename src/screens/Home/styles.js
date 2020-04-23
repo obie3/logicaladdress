@@ -2,16 +2,11 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 const window = Dimensions.get('window');
 export const IMAGE_HEIGHT = window.width / 3;
 export const IMAGE_HEIGHT_SMALL = window.width / 6;
-import defaultTheme from '../../assets/theme';
+import theme from 'assets/theme';
 
 let styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    // paddingTop: (Platform.OS) === 'ios' ? 20 : 0,
-    // padding : 20
+    ...theme.container,
   },
 
   slide: {
@@ -61,9 +56,10 @@ let styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  image: {
-    width: 320,
-    height: 320,
+  bgImage: {
+    flex: 1,
+    resizeMode: 'contain',
+    justifyContent: 'center',
   },
 });
 

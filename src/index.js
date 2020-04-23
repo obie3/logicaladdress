@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
+import { StyleSheet, View, TextInput, Image, StatusBar } from 'react-native';
 import * as Font from 'expo-font';
 import Navigator from './routes';
 import colors from './assets/colors';
@@ -35,9 +35,33 @@ export default class App extends Component {
 
   render() {
     const { fontsLoaded } = this.state;
+    const image = require('assets/images/splash.png');
+
     return (
       <View style={styles.container}>
-        <Provider store={store}>{fontsLoaded ? <Navigator /> : null}</Provider>
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          hidden={false}
+          backgroundColor={colors.blue}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />
+        <Provider store={store}>
+          {fontsLoaded ? (
+            <Navigator />
+          ) : (
+            <View style={{ flex: 1 }}>
+              <Image
+                source={image}
+                style={{
+                  flex: 1,
+                  resizeMode: 'contain',
+                  justifyContent: 'center',
+                }}
+              />
+            </View>
+          )}
+        </Provider>
       </View>
     );
   }

@@ -1,104 +1,98 @@
 'use strict';
 import React, { Component } from 'react';
-import {
-  View,
-  SafeAreaView,
-  StatusBar,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-} from 'react-native';
-import { Paragraph, SubmitButton } from '../../components';
+import { View, SafeAreaView, StatusBar, Platform } from 'react-native';
+import { Paragraph, Icons } from 'components';
 import styles from './styles';
 import { connect } from 'react-redux';
-import Icon from '@expo/vector-icons/AntDesign';
+import colors from 'assets/colors';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
+import CustomTabBar from '../CustomTab';
+import ProfileDetails from '../ProfileDetails';
+import DocumentLists from '../DocumentLists';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      title: '',
+    };
   }
 
-  componentDidMount() {}
+  showProfileEditPage = () => this.props.navigation.navigate('DocumentUpload');
+  showNotificationPage = () => this.props.navigation.navigate('');
+  showSettingspage = () => this.props.navigation.navigate('Settings');
+
+  _updateTitle(obj) {
+    const { i } = obj;
+    let title = '';
+    switch (i) {
+      case 0:
+        title = 'Profile';
+        break;
+      case 1:
+        title = 'Documents';
+        break;
+    }
+    this.setState({
+      title,
+    });
+  }
 
   render() {
+    const { title } = this.state;
+    let iconName =
+      title === 'Profile'
+        ? 'ios-create'
+        : title == 'Documents'
+        ? 'ios-add-circle'
+        : 'ios-notifications';
+    let link =
+      title === 'Profile'
+        ? this.showProfileEditPage
+        : this.showNotificationPage;
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle='default' />
-        <View style={styles.navBar}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.goBack()}
-            style={styles.headerImage}
-          >
-            <Image
-              onPress={() => this.props.navigation.goBack()}
-              source={require('../../assets/images/back.png')}
-              style={StyleSheet.flatten(styles.headerIcon)}
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          hidden={false}
+          backgroundColor={colors.blue}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />
+
+        <View style={styles.navBg}>
+          <View style={styles.iconContainer}>
+            <Icons
+              disabled={false}
+              onPress={this.showSettingspage}
+              name={'ios-settings'}
+              iconStyle={styles.navIcon}
+              iconColor={colors.blue}
+              iconSize={hp('3%')}
             />
-          </TouchableOpacity>
-          <View style={styles.nameView}>
-            <Paragraph
-              text={'PROGRAM'}
-              styles={StyleSheet.flatten(styles.txtHeader)}
+
+            <Paragraph styles={styles.title} text={this.state.title} />
+
+            <Icons
+              disabled={false}
+              onPress={link}
+              name={iconName}
+              iconStyle={styles.navIcon}
+              iconColor={colors.blue}
+              iconSize={hp('3%')}
             />
           </View>
         </View>
-        <View style={styles.viewBody}>
-          <View style={styles.cardLayout}>
-            <View style={styles.cardContents}>
-              <View style={{ flex: 0, flexDirection: 'row' }}>
-                <View style={styles.cardIconLayout}>
-                  <Image
-                    style={styles.cardIcon}
-                    borderRadius={20}
-                    source={require('../../assets/images/maplocation.png')}
-                  />
-                </View>
-                <View style={styles.verificationStatusLayout}>
-                  <Paragraph
-                    text={'Retnan Daser'}
-                    styles={StyleSheet.flatten(styles.nameText)}
-                  />
-                  <Paragraph
-                    text={'07038602624'}
-                    styles={StyleSheet.flatten(styles.nameText)}
-                  />
-                  <View style={styles.verificationIndicators}>
-                    <Paragraph
-                      text={'Verified'}
-                      styles={StyleSheet.flatten(styles.verificationText)}
-                    />
-                    <View style={styles.iconLayout}>
-                      <Icon
-                        name='check'
-                        color={'white'}
-                        size={20}
-                        style={styles.iconStyle}
-                      />
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <View>
-                <SubmitButton
-                  title={'Verify'}
-                  onPress={() => console.log('hellooo')}
-                  //imgSrc={require('../../assets/images/add_peopl.png')}
-                  btnStyle={styles.button}
-                  //imgStyle={StyleSheet.flatten(styles.iconDoor)}
-                  titleStyle={StyleSheet.flatten(styles.buttonTxt)}
-                  disabled={false}
-                />
-                {/* <Button
-                    onPress={()=>{console.log('I was pressed')}}
-                    title="Learn More"
-                    color="#841584"
-                    accessibilityLabel="Learn more about this purple button"
-                  /> */}
-              </View>
-            </View>
-          </View>
-        </View>
+        <ScrollableTabView
+          style={{ flex: 1 }}
+          initialPage={0}
+          onChangeTab={obj => this._updateTitle(obj)}
+          renderTabBar={() => <CustomTabBar {...this.props} />}
+        >
+          <ProfileDetails {...this.props} tabLabel={'ios-person'} />
+          <DocumentLists {...this.props} tabLabel={'ios-paper'} />
+        </ScrollableTabView>
       </SafeAreaView>
     );
   }
@@ -106,7 +100,8 @@ class Profile extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    program: state.ProgramReducer.program,
+    documents: state.DocumentReducer.documents,
+    profile: state.ProfileReducer.profile,
   };
 };
 

@@ -3,26 +3,79 @@ import {
   createStackNavigator,
   createAppContainer,
 } from 'react-navigation';
-import { StatusBar } from 'react-native';
-import Home from '../screens/Home';
-import Register from '../screens/Register';
-import ForgetPassword from '../screens/ForgetPassword';
-import Logout from '../screens/Logout';
-import Login from '../screens/Login';
-import LinkExpire from '../screens/LinkExpire';
-import ResetPassword from '../screens/ResetPassword';
-import VerificationScreen from '../screens/Verification/VerificationScreen';
-import Dashboard from '../screens/DashBoard';
-import LastPage from '../screens/LastPage';
-import Navigations from '../screens/Navigations/Navigations';
-import Settings from '../screens/Settings/Settings';
-import Notification from '../screens/Notification/Notification';
-import About from '../screens/About/About';
-import Map from '../screens/Map/Map';
+import {
+  fromLeft,
+  fromRight,
+  fadeIn,
+  zoomIn,
+  zoomOut,
+} from 'react-navigation-transitions';
+import Home from 'screens/Home';
+import Register from 'screens/Register';
+import Logout from 'screens/Logout';
+import Login from 'screens/Login';
+import ContactTracing from 'screens/ContactTracing';
+import VerificationScreen from 'screens/Verification/VerificationScreen';
+import Dashboard from 'screens/Dashboard';
+import Navigations from 'screens/Navigations/Navigations';
+import Settings from 'screens/Settings/Settings';
+import Notification from 'screens/Notification/Notification';
+import Profile from 'screens/Profile/Profile';
+import Map from 'screens/Map/Map';
+import Loader from 'screens/Loader/Loader';
+import DocumentUpload from 'screens/DocumentUpload/DocumentUpload';
+import Dialer from 'screens/Dialer/Dialer';
+import SelectFields from 'screens/SelectFields/SelectFields';
+import ContactLists from 'screens/ContactLists/ContactLists';
+import DocumentLists from 'screens/DocumentLists/DocumentLists';
 
-const AuthStack = createStackNavigator({
-  Home: {
-    screen: Home,
+const handleCustomTransition = ({ scenes }) => {
+  const prevScene = scenes[scenes.length - 2];
+  const nextScene = scenes[scenes.length - 1];
+  // console.log({prevScene})
+  // Custom transitions go there
+  if (
+    prevScene &&
+    prevScene.route.routeName === 'Home' &&
+    nextScene.route.routeName === 'Register'
+  ) {
+    return zoomIn();
+  }
+  return fromLeft();
+};
+
+const AuthStack = createStackNavigator(
+  {
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    Logout: {
+      screen: Logout,
+      navigationOptions: {
+        header: null,
+      },
+    },
+  },
+  {
+    transitionConfig: () => fromLeft(1000),
+    //transitionConfig: (nav) => handleCustomTransition(nav)
+  },
+);
+
+export const VerificationStack = createStackNavigator({
+  VerificationScreen: {
+    screen: VerificationScreen,
     navigationOptions: {
       header: null,
     },
@@ -33,39 +86,11 @@ const AuthStack = createStackNavigator({
       header: null,
     },
   },
-
-  Login: {
-    screen: Login,
-    navigationOptions: {
-      header: null,
-    },
-  },
-
-  ForgetPassword: {
-    screen: ForgetPassword,
-    navigationOptions: {
-      header: null,
-    },
-  },
-
-  Logout: {
-    screen: Logout,
-    navigationOptions: {
-      header: null,
-    },
-  },
-
-  ResetPassword: {
-    screen: ResetPassword,
-    navigationOptions: {
-      header: null,
-    },
-  },
 });
 
-export const VerificationStack = createStackNavigator({
-  VerificationScreen: {
-    screen: VerificationScreen,
+export const OnBoardingStack = createStackNavigator({
+  Loader: {
+    screen: Loader,
     navigationOptions: {
       header: null,
     },
@@ -80,6 +105,7 @@ export const AppStack = createStackNavigator(
         header: null,
       },
     },
+
     Dashboard: {
       screen: Dashboard,
       navigationOptions: {
@@ -100,23 +126,66 @@ export const AppStack = createStackNavigator(
         header: null,
       },
     },
-    Settings: {
-      screen: Settings,
-      navigationOptions: {
-        header: null,
-      },
-    },
+
     Notification: {
       screen: Notification,
       navigationOptions: {
         header: null,
       },
     },
+
+    ContactTracing: {
+      screen: ContactTracing,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    Profile: {
+      screen: Profile,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    DocumentUpload: {
+      screen: DocumentUpload,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    Dialer: {
+      screen: Dialer,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    SelectFields: {
+      screen: SelectFields,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    ContactLists: {
+      screen: ContactLists,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    DocumentLists: {
+      screen: DocumentLists,
+      navigationOptions: {
+        header: null,
+      },
+    },
   },
+
   {
-    mode: 'modal',
-    cardStyle: { paddingTop: StatusBar.currentHeight }, //Setting the tb to go under the sb
-    headerMode: 'none',
+    transitionConfig: () => fromLeft(1000),
+    //transitionConfig: (nav) => handleCustomTransition(nav)
   },
 );
 
@@ -126,8 +195,7 @@ const AppSwitchNavigator = createSwitchNavigator(
     Auth: AuthStack,
     Verification: VerificationStack,
     App: AppStack,
-    // OnBoard:OnBoardingStack,
-    // Menu:MenuStack,
+    OnBoarding: OnBoardingStack,
   },
   {
     initialRouteName: 'AuthLoading',

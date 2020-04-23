@@ -1,28 +1,24 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, SafeAreaView, StatusBar } from 'react-native';
-import {
-  Paragraph,
-  SubmitButton,
-  Line,
-  Verified,
-  Pending,
-  Logo,
-} from 'components';
+import { View, SafeAreaView, StatusBar, Platform } from 'react-native';
+import { Paragraph, Icons } from 'components';
+import { fetchToken } from 'utils';
 import styles from './styles';
-import { connect } from 'react-redux';
-import UserAvatar from 'react-native-user-avatar';
-import { fetchProfile } from 'utils';
 import colors from 'assets/colors';
+import DropdownAlert from 'react-native-dropdownalert';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
+import CustomTabBar from '../CustomTab';
+import ContactLists from '../ContactLists';
+import Permissions from '../Permissions';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      phone: '',
-      firstName: '',
-      lastName: '',
-      middleName: '',
+      data: [],
+      token: '',
+      title: '',
     };
   }
 
@@ -31,106 +27,87 @@ class Dashboard extends Component {
   }
 
   getProfile = async () => {
-    let response = await fetchProfile();
-    if (typeof response.name !== 'undefined') {
-      let phone = response.phone.substring(4);
-      let nPhone = `${'0'}${phone}`;
-
-      let names = response.name;
-      let firstName = names.split(' ')[0];
-      let lastNames = names.split(' ')[1];
-
-      return this.setState({
-        phone: nPhone,
-        firstName,
-        lastNames,
-      });
-    }
+    let response = await fetchToken();
+    return this.setState({
+      token: response.token,
+    });
   };
 
-  gotoMap = () => this.props.navigation.navigate('Map');
+  showSettingspage = () => this.props.navigation.navigate('Settings');
+  showDialer = () => this.props.navigation.navigate('Dialer');
+
+  showNotification = (type, title, message) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
+  };
+
+  _updateTitle(obj) {
+    const { i } = obj;
+    let title = '';
+    switch (i) {
+      case 0:
+        title = 'Contacts';
+        break;
+      case 1:
+        title = 'Permissions';
+        break;
+    }
+    this.setState({
+      title,
+    });
+  }
 
   render() {
-    const { phone, firstName, lastNames } = this.state;
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle='default' />
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          hidden={false}
+          backgroundColor={colors.blue}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />
 
-        <Logo />
+        <View style={styles.navBg}>
+          <View style={styles.iconContainer}>
+            <Icons
+              disabled={false}
+              onPress={this.showSettingspage}
+              name={'ios-settings'}
+              iconStyle={styles.navIcon}
+              iconColor={colors.blue}
+              iconSize={hp('3%')}
+            />
 
-        <View style={styles.viewBody}>
-          <View style={styles.cardLayout}>
-            <View style={styles.cardContents}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignContent: 'center',
-                  alignSelf: 'center',
-                }}
-              >
-                <View style={styles.verificationStatusLayout}>
-                  <Paragraph text={phone} styles={styles.phoneText} />
-                  <View style={styles.verificationIndicators}>
-                    <Paragraph
-                      text={'Verified'}
-                      styles={styles.verificationText}
-                    />
-                    <Verified layoutSize={25} size={15} />
-                  </View>
-                </View>
-              </View>
-              <View style={styles.buttonLayout}>
-                <SubmitButton
-                  title={'Set Address'}
-                  onPress={this.gotoMap}
-                  btnStyle={styles.button}
-                  titleStyle={styles.buttonTxt}
-                  disabled={false}
-                />
-              </View>
-              <Line />
-              <Paragraph text={'Personal Details'} styles={styles.nameText} />
+            <Paragraph styles={styles.title} text={this.state.title} />
 
-              <View style={styles.avatarLayout}>
-                <UserAvatar
-                  size='80'
-                  name={`${firstName}${' '}${lastNames}`}
-                  color={colors.buttonBlue}
-                />
-              </View>
-              <View>
-                <View style={styles.profileRowItem}>
-                  <View style={styles.profileIconLayout}>
-                    <Verified layoutSize={30} size={20} />
-                  </View>
-                  <View style={styles.profileItem}>
-                    <Paragraph text={'First Name'} styles={styles.fieldLabel} />
-                    <Paragraph text={firstName} styles={styles.nameText} />
-                  </View>
-                </View>
-
-                <View style={styles.profileRowItem}>
-                  <View style={styles.profileIconLayout}>
-                    <Verified layoutSize={30} size={20} />
-                  </View>
-                  <View style={styles.profileItem}>
-                    <Paragraph text={'Last Name'} styles={styles.fieldLabel} />
-                    <Paragraph text={lastNames} styles={styles.nameText} />
-                  </View>
-                </View>
-              </View>
-            </View>
+            <Icons
+              disabled={false}
+              onPress={this.showSettingspage}
+              name={'ios-notifications'}
+              iconStyle={styles.navIcon}
+              iconColor={colors.blue}
+              iconSize={hp('3%')}
+            />
           </View>
         </View>
+        <DropdownAlert
+          duration={5}
+          defaultContainer={styles.alert}
+          ref={ref => (this.dropDownAlertRef = ref)}
+        />
+        <ScrollableTabView
+          style={{ flex: 1 }}
+          initialPage={0}
+          onChangeTab={obj => this._updateTitle(obj)}
+          renderTabBar={() => <CustomTabBar {...this.props} />}
+        >
+          <ContactLists {...this.props} tabLabel={'ios-people'} />
+          <Permissions {...this.props} tabLabel={'ios-key'} />
+        </ScrollableTabView>
       </SafeAreaView>
     );
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    program: state.ProgramReducer.program,
-  };
-};
-
-export default connect(mapStateToProps)(Dashboard);
+export default Dashboard;

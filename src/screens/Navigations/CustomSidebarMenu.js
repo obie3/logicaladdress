@@ -1,17 +1,18 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, SafeAreaView, Image, Text, StyleSheet } from 'react-native';
-import colors from '../../assets/colors';
+import { View, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
+import colors from 'assets/colors';
 import styles from './styles';
-import theme from '../../assets/theme';
 import { connect } from 'react-redux';
-import { Paragraph } from '../../components';
+import { Paragraph, Icons } from 'components';
 import UserAvatar from 'react-native-user-avatar';
-import { fetchProfile } from '../../utils';
+import { fetchProfile } from 'utils';
 
-const dashboard = require('../../assets/images/home.png'),
-  logout = require('../../assets/images/logout.png');
-
+const dashboard = 'home', //require('assets/images/home.png'),
+  documentupload = 'id-card',
+  contacttracing = 'location-arrow', //require('assets/images/home.png'),
+  logout = 'sign-out'; //require('assets/images/logout.png');
+let currentScreenIndex = 0;
 class CustomSidebarMenu extends Component {
   constructor() {
     super();
@@ -24,7 +25,17 @@ class CustomSidebarMenu extends Component {
       {
         navOptionThumb: dashboard,
         navOptionName: 'Dashboard',
-        screenToNavigate: 'DashBoard',
+        screenToNavigate: 'Dashboard',
+      },
+      {
+        navOptionThumb: documentupload,
+        navOptionName: 'Verify Me',
+        screenToNavigate: 'DocumentUpload',
+      },
+      {
+        navOptionThumb: contacttracing,
+        navOptionName: 'Contact Tracing',
+        screenToNavigate: 'ContactTracing',
       },
       {
         navOptionThumb: logout,
@@ -40,33 +51,36 @@ class CustomSidebarMenu extends Component {
 
   getProfile = async () => {
     let response = await fetchProfile();
-    if (typeof response.name !== 'undefined') {
-      let phone = response.phone.substring(4);
-      let nPhone = `${'0'}${phone}`;
-
-      let names = response.name;
-      let firstName = names.split(' ')[0];
-      let lastName = names.split(' ')[1];
+    let data = response.data.params;
+    if (typeof data.firstName !== 'undefined') {
+      let firstName = data.firstName;
+      let phone = data.phone;
+      let image = data.profilePhoto;
 
       return this.setState({
-        phone: nPhone,
+        phone,
         firstName,
-        lastName,
+        image,
       });
     }
   };
 
   render() {
-    const { phone, firstName, lastName } = this.state;
+    const { phone, firstName, image } = this.state;
     return (
       <SafeAreaView style={styles.sideMenuContainer}>
         <View style={styles.drawerImageView}>
           <UserAvatar
             size='80'
-            name={`${firstName}${' '}${lastName}`}
+            name={`${'LogicalAddress'}`}
             color={colors.buttonBlue}
+            src={image}
           />
           <View style={styles.userDetailView}>
+            <Paragraph
+              text={firstName.toUpperCase()}
+              styles={StyleSheet.flatten(styles.txtuser)}
+            />
             <Paragraph
               text={phone}
               styles={StyleSheet.flatten(styles.txtuser)}
@@ -76,42 +90,56 @@ class CustomSidebarMenu extends Component {
         <View style={styles.divider} />
         <View style={{ width: '100%' }}>
           {this.items.map((item, key) => (
-            <View
+            <TouchableOpacity
               key={key}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingTop: 10,
-                paddingBottom: 10,
-                backgroundColor:
-                  global.currentScreenIndex === key
-                    ? colors.field_color
-                    : colors.white,
-                borderLeftWidth: global.currentScreenIndex === key ? 4 : 0,
-                borderColor: colors.green_background,
+              style={[
+                styles.sidebarText,
+                { color: currentScreenIndex === key ? '#ABABAB' : colors.blue },
+              ]}
+              onPress={() => {
+                currentScreenIndex = key;
+                this.props.navigation.navigate(item.screenToNavigate);
               }}
             >
-              <View style={{ marginRight: 10, marginLeft: 20 }}>
-                <Image source={item.navOptionThumb} style={styles.draweIcon} />
-              </View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontFamily: theme.subHeaderFont,
-                  color:
-                    global.currentScreenIndex === key
-                      ? '#ABABAB'
-                      : colors.darkSilver,
-                }}
+              <View
                 key={key}
-                onPress={() => {
-                  global.currentScreenIndex = key;
-                  this.props.navigation.navigate(item.screenToNavigate);
-                }}
+                style={[
+                  styles.sidebarView,
+                  {
+                    backgroundColor:
+                      currentScreenIndex === key ? colors.blue : colors.white,
+                    borderLeftWidth: currentScreenIndex === key ? 4 : 0,
+                    borderColor: colors.blue,
+                  },
+                ]}
               >
-                {item.navOptionName}
-              </Text>
-            </View>
+                <View style={{ marginRight: 10, marginLeft: 20 }}>
+                  <Icons
+                    name={item.navOptionThumb}
+                    iconSize={20}
+                    iconStyle={styles.draweIcon}
+                    iconColor={
+                      currentScreenIndex === key ? '#ABABAB' : colors.blue
+                    }
+                  />
+                </View>
+                <Paragraph
+                  key={key}
+                  styles={[
+                    styles.sidebarText,
+                    {
+                      color:
+                        currentScreenIndex === key ? '#ABABAB' : colors.blue,
+                    },
+                  ]}
+                  text={item.navOptionName}
+                  onPress={() => {
+                    currentScreenIndex = key;
+                    this.props.navigation.navigate(item.screenToNavigate);
+                  }}
+                />
+              </View>
+            </TouchableOpacity>
           ))}
         </View>
       </SafeAreaView>

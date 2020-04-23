@@ -6,7 +6,6 @@ import colors from 'assets/colors';
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: 'green',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -23,7 +22,7 @@ export default styles = StyleSheet.create({
     right: 0,
   },
   panel: {
-    height: 200,
+    height: 100,
     padding: 20,
     backgroundColor: '#f7f5eee8',
     alignItems: 'center',
@@ -43,12 +42,12 @@ export default styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     backgroundColor: '#00000040',
-    marginBottom: 10,
+    //marginBottom: 10,
   },
   panelTitle: {
     fontSize: theme.headerThreeFont,
     color: colors.blue, //colors.headerFontColor,
-    fontWeight: 'bold',
+    //fontWeight: 'bold',
   },
   panelSubtitle: {
     fontSize: 14,
@@ -67,9 +66,24 @@ export default styles = StyleSheet.create({
     ...theme.buttonText,
   },
 
-  // photo: {
-  //   width: '100%',
-  //   height: 225,
-  //   marginTop: 30,
-  // },
+  alert: {
+    ...theme.alertNotification,
+  },
+
+  backView: {
+    height: 35,
+    width: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+    backgroundColor: colors.label,
+  },
+
+  navBar: {
+    marginTop: 20,
+    paddingLeft: 16,
+    paddingRight: 16,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
 });

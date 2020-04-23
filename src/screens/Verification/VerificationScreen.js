@@ -1,14 +1,22 @@
-import { Animated, SafeAreaView, View, StatusBar } from 'react-native';
+import {
+  Animated,
+  SafeAreaView,
+  View,
+  StatusBar,
+  Platform,
+} from 'react-native';
 import React, { useState, memo, useEffect } from 'react';
 import { Paragraph, SubmitButton, Preloader, BackIcon } from 'components';
-
+import CountDown from 'react-native-countdown-component';
+import colors from 'assets/colors';
+import WomanSvg from './WomanSvg';
+import { NavigationActions, StackActions } from 'react-navigation';
 import {
   fetchProfile,
   saveToken,
   VerifyOTPEndpoint,
   generateOTPEndpoint,
   RegistrationEndpoint,
-  ProfileEndpoint,
   logout,
 } from 'utils';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -52,6 +60,8 @@ const VerificationScreen = ({ navigation }) => {
   const [nPhone, setnPhone] = useState('');
   const [showLoading, setShowLoading] = useState(false);
   const [params, setParams] = useState({});
+  const [enabledRequest, setEnabledRequest] = useState(true);
+  const [startTimer, setStartTimer] = useState(false);
 
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -62,6 +72,18 @@ const VerificationScreen = ({ navigation }) => {
   useEffect(() => {
     getParams();
   }, []);
+
+  let resetNavigationStack = () => {
+    const navigateAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: 'Register',
+        }),
+      ],
+    });
+    navigation.dispatch(navigateAction);
+  };
 
   const renderCell = ({ index, symbol, isFocused }) => {
     const hasValue = Boolean(symbol);
@@ -136,26 +158,32 @@ const VerificationScreen = ({ navigation }) => {
   let phoneVerification = async () => {
     showLoadingDialogue();
     let otp = value;
+    let body = {
+      action: 'auth',
+      contact: phone,
+      otp,
+    };
     const settings = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ phone, otp }),
+      body: JSON.stringify(body),
     };
 
     try {
       const response = await fetch(VerifyOTPEndpoint, settings);
       const res = await response.json();
+      //console.log({res})
       if (typeof res.data === 'undefined') {
         return showNotification('error', 'Message', res.error);
       }
       let result = res.data;
       await saveToken(result.token);
       return typeof result.user === 'undefined'
-        ? completeRegistration(result.token, params)
-        : navigation.navigate('App'); //getProfile(result.token);
+        ? resetNavigationStack() //completeRegistration(result.token)
+        : navigation.navigate('OnBoarding');
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }
@@ -169,7 +197,7 @@ const VerificationScreen = ({ navigation }) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ phone }),
+      body: JSON.stringify({ contact: phone }),
     };
 
     try {
@@ -178,14 +206,28 @@ const VerificationScreen = ({ navigation }) => {
       if (typeof res.data === 'undefined') {
         return showNotification('error', 'Message', res.error.message);
       }
-      return showNotification('success', 'Message', 'OTP sent successfully');
+      setEnabledRequest(false);
+      setStartTimer(true);
+      return showNotification(
+        'success',
+        'Message',
+        'OTP sent, wait for 15 secs before retrying',
+      );
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }
   };
 
-  let completeRegistration = async (token, params) => {
-    let name = params.name.split(' ');
+  let activateResentLink = () => {
+    setEnabledRequest(true);
+    return setStartTimer(false);
+  };
+
+  let completeRegistration = async token => {
+    let nName = params.name.replace(/\b./g, function(m) {
+      return m.toUpperCase();
+    });
+    let name = nName.split(' ');
     let defaultParams = {
       firstName: name[0],
       email: params.email ? params.email : '',
@@ -213,35 +255,8 @@ const VerificationScreen = ({ navigation }) => {
       }
       await saveToken(res.data.token);
       hideLoadingDialogue();
-      return navigation.navigate('App');
+      return navigation.navigate('OnBoarding');
       //return getProfile(result);
-    } catch (error) {
-      return showNotification('error', 'Hello', error.toString());
-    }
-  };
-
-  let getProfile = async token => {
-    const settings = {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      //body: JSON.stringify(body),
-    };
-
-    try {
-      const response = await fetch(ProfileEndpoint, settings);
-      const res = await response.json();
-      console.log({ 'profile res': token });
-      if (typeof res.data === 'undefined') {
-        return showNotification('error', 'Message', res.error);
-      }
-      //let result = res.data;
-      await saveToLocalStorage(phone);
-      hideLoadingDialogue();
-      return navigation.navigate('App');
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }
@@ -249,7 +264,13 @@ const VerificationScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle='default' />
+      <StatusBar
+        barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+        hidden={false}
+        backgroundColor={colors.blue}
+        translucent={false}
+        networkActivityIndicatorVisible={true}
+      />
       <DropdownAlert
         duration={5}
         defaultContainer={styles.alert}
@@ -267,8 +288,20 @@ const VerificationScreen = ({ navigation }) => {
         />
         <Paragraph text={nPhone} styles={styles.msgText2} />
       </View>
-
       <View style={styles.optView}>
+        {!enabledRequest ? (
+          <CountDown
+            until={15}
+            onFinish={activateResentLink}
+            digitStyle={{ backgroundColor: colors.blue }}
+            timeToShow={['S']}
+            timeLabels={{ s: 'Secs' }}
+            running={startTimer}
+            digitTxtStyle={styles.buttonTxt}
+            size={20}
+          />
+        ) : null}
+
         <CodeField
           ref={ref}
           {...props}
@@ -289,17 +322,21 @@ const VerificationScreen = ({ navigation }) => {
             titleStyle={styles.buttonTxt}
             disabled={false}
           />
-
-          <View style={styles.textView}>
-            <Paragraph text={"Didn't get code?"} styles={styles.msgText} />
-            <Paragraph
-              text={'Resend'}
-              styles={styles.resend}
-              onPress={requestNewToken}
-            />
-          </View>
+          {enabledRequest ? (
+            <View style={styles.textView}>
+              <Paragraph text={"Didn't get code?"} styles={styles.msgText} />
+              <Paragraph
+                text={'Resend'}
+                styles={styles.resend}
+                onPress={requestNewToken}
+              />
+            </View>
+          ) : null}
           <Preloader modalVisible={showLoading} animationType='fade' />
         </View>
+      </View>
+      <View style={styles.footerView}>
+        <WomanSvg />
       </View>
     </SafeAreaView>
   );

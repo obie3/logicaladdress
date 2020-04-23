@@ -7,15 +7,12 @@ import {
   KeyboardAvoidingView,
   SafeAreaView,
   StatusBar,
+  Keyboard,
+  Platform,
+  Animated,
 } from 'react-native';
-import {
-  InputField,
-  SubmitButton,
-  Preloader,
-  Logo,
-  Paragraph,
-} from 'components';
-import styles from './styles';
+import { InputField, SubmitButton, Preloader, Paragraph } from 'components';
+import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL } from './styles';
 import {
   isEmpty,
   isPhoneValid,
@@ -23,6 +20,8 @@ import {
   saveToLocalStorage,
 } from 'utils';
 import colors from 'assets/colors';
+import WomanSvg from './WomanSvg';
+import logicallogo from 'assets/images/logo.png';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { addProfile } from 'redux/actions/ProfileActions';
@@ -36,6 +35,7 @@ class Login extends Component {
       showLoading: false,
       isPhoneFocused: false,
     };
+    this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
   }
 
   resetNavigationStack = location => {
@@ -77,13 +77,65 @@ class Login extends Component {
   };
 
   handleBackPress = () => this.props.navigation.navigate('Register');
-  handleForgetPassword = () => this.props.navigation.navigate('ForgetPassword');
   showLoadingDialogue = () => this.setState({ showLoading: true });
   hideLoadingDialogue = () => this.setState({ showLoading: false });
 
   showNotification = (type, title, message) => {
     this.hideLoadingDialogue();
     return this.dropDownAlertRef.alertWithType(type, title, message);
+  };
+
+  componentDidMount() {
+    if (Platform.OS == 'ios') {
+      this.keyboardWillShowSub = Keyboard.addListener(
+        'keyboardWillShow',
+        this.keyboardWillShow,
+      );
+      this.keyboardWillHideSub = Keyboard.addListener(
+        'keyboardWillHide',
+        this.keyboardWillHide,
+      );
+    } else {
+      this.keyboardWillShowSub = Keyboard.addListener(
+        'keyboardDidShow',
+        this.keyboardDidShow,
+      );
+      this.keyboardWillHideSub = Keyboard.addListener(
+        'keyboardDidHide',
+        this.keyboardDidHide,
+      );
+    }
+  }
+
+  componentWillUnmount() {
+    this.keyboardWillShowSub.remove();
+    this.keyboardWillHideSub.remove();
+  }
+
+  keyboardWillShow = event => {
+    Animated.timing(this.imageHeight, {
+      duration: event.duration,
+      toValue: IMAGE_HEIGHT_SMALL,
+    }).start();
+  };
+
+  keyboardWillHide = event => {
+    Animated.timing(this.imageHeight, {
+      duration: event.duration,
+      toValue: IMAGE_HEIGHT,
+    }).start();
+  };
+
+  keyboardDidShow = event => {
+    Animated.timing(this.imageHeight, {
+      toValue: IMAGE_HEIGHT_SMALL,
+    }).start();
+  };
+
+  keyboardDidHide = event => {
+    Animated.timing(this.imageHeight, {
+      toValue: IMAGE_HEIGHT,
+    }).start();
   };
 
   formValidation = () => {
@@ -103,7 +155,8 @@ class Login extends Component {
     let stripedPhone = phone.substring(1);
     phone = `${'+234'}${stripedPhone}`;
     let body = {
-      phone,
+      contact: phone,
+      action: 'auth',
     };
     const settings = {
       method: 'POST',
@@ -137,19 +190,26 @@ class Login extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle='default' />
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          hidden={false}
+          backgroundColor={colors.blue}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />
         <DropdownAlert
           duration={5}
           defaultContainer={styles.alert}
           ref={ref => (this.dropDownAlertRef = ref)}
         />
         {/* <BackIcon onPress={this.handleBackPress} /> */}
+        <KeyboardAvoidingView style={styles.wrapper}>
+          <Animated.Image
+            source={logicallogo}
+            style={[styles.logo, { height: this.imageHeight }]}
+          />
 
-        <KeyboardAvoidingView style={styles.wrapper} behavior='padding'>
-          <View style={styles.LogoLayout}>
-            <Logo />
-          </View>
-          <View style={{ paddingBottom: 100 }}>
+          <View>
             <View
               style={[
                 styles.textInputView,
@@ -174,6 +234,7 @@ class Login extends Component {
                 autoCapitalize='none'
                 autoCompleteType='tel'
                 textContentType='telephoneNumber'
+                keyboardType='phone-pad'
                 height={40}
                 width={'90%'}
                 borderColor={colors.white}
@@ -200,7 +261,7 @@ class Login extends Component {
                 titleStyle={styles.buttonTxt}
               />
             </View>
-            <View style={styles.signupLinkView}>
+            {/* <View style={styles.signupLinkView}>
               <Paragraph
                 text={'Dont have an Account? '}
                 styles={styles.signupText}
@@ -211,10 +272,13 @@ class Login extends Component {
                 styles={styles.createAccount}
                 onPress={this.handleBackPress}
               />
-            </View>
+            </View> */}
           </View>
           <Preloader modalVisible={showLoading} animationType='fade' />
         </KeyboardAvoidingView>
+        <View style={styles.footerView}>
+          <WomanSvg />
+        </View>
       </SafeAreaView>
     );
   }

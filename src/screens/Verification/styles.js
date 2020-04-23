@@ -9,6 +9,10 @@ export const NOT_EMPTY_CELL_BG_COLOR = '#3557b7';
 export const ACTIVE_CELL_BG_COLOR = '#f7fafe';
 
 const styles = StyleSheet.create({
+  container: {
+    ...theme.container,
+  },
+
   codeFiledRoot: {
     height: CELL_SIZE,
     marginTop: 30,
@@ -39,11 +43,6 @@ const styles = StyleSheet.create({
   },
 
   // =======================
-
-  container: {
-    ...theme.container,
-  },
-
   closeView: {
     width: 40,
     height: 40,
@@ -108,15 +107,15 @@ const styles = StyleSheet.create({
   },
 
   optView: {
-    marginTop: '20%',
+    //marginTop: '20%',
     justifyContent: 'center',
-    padding: 20,
+    padding: 10,
   },
 
   btnView: {
     alignItems: 'center',
     width: '100%',
-    marginTop: 30,
+    marginTop: 10,
   },
 
   buttonWithImage: {

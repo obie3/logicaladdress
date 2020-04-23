@@ -1,101 +1,142 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import theme from '../../assets/theme';
-import colors from '../../assets/colors';
-
+import { StyleSheet } from 'react-native';
+import theme from 'assets/theme';
+import colors from 'assets/colors';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 export default styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  navBar: {
-    flexDirection: 'row',
-    // paddingTop : (Platform.OS === "ios") ? 16 : 14,
-    height: 60,
-    backgroundColor: theme.toolBarColor,
-    width: '100%',
-    alignItems: 'center',
-    paddingBottom: 4,
-    shadowColor: theme.secondaryTextColor,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 3,
-  },
-  headerIcon: {
-    height: 18,
-    width: 18,
-    tintColor: theme.primaryColor,
-  },
-  headerLogoIcon: {
-    height: 35,
-    width: 80,
-  },
-  headerImage: {
-    borderRadius: 30,
-    height: 40,
-    width: 40,
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 8,
-  },
-  balanceTxtView: {
-    flexDirection: 'row',
+    ...theme.container,
     justifyContent: 'flex-start',
-    width: '50%',
-  },
-  nameView: {
-    flexDirection: 'row',
-    width: '70%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  txtHeader: {
-    fontSize: 18,
-    color: theme.primaryTextColor,
-    marginLeft: 16,
-    alignSelf: 'center',
-    fontFamily: theme.secondaryFont,
+    alignContent: 'center',
   },
 
-  iconBotton: {
-    width: 25,
-    height: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
+  navBg: {
+    backgroundColor: theme.backgroundColor,
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    elevation: 1,
   },
-  iconBottonSearch: {
-    width: 25,
-    height: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 4,
-  },
-  viewBody: {
+
+  tab: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 10,
+  },
+
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 35,
+  },
+  img: {
+    width: 375,
+    height: 550,
+  },
+  title: {
+    color: colors.blue,
+    fontSize: 16,
+    fontFamily: theme.headerFont,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flex: 1,
+    paddingRight: wp('6%'),
+    paddingLeft: wp('6%'),
+    alignItems: 'center',
+  },
+
+  navIcon: {
+    height: hp('8%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  wrapper: {
+    height: '100%',
     paddingLeft: 20,
     paddingRight: 20,
   },
 
+  uploadLayout: {
+    height: '100%',
+    paddingLeft: 20,
+    paddingRight: 20,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+
+  imageLayout: {
+    width: '100%',
+    height: '50%',
+    justifyContent: 'center',
+    alignContent: 'center',
+    resizeMode: 'contain',
+  },
+
+  documentMsgLayout: {
+    marginTop: '30%',
+    height: '40%',
+    justifyContent: 'flex-end',
+  },
+
+  headerText: {
+    fontFamily: theme.inputHintFont,
+    color: colors.blue, //colors.headerFontColor,
+    fontWeight: 'bold',
+    paddingLeft: '2%',
+    paddingRight: '2%',
+    //paddingBottom : '4%',
+    textAlign: 'center',
+    fontSize: theme.headerThreeFont,
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+  },
+
+  btnView: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '35%',
+  },
+
+  btnIcon: {
+    ...theme.buttonIcon,
+    marginLeft: 4,
+  },
+
+  altLinkLayout: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+
+  tabView: {
+    flex: 1,
+  },
+
+  card: {
+    flex: 1,
+    borderWidth: 1,
+    borderWidth: 0,
+    justifyContent: 'center',
+  },
+
   cardLayout: {
     flexDirection: 'column',
-    marginTop: 20,
-    backgroundColor: theme.colorAccent,
     borderRadius: 4,
     shadowColor: theme.primaryTextColor,
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    shadowOffset: { height: 1, width: 0 },
-    elevation: 1,
   },
 
   cardContents: {
     minHeight: 40,
-    padding: 5,
-    margin: 5,
-    backgroundColor: '#F8F8FF',
+    paddingRight: 25,
+    paddingLeft: 25,
+    marginTop: -20,
   },
 
   cardIconLayout: {
@@ -114,43 +155,68 @@ export default styles = StyleSheet.create({
   },
 
   verificationStatusLayout: {
-    flex: 1,
     flexDirection: 'column',
-    padding: 20,
+    alignItems: 'center',
   },
 
   verificationIndicators: {
     flexDirection: 'row',
     alignItems: 'center',
-    //justifyContent: 'center'
-    //backgroundColor: 'white'
-  },
-
-  headerText: {
-    fontFamily: theme.inputHintFont,
-    fontSize: theme.SmallFont,
-    color: theme.primaryTextColor,
+    alignContent: 'center',
   },
 
   verificationText: {
-    fontFamily: theme.inputHintFont,
-    fontSize: theme.SmallFont,
-    color: '#bdc3c7',
+    fontSize: theme.headerThreeFont,
+    color: colors.label,
+    fontWeight: '500',
     paddingRight: 6,
-    paddingTop: 6,
+  },
+
+  addressText: {
+    fontFamily: theme.inputHintFont,
+    fontSize: theme.headerOneFont,
+    color: colors.headerFontColor,
+    fontWeight: 'bold',
+    paddingLeft: '2%',
+    paddingRight: '2%',
+    //marginTop: '30%'
   },
 
   nameText: {
-    fontFamily: theme.inputHintFont,
-    fontSize: 24,
-    color: theme.primaryTextColor,
-    fontWeight: 'bold',
-    paddingRight: 6,
+    fontSize: theme.headerFourFont,
+    color: colors.headerFontColor,
+    // fontWeight: 'bold',
   },
 
-  iconStyle: {
-    marginRight: -2,
-    marginTop: -2,
+  fieldLabel: {
+    fontFamily: theme.inputHintFont,
+    fontSize: theme.headerFourFont,
+    color: colors.label,
+  },
+
+  profileItem: {
+    flex: 2,
+    justifyContent: 'center',
+    marginTop: 2,
+  },
+
+  profileIconLayout: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  profileRowItem: {
+    flexDirection: 'row',
+    marginTop: 15,
+  },
+
+  avatarLayout: {
+    width: 100,
+    height: 100,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 25,
   },
 
   iconLayout: {
@@ -162,36 +228,49 @@ export default styles = StyleSheet.create({
     backgroundColor: '#2ecc71',
     marginTop: 5,
     marginRight: 15,
-    marginRight: 15,
   },
 
-  headerProgramView: {
-    width: '60%',
-    marginTop: 2,
+  buttonLayout: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 
-  button: {
-    borderRadius: 5,
-    width: '100%',
-    height: 35,
-    backgroundColor: theme.buttonPrimary,
+  overlay: {
+    flex: 1,
+    opacity: 0.9,
+    backgroundColor: 'rgba(0, 0, 0,0.5)',
+  },
+
+  profileHeader: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
+
+  imageButton: {
+    marginTop: 25,
+    backgroundColor: colors.white,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    //paddingRight : 8,
+    borderRadius: 30,
+    width: '30%',
+    height: 45,
+    borderWidth: 0.5,
+    borderColor: colors.blue,
+  },
+
+  button: {
+    ...theme.button,
+    marginTop: 25,
   },
 
   buttonTxt: {
-    fontFamily: theme.headerFont,
-    color: theme.colorAccent,
-    fontSize: theme.SmallFont,
-    //alignSelf : 'center',
+    ...theme.buttonText,
   },
-
-  subHeaderText: {
-    fontFamily: theme.subHeaderFont,
-    fontSize: theme.SmallFont,
-    color: theme.secondaryTextColor,
-    height: 40,
+  btnIcon: {
+    ...theme.buttonIcon,
   },
 });

@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default styles = StyleSheet.create({
   image: {
     width: '100%',
-    height: 50,
+    height: 100,
     resizeMode: 'contain',
     justifyContent: 'center',
     alignItems: 'center',
@@ -12,6 +12,6 @@ export default styles = StyleSheet.create({
     height: 100,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
 });
