@@ -1,68 +1,96 @@
 import { StyleSheet, Dimensions } from 'react-native';
-const window = Dimensions.get('window');
-import colors from '../../assets/colors';
-import theme from '../../assets/theme';
+import colors from 'assets/colors';
+import theme from 'assets/theme';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 export default styles = StyleSheet.create({
   container: {
-    flex: 1,
+    ...theme.container,
+    justifyContent: 'flex-start',
+    alignContent: 'center',
+    backgroundColor: '#ccc',
   },
-  navBar: {
-    flexDirection: 'row',
-    // paddingTop : (Platform.OS === "ios") ? 16 : 14,
-    height: 60,
-    backgroundColor: theme.toolBarColor,
-    width: '100%',
-    alignItems: 'center',
-    paddingBottom: 4,
-    shadowColor: theme.secondaryTextColor,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 3,
-  },
-  headerIcon: {
-    height: 18,
-    width: 18,
-    tintColor: theme.primaryColor,
-  },
-  headerLogoIcon: {
-    height: 35,
-    width: 80,
-  },
-  headerImage: {
-    borderRadius: 30,
-    height: 40,
-    width: 40,
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 8,
-  },
-  balanceTxtView: {
+
+  navBg: {
+    backgroundColor: theme.backgroundColor,
+    height: 50,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    width: '50%',
+    elevation: 1,
   },
-  nameView: {
+
+  iconContainer: {
     flexDirection: 'row',
-    width: '70%',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
+    paddingRight: wp('6%'),
+    paddingLeft: wp('6%'),
     alignItems: 'center',
   },
-  txtHeader: {
-    fontSize: 18,
-    color: theme.primaryColor,
-    marginLeft: 16,
-    alignSelf: 'center',
+
+  headerText: {
+    color: colors.blue,
+    fontSize: 16,
+    fontFamily: theme.headerFont,
   },
-  exitTxt: {
-    fontSize: 40,
-    color: colors.text_color,
-    fontFamily: 'Poppins-Regular',
-    marginLeft: 16,
+
+  wrapper: {
+    flex: 1,
+    marginTop: hp('3%'),
+    paddingRight: wp('3%'),
+    paddingLeft: wp('3%'),
+  },
+
+  cardLayout: {
+    height: hp('8%'),
+    backgroundColor: colors.white,
+    elevation: 2,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    shadowOffset: { height: 1, width: 0 },
+  },
+
+  cardContent: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: wp('3%'),
+    paddingLeft: wp('3%'),
+    alignItems: 'center',
+  },
+
+  cardText: {
+    fontFamily: theme.secondaryFont,
+    color: '#95a5a6',
+    fontSize: theme.smallFont,
+  },
+
+  buttonStyle: {
+    backgroundColor: colors.white,
+    width: wp('15%'),
+    height: hp('8%'),
+    borderRadius: hp('52%') / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: wp('3%'),
+    elevation: 3,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    shadowOffset: { height: 1, width: 0 },
+  },
+
+  logoutLayout: {
+    position: 'absolute',
+    bottom: hp('5%'),
+    alignSelf: 'flex-end',
+  },
+
+  forwardIcon: {
+    height: hp('8%'),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

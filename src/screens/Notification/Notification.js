@@ -9,10 +9,9 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import { Paragraph } from '../../components';
+import { Paragraph } from 'components';
 import styles from './styles';
-import colors from '../../assets/colors';
-import { DrawerActions } from 'react-navigation';
+import colors from 'assets/colors';
 
 export default class Notification extends Component {
   constructor(props) {
@@ -23,12 +22,6 @@ export default class Notification extends Component {
       message: '',
     };
   }
-
-  toggleDrawer = () => {
-    //Props to open/close the drawer
-    // this.props.navigation.toggleDrawer();
-    this.props.navigation.dispatch(DrawerActions.toggleDrawer());
-  };
 
   render() {
     return (
@@ -44,7 +37,7 @@ export default class Notification extends Component {
           >
             <Image
               onPress={this.toggleDrawer}
-              source={require('../../assets/images/menu.png')}
+              source={require('assets/images/menu.png')}
               style={StyleSheet.flatten(styles.headerIcon)}
             />
           </TouchableOpacity>
