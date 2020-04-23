@@ -11,6 +11,10 @@ import LocationService from './LocationService';
 import DocumentUpload from './DocumentUpload';
 import Dialer from './Dialer';
 import SelectFields from './SelectFields';
+import ContactLists from './ContactList';
+import Permissions from './Permissions';
+import Permissions from './Permissions';
+import DocumentLists from './DocumentLists';
 
 export default {
   ForgetPassword,
@@ -30,4 +34,7 @@ export default {
   DocumentUpload,
   Dialer,
   SelectFields,
+  ContactLists,
+  Permissions,
+  DocumentLists,
 };

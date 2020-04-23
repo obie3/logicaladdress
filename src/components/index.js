@@ -5,8 +5,7 @@ import { Paragraph } from './Text';
 import { Icons } from './Icons';
 import { Preloader } from './Preloader';
 import { Line } from './Line';
-import { Verified } from './Verified';
-import { Pending } from './Pending';
+import { StatusIcon } from './StatusIcon';
 import { Logo } from './Logo';
 import { Navbar } from './Navbar';
 
@@ -21,9 +20,8 @@ export {
   ErrorAlert,
   Preloader,
   Line,
-  Verified,
-  Pending,
   Logo,
   BackIcon,
   Navbar,
+  StatusIcon,
 };

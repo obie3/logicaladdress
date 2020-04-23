@@ -9,10 +9,6 @@ const initialState = {
 };
 export default function authReducer(state = initialState, action) {
   switch (action.type) {
-    case types.SET_EXPO_TOKEN:
-      return Object.assign({}, state, {
-        expoToken: action.expoToken,
-      });
     case types.SET_SESSION_TOKEN:
       return Object.assign({}, state, {
         sessionToken: action.token,
@@ -30,10 +26,6 @@ export default function authReducer(state = initialState, action) {
       return Object.assign({}, state, {
         isLoggedIn: true,
         sessionToken: action.sessionToken,
-      });
-    case types.REGISTRATION_STATUS:
-      return Object.assign({}, state, {
-        registered: action.bool,
       });
     default:
       return state;

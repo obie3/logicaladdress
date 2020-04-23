@@ -7,18 +7,13 @@ import {
   Platform,
   TouchableOpacity,
   FlatList,
-  Image,
-  Text,
-  ScrollView,
 } from 'react-native';
 import {
   Paragraph,
   SubmitButton,
   Line,
-  Verified,
-  Pending,
+  StatusIcon,
   Preloader,
-  Icons,
 } from 'components';
 import {
   getProfile,
@@ -35,14 +30,6 @@ import colors from 'assets/colors';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import DropdownAlert from 'react-native-dropdownalert';
 import * as ImagePicker from 'expo-image-picker';
-import NavBar, { NavButton, NavTitle } from 'react-native-nav';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-import CustomTabBar from './CustomTabBar';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-
 import {
   CLOUDINARY_UPLOAD_URL,
   CLOUDINARY_UPLOAD_PRESET,
@@ -50,7 +37,7 @@ import {
   CLOUDINARY_ACCOUNT_NAME,
 } from 'react-native-dotenv';
 
-class Dashboard extends Component {
+class ProfileDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,17 +61,12 @@ class Dashboard extends Component {
       newText: '',
       tabTitle: 'name',
       index: null,
-
-      indexx: 0,
-      routes: [
-        { key: 'first', title: 'First' },
-        { key: 'second', title: 'Second' },
-      ],
     };
   }
 
   componentDidMount() {
     this.getProfile();
+    console.log({ props: this.props.profile });
   }
 
   getProfile = async () => {
@@ -109,6 +91,14 @@ class Dashboard extends Component {
         val['isVerified'] = profile.isVerified;
         (val['value'] = profile.key === 'phone' ? `${'0'}${value}` : value),
           phoneArray.push(val);
+        //console.log({phoneArray})
+        // }
+        //else if (profile.key === 'email') {
+        // val['id'] = profile.id;
+        // val['key'] = label;
+        // val['value'] = profile.value;
+        // val['isVerified'] = profile.isVerified;
+        // emailArray.push(val);
       } else if (profile.key.includes('Name')) {
         val['id'] = profile.id;
         val['key'] = label;
@@ -178,8 +168,12 @@ class Dashboard extends Component {
           <Paragraph text={label} styles={styles.fieldLabel} />
           <Paragraph text={value} styles={styles.nameText} />
         </View>
-        <View style={styles.editIconLayout}>
-          {isVerified ? <Verified layoutSize={30} size={20} /> : null}
+        <View style={styles.iconLayout}>
+          {isVerified ? (
+            <StatusIcon name={'ios-checkmark-circle'} color={colors.green} />
+          ) : null
+          //  <Pending layoutSize={30} size={20} />
+          }
         </View>
         <Line />
       </View>
@@ -321,7 +315,7 @@ class Dashboard extends Component {
   showEdit = () => this.props.navigation.navigate('Profile');
 
   handleCustomIndexSelect = index => {
-    const { nameArray, phoneArray } = this.state;
+    const { nameArray, phoneArray, emailArray } = this.state;
     let filter = [];
     let tabTitle = '';
     if (index === 0) {
@@ -409,10 +403,6 @@ class Dashboard extends Component {
     }
   };
 
-  _handleIndexChange = indexx => this.setState({ indexx });
-
-  _renderLazyPlaceholder = ({ route }) => <LazyPlaceholder route={route} />;
-
   render() {
     const {
       params,
@@ -422,6 +412,11 @@ class Dashboard extends Component {
       photo,
       showLoading,
     } = this.state;
+    let color = params.isVerfied === true ? colors.green : colors.errorRed;
+    let iconName =
+      params.isVerified === true
+        ? 'ios-checkmark-circle'
+        : 'ios-information-circle';
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -431,125 +426,79 @@ class Dashboard extends Component {
           translucent={false}
           networkActivityIndicatorVisible={true}
         />
-
-        <NavBar>
-          <NavButton style={styles.navButton}>
-            <Image
-              style={styles.image}
-              resizeMode={'contain'}
-              source={require('assets/images/settings.png')}
-            />
-          </NavButton>
-          <NavTitle style={styles.title}>{'Home'}</NavTitle>
-          <NavButton style={styles.navButton}>
-            <Image
-              style={styles.image}
-              resizeMode={'contain'}
-              source={require('assets/images/bell.png')}
-            />
-          </NavButton>
-        </NavBar>
-
         <DropdownAlert
           duration={5}
           defaultContainer={styles.alert}
           ref={ref => (this.dropDownAlertRef = ref)}
         />
-        <ScrollableTabView
-          style={{ marginTop: hp('2%') }}
-          initialPage={0}
-          renderTabBar={() => (
-            <CustomTabBar title={['Contacts', 'Permissions']} />
-          )}
-        >
-          <ScrollView tabLabel='ios-paper' style={styles.tabView}>
-            <View style={styles.card}>
-              <View style={styles.wrapper}>
-                <View style={styles.avatarLayout}>
-                  <TouchableOpacity onPress={this.getImage}>
-                    <UserAvatar
-                      size='120'
-                      name={firstName}
-                      color={colors.buttonBlue}
-                      src={photo}
-                    />
-                  </TouchableOpacity>
+        <View style={styles.wrapper}>
+          <View style={styles.avatarLayout}>
+            <TouchableOpacity onPress={this.getImage}>
+              <UserAvatar
+                size='120'
+                name={firstName}
+                color={colors.buttonBlue}
+                src={photo}
+              />
+            </TouchableOpacity>
 
-                  <View style={styles.verificationIndicators}>
-                    <Paragraph
-                      text={params.LogicalAddress}
-                      styles={styles.addressText}
-                    />
-                    {params.isVerfied ? (
-                      <Verified layoutSize={25} size={15} />
-                    ) : (
-                      <Pending layoutSize={25} size={15} />
-                    )}
-                  </View>
-                  <Paragraph
-                    text={'LogicalAddress'}
-                    styles={styles.verificationText}
-                  />
-                  <View style={styles.buttonLayout}>
-                    {!params.isVerfied ? (
-                      <SubmitButton
-                        title={'Set Address'}
-                        onPress={this.gotoMap}
-                        btnStyle={styles.button}
-                        titleStyle={styles.buttonTxt}
-                        disabled={false}
-                      />
-                    ) : null}
-                  </View>
-                </View>
-                <View style={{ flex: 1, flexDirection: 'column' }}>
-                  <View style={styles.detailsTabView}>
-                    <SegmentedControlTab
-                      values={['Names', 'Contact', 'Others']}
-                      selectedIndex={customStyleIndex}
-                      tabTextStyle={styles.tabTextStyle}
-                      activeTabTextStyle={styles.activeTabTextStyle}
-                      onTabPress={this.handleCustomIndexSelect}
-                      borderRadius={0}
-                      tabsContainerStyle={styles.tabsContainerStyle}
-                      tabStyle={styles.tabStyle}
-                      activeTabStyle={styles.activeTabStyle}
-                      firstTabStyle={styles.firstTabStyle}
-                      lastTabStyle={styles.lastTabStyle}
-                    />
-                  </View>
-                  <View style={styles.profileLayout}>
-                    <FlatList
-                      extraData={this.state}
-                      data={profileData}
-                      renderItem={this.renderRow}
-                      keyExtractor={profileData => profileData.id.toString()}
-                      ItemSeparatorComponent={this.renderSeparator}
-                      showsVerticalScrollIndicator={false}
-                    />
-                  </View>
-                </View>
-
-                <Preloader modalVisible={showLoading} animationType='fade' />
-              </View>
+            <View style={styles.verificationIndicators}>
+              <Paragraph
+                text={params.LogicalAddress}
+                styles={styles.addressText}
+              />
+              <StatusIcon name={iconName} color={color} />
             </View>
-          </ScrollView>
-          <ScrollView tabLabel='ios-people' style={styles.tabView}>
-            <View style={styles.card}>
-              <Text>Friends</Text>
+            <Paragraph
+              text={'LogicalAddress'}
+              styles={styles.verificationText}
+            />
+            <View style={styles.buttonLayout}>
+              {!params.isVerfied ? (
+                <SubmitButton
+                  title={'Set Address'}
+                  onPress={this.gotoMap}
+                  btnStyle={styles.button}
+                  titleStyle={styles.buttonTxt}
+                  disabled={false}
+                />
+              ) : null}
             </View>
-          </ScrollView>
-        </ScrollableTabView>
+          </View>
+          <View style={{ flex: 1, flexDirection: 'column' }}>
+            <View style={styles.tabView}>
+              <SegmentedControlTab
+                values={['Names', 'Contact', 'Others']}
+                selectedIndex={customStyleIndex}
+                tabTextStyle={styles.tabTextStyle}
+                activeTabTextStyle={styles.activeTabTextStyle}
+                onTabPress={this.handleCustomIndexSelect}
+                borderRadius={0}
+                tabsContainerStyle={styles.tabsContainerStyle}
+                tabStyle={styles.tabStyle}
+                activeTabStyle={styles.activeTabStyle}
+                firstTabStyle={styles.firstTabStyle}
+                lastTabStyle={styles.lastTabStyle}
+              />
+            </View>
+            {/* <View style={styles.segmentHeader}>
+              <Paragraph text={'Add'} styles={styles.verificationText}
+                onPress={()=>this.props.navigation.navigate('Profile')}/>
+            </View> */}
 
-        {/* <View style={styles.editIconWrapper}>
-          <Icons
-            name={'edit'}
-            iconColor={colors.blue}
-            iconSize={25}
-            onPress={this.handleProfileLink}
-            iconStyle={styles.editIcon}
-          />
-        </View> */}
+            <View style={styles.profileLayout}>
+              <FlatList
+                extraData={this.state}
+                data={profileData}
+                renderItem={this.renderRow}
+                keyExtractor={profileData => profileData.id.toString()}
+                ItemSeparatorComponent={this.renderSeparator}
+                showsVerticalScrollIndicator={false}
+              />
+            </View>
+          </View>
+          <Preloader modalVisible={showLoading} animationType='fade' />
+        </View>
       </SafeAreaView>
     );
   }
@@ -557,10 +506,10 @@ class Dashboard extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    program: state.ProgramReducer.program,
+    profile: state.ProfileReducer.profile,
   };
 };
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps)(ProfileDetail);
 
 // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IisyMzQ3MDM3MzI0MzIzIiwiaWF0IjoxNTg2NjkyODYzLCJleHAiOjE1ODY2OTY0NjN9.UjJN18hRp6wf2MXJPggrNfOq3zLWOxkFBYJqaLPVLS0"

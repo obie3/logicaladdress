@@ -6,38 +6,37 @@ import {
   SafeAreaView,
   FlatList,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native';
-import { Paragraph, Line, Preloader, Icons } from 'components';
+import { Paragraph, Line, Icons, Navbar } from 'components';
 import styles from './styles';
-import { FetchProfileFiled, fetchToken } from 'utils';
-import { connect } from 'react-redux';
-import { addProfile } from 'redux/actions/ProfileActions';
 import colors from 'assets/colors';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import DropdownAlert from 'react-native-dropdownalert';
 
 const NUMBERS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
 let tempAddress = [];
-class Dialer extends Component {
+export default class Dialer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       value: 0,
       token: '',
       logicalAddress: '',
-      showLoading: false,
       isDisabled: true,
       status: true,
     };
   }
 
   componentDidMount() {
-    this.getToken();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
   showLoadingDialogue = () => this.setState({ showLoading: true });
 
   hideLoadingDialogue = () => this.setState({ showLoading: false });
@@ -45,11 +44,6 @@ class Dialer extends Component {
   showNotification = (type, title, message) => {
     this.hideLoadingDialogue();
     return this.dropDownAlertRef.alertWithType(type, title, message);
-  };
-
-  getToken = async () => {
-    let response = await fetchToken();
-    return this.setState({ token: response.token });
   };
 
   onChangeText = text => {
@@ -86,36 +80,15 @@ class Dialer extends Component {
     });
   };
 
-  onBackPress = () => this.props.navigation.navigate('Navigations');
+  handleBackPress = () => this.props.navigation.navigate('Navigations');
 
-  onDialPress = async () => {
+  onDialPress = () => {
     const { logicalAddress, token } = this.state;
-    this.showLoadingDialogue();
-    const settings = {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
+    let params = {
+      token: token,
+      logicalAddress: logicalAddress,
     };
-
-    try {
-      const response = await fetch(FetchProfileFiled, settings);
-      const res = await response.json();
-      if (typeof res.data === 'undefined') {
-        return this.showNotification('error', 'Message', res.message);
-      }
-      let params = {
-        token: token,
-        data: res.data,
-        logicalAddress: logicalAddress,
-      };
-      this.hideLoadingDialogue();
-      return this.props.navigation.navigate('SelectFields', { params });
-    } catch (error) {
-      return this.showNotification('error', 'Hello', error.toString());
-    }
+    return this.props.navigation.navigate('SelectFields', { params });
   };
 
   renderRow = ({ item }) => {
@@ -139,7 +112,7 @@ class Dialer extends Component {
   };
 
   render() {
-    const { logicalAddress, showLoading, isDisabled, status } = this.state;
+    const { logicalAddress, isDisabled, status } = this.state;
     return (
       <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
         <StatusBar
@@ -149,22 +122,20 @@ class Dialer extends Component {
           translucent={false}
           networkActivityIndicatorVisible={true}
         />
-        <DropdownAlert
-          duration={5}
-          defaultContainer={styles.alert}
-          ref={ref => (this.dropDownAlertRef = ref)}
+
+        <Navbar
+          size={hp('4%')}
+          layoutSize={3}
+          leftIconName={'ios-arrow-back'}
+          rightIconName={null}
+          rightIconColor={colors.blue}
+          leftIconColor={colors.iconColor}
+          headerTitle={null}
+          leftIconOnPress={this.handleBackPress}
+          rightIconOnPress={() => {
+            console.log('hello...');
+          }}
         />
-        <View style={styles.navBar}>
-          <View style={styles.backIconLayout}>
-            <Icons
-              name={'ios-arrow-back'}
-              iconStyle={styles.backIcon}
-              iconColor={colors.blue}
-              iconSize={hp('2%')}
-              onPress={this.onBackPress}
-            />
-          </View>
-        </View>
 
         <View style={{ height: hp('25%'), justifyContent: 'center' }}>
           <Paragraph
@@ -209,26 +180,9 @@ class Dialer extends Component {
               onPress={this.onDialPress}
               disabled={isDisabled}
             />
-            <Preloader modalVisible={showLoading} animationType='fade' />
           </View>
         </View>
       </SafeAreaView>
     );
   }
 }
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    profile: state.ProfileReducer.profile,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setProfile: data => {
-      dispatch(addProfile(data));
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dialer);

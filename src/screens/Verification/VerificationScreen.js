@@ -175,6 +175,7 @@ const VerificationScreen = ({ navigation }) => {
     try {
       const response = await fetch(VerifyOTPEndpoint, settings);
       const res = await response.json();
+      //console.log({res})
       if (typeof res.data === 'undefined') {
         return showNotification('error', 'Message', res.error);
       }

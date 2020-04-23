@@ -1,28 +1,68 @@
 import { StyleSheet } from 'react-native';
 import theme from 'assets/theme';
 import colors from 'assets/colors';
-import Constants from 'expo-constants';
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 export default styles = StyleSheet.create({
   container: {
     ...theme.container,
     justifyContent: 'flex-start',
     alignContent: 'center',
-    //marginTop: Constants.statusBarHeight,
-    //paddingBottom: Constants.statusBarHeight,
+  },
+
+  navBg: {
+    backgroundColor: theme.backgroundColor,
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    elevation: 1,
+  },
+
+  tab: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 10,
+  },
+
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 35,
+  },
+  img: {
+    width: 375,
+    height: 550,
+  },
+  title: {
+    color: colors.blue,
+    fontSize: 16,
+    fontFamily: theme.headerFont,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flex: 1,
+    paddingRight: wp('6%'),
+    paddingLeft: wp('6%'),
+    alignItems: 'center',
+  },
+
+  navIcon: {
+    height: hp('8%'),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   wrapper: {
-    //flex: 1,
     height: '100%',
     paddingLeft: 20,
     paddingRight: 20,
-    //justifyContent: 'center',
-    backgroundColor: 'green',
   },
 
   uploadLayout: {
-    //flex:1,
     height: '100%',
     paddingLeft: 20,
     paddingRight: 20,
@@ -77,19 +117,11 @@ export default styles = StyleSheet.create({
 
   tabView: {
     flex: 1,
-    //padding: 10,
-    //height: 20,
-    backgroundColor: 'black', //'rgba(0,0,0,0.01)',
   },
 
   card: {
     flex: 1,
     borderWidth: 1,
-    backgroundColor: 'black',
-    // shadowColor: '#ccc',
-    // shadowOffset: { width: 2, height: 2 },
-    // shadowOpacity: 0.5,
-    // shadowRadius: 3,
     borderWidth: 0,
     justifyContent: 'center',
   },
@@ -98,9 +130,6 @@ export default styles = StyleSheet.create({
     flexDirection: 'column',
     borderRadius: 4,
     shadowColor: theme.primaryTextColor,
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    shadowOffset: { height: 1, width: 0 },
   },
 
   cardContents: {
@@ -134,7 +163,6 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignContent: 'center',
-    //justifyContent: 'space-around',
   },
 
   verificationText: {
@@ -215,7 +243,6 @@ export default styles = StyleSheet.create({
   },
 
   profileHeader: {
-    //backgroundColor: 'green',
     flexDirection: 'row',
     justifyContent: 'flex-end',
     paddingTop: 5,
@@ -223,7 +250,6 @@ export default styles = StyleSheet.create({
   },
 
   imageButton: {
-    // ...theme.button,
     marginTop: 25,
     backgroundColor: colors.white,
     justifyContent: 'center',
@@ -247,11 +273,4 @@ export default styles = StyleSheet.create({
   btnIcon: {
     ...theme.buttonIcon,
   },
-
-  // headerText: {
-  //   fontSize: theme.headerOneFont,
-  //   color: colors.headerFontColor,
-  //   padding: 25,
-  //   //paddingLeft: 25,
-  // },
 });

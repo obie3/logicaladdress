@@ -6,23 +6,23 @@ import {
   StatusBar,
   TouchableOpacity,
   FlatList,
-  Platform,
+  BackHandler,
 } from 'react-native';
-import { Paragraph, SubmitButton } from 'components';
+import { connect } from 'react-redux';
+import { Paragraph, SubmitButton, Preloader } from 'components';
 import styles from './styles';
 import colors from 'assets/colors';
 import { Navbar } from 'components';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import DropdownAlert from 'react-native-dropdownalert';
+import { RequestConnectionEndpoint, fetchToken } from 'utils';
 
-export default class SelectFields extends Component {
+class SelectFields extends Component {
   constructor(props) {
     super(props);
     this.state = {
       token: '',
-      showAlert: false,
+      showLoading: false,
       logicalAddress: '',
       data: [],
     };
@@ -30,17 +30,29 @@ export default class SelectFields extends Component {
 
   componentDidMount() {
     this.getNavParams();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
-  handleGoBack = () => {
-    return this.props.navigation.goBack();
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => this.props.navigation.goBack();
+
+  showNotification = (type, title, message) => {
+    this.hideLoadingDialogue = () => this.setState({ showLoading: false });
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   };
 
-  getNavParams = () => {
+  showLoadingDialogue = () => this.setState({ showLoading: true });
+  hideLoadingDialogue = () => this.setState({ showLoading: false });
+
+  getNavParams = async () => {
     let response = this.props.navigation.getParam('params');
+    let res = await fetchToken();
     return this.setState({
-      data: response.data,
-      token: response.token,
+      data: this.props.profileFieldNames,
+      token: res.token,
       logicalAddress: response.logicalAddress,
     });
   };
@@ -60,6 +72,43 @@ export default class SelectFields extends Component {
       }
     });
     this.setState({ data: renderData });
+  };
+
+  getSelectedItems = () => {
+    let tempArray = [];
+    this.state.data.map(item => {
+      if (item.selected === true) {
+        tempArray.push(item.id);
+      }
+    });
+    return tempArray;
+  };
+
+  submitForm = async () => {
+    const { logicalAddress, token } = this.state;
+    let profileFields = this.getSelectedItems();
+    let body = JSON.stringify({ logicalAddress, profileFields });
+    this.showLoadingDialogue();
+    const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body,
+    };
+
+    try {
+      const response = await fetch(RequestConnectionEndpoint, settings);
+      const res = await response.json();
+      if (typeof res.data === 'undefined') {
+        return this.showNotification('error', 'Message', res.message);
+      }
+      return this.showNotification('success', 'Message', 'Success');
+    } catch (error) {
+      return this.showNotification('error', 'Hello', error.toString());
+    }
   };
 
   renderRow = ({ item }) => {
@@ -96,50 +145,80 @@ export default class SelectFields extends Component {
   };
 
   render() {
-    const { data } = this.state;
+    const { data, showLoading } = this.state;
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle='default' />
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+          hidden={false}
+          backgroundColor={colors.blue}
+          translucent={false}
+          networkActivityIndicatorVisible={true}
+        />
+        <DropdownAlert
+          duration={5}
+          defaultContainer={styles.alert}
+          ref={ref => (this.dropDownAlertRef = ref)}
+        />
         <Navbar
-          size={hp('5%')}
+          size={hp('4%')}
           layoutSize={3}
-          leftIconName={
-            Platform.OS === 'ios' ? 'ios-arrow-back' : 'ios-arrow-round-back'
-          }
-          rightIconName={'ios-notifications-outline'}
-          rightIconColor={'black'}
-          leftIconColor={'#bdc3c7'}
-          headerTitle={'Select Fields'}
-          leftIconOnPress={() => {
-            console.log('hello...');
-          }}
+          leftIconName={'ios-arrow-back'}
+          rightIconName={null}
+          rightIconColor={colors.blue}
+          leftIconColor={colors.iconColor}
+          headerTitle={null}
+          leftIconOnPress={this.handleBackPress}
           rightIconOnPress={() => {
             console.log('hello...');
           }}
         />
 
-        <View style={styles.aboutView}>
-          <View style={styles.fieldsLayout}>
-            <FlatList
-              extraData={this.state}
-              data={data}
-              renderItem={this.renderRow}
-              keyExtractor={data => data.id}
-              ItemSeparatorComponent={this.renderSeparator}
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
-          <View style={styles.btnView}>
-            <SubmitButton
-              title={'Submit'}
-              disabled={false}
-              onPress={() => {}}
-              btnStyle={styles.buttonWithImage}
-              titleStyle={styles.buttonTxt}
-            />
-          </View>
+        <View
+          style={{
+            height: '15%',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Paragraph
+            text={
+              'Select the information you would like \nto request from this connection \nyou can select multiple items.'
+            }
+            styles={styles.introMessage}
+          />
         </View>
+
+        <View style={styles.flatListLayout}>
+          <FlatList
+            extraData={this.state}
+            data={data}
+            renderItem={this.renderRow}
+            keyExtractor={data => data.id}
+            ItemSeparatorComponent={this.renderSeparator}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+        <View style={styles.btnView}>
+          <SubmitButton
+            title={'Submit'}
+            disabled={false}
+            onPress={this.submitForm}
+            btnStyle={styles.buttonWithImage}
+            titleStyle={styles.buttonTxt}
+          />
+        </View>
+        <Preloader modalVisible={showLoading} animationType='fade' />
       </SafeAreaView>
     );
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    profileFieldNames: state.ProfileReducer.profileFieldNames,
+  };
+};
+
+export default connect(mapStateToProps)(SelectFields);
+// 6966038855

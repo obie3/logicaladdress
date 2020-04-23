@@ -1,32 +1,25 @@
 'use strict';
 import React, { Component } from 'react';
 import { View, SafeAreaView, StatusBar, Platform, Image } from 'react-native';
-import {
-  Paragraph,
-  SubmitButton,
-  Verified,
-  Preloader,
-  Icons,
-} from 'components';
-import {
-  getProfile,
-  fetchToken,
-  UpdateProfileEndpoint,
-  AddProfileFieldEndpoint,
-} from 'utils';
+import { Paragraph, SubmitButton, Preloader, Navbar } from 'components';
+import { fetchToken, AddDocumentEndpoint } from 'utils';
 import styles from './styles';
 import { connect } from 'react-redux';
 import colors from 'assets/colors';
 import DropdownAlert from 'react-native-dropdownalert';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import { addDocument } from 'redux/actions/DocumentActions';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 import {
   CLOUDINARY_UPLOAD_URL,
   CLOUDINARY_UPLOAD_PRESET,
   CLOUDINARY_FOLDER,
   CLOUDINARY_ACCOUNT_NAME,
-  GOOGLE_CLOUD_VISION_API_KEY,
 } from 'react-native-dotenv';
 class DocumentUpload extends Component {
   constructor(props) {
@@ -36,6 +29,7 @@ class DocumentUpload extends Component {
       data: [],
       token: '',
       showLoading: false,
+      type: 'idCard',
       image: require('assets/images/upload.png'),
     };
   }
@@ -45,82 +39,23 @@ class DocumentUpload extends Component {
   }
 
   getProfile = async () => {
-    let data = {};
-    let payload = await getProfile();
     let response = await fetchToken();
-    return this.setState({});
-  };
-
-  formatProfileKey = key => {
-    let nLabel = key.charAt(0).toUpperCase() + key.slice(1);
-    return nLabel.replace(/([a-z])([A-Z])/g, '$1 $2');
+    return this.setState({ token: response.token });
   };
 
   showLoadingDialogue = () => this.setState({ showLoading: true });
   hideLoadingDialogue = () => this.setState({ showLoading: false });
-  handleProfileLink = () => this.props.navigation.navigate('Profile');
+  handleBackPress = () => this.props.navigation.navigate('Profile');
 
   showNotification = (type, title, message) => {
     this.hideLoadingDialogue();
     return this.dropDownAlertRef.alertWithType(type, title, message);
   };
 
-  updateProfile = async body => {
-    const { token } = this.state;
-    const settings = {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      body: JSON.stringify({ fields: [body] }),
-    };
-
-    try {
-      const response = await fetch(UpdateProfileEndpoint, settings);
-      const res = await response.json();
-      if (typeof res.data === 'undefined') {
-        return this.showNotification('error', 'Message', res.error);
-      }
-      return true;
-    } catch (error) {
-      return this.showNotification('error', 'Hello', error.toString());
-    }
-  };
-
-  handleCreateField = async body => {
-    const { token } = this.state;
-    const settings = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      body: JSON.stringify({ fields: [body] }),
-    };
-
-    try {
-      const response = await fetch(AddProfileFieldEndpoint, settings);
-      const res = await response.json();
-      if (typeof res.data === 'undefined') {
-        return this.showNotification('error', 'Message', res.error);
-      }
-      return true;
-    } catch (error) {
-      return this.showNotification('error', 'Hello', error.toString());
-    }
-  };
-
-  gotoMap = () => this.props.navigation.navigate('Map');
-  showEdit = () => this.props.navigation.navigate('Profile');
-
   launchCamera = async () => {
     const { status: cameraPerm } = await Permissions.askAsync(
       Permissions.CAMERA,
     );
-
     const { status: cameraRollPerm } = await Permissions.askAsync(
       Permissions.CAMERA_ROLL,
     );
@@ -130,15 +65,14 @@ class DocumentUpload extends Component {
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
-        // base64: true,
+        base64: true,
       });
 
       if (!pickerResult.cancelled) {
-        // this.setState({ image: { uri: pickerResult.uri } });
-        this.setState({ image: pickerResult.uri });
-        this.submitToGoogle();
+        const { uri, base64 } = pickerResult;
+        this.showLoadingDialogue();
+        return this.uploadImageToCloudinary(uri, base64);
       }
-      //this.uploadImageAsync(pickerResult.uri);
     } else {
       return this.showNotification(
         'info',
@@ -162,23 +96,17 @@ class DocumentUpload extends Component {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-      //base64: true,
+      base64: true,
     });
     if (!result.cancelled) {
       const { uri, base64 } = result;
-      //this.showLoadingDialogue();
-      // this.setState({ image: { uri } });
-      this.setState({ image: uri });
-
-      // this.submitToGoogle();
-
-      return this.uploadImage(uri, base64);
+      this.showLoadingDialogue();
+      return this.uploadImageToCloudinary(uri, base64);
     }
     return;
   };
 
-  uploadImage = async (uri, base64) => {
-    const { profileItemIds } = this.state;
+  uploadImageToCloudinary = async (uri, base64) => {
     const uriArr = uri.split('.');
     const fileType = uriArr[uriArr.length - 1];
     const file = `data:${fileType};base64,${base64}`;
@@ -204,65 +132,45 @@ class DocumentUpload extends Component {
       if (typeof res.secure_url === 'undefined') {
         return this.showNotification('error', 'Message', res.error.message);
       }
-      let data = {
-        fieldId: profileItemIds.profilePhoto,
-        value: res.secure_url,
-      };
-      // this.updateProfile(data).then(res => {
-      //   if (res) {
-      //     return this.setState({ photo: res.secure_url });
-      //   }
-      // });
+      let cloudinaryUrl = res.secure_url;
+      return this.uploadDocumentAsync(cloudinaryUrl);
     } catch (error) {
       return this.showNotification('error', 'Hello', error.toString());
     }
   };
 
-  submitToGoogle = async () => {
+  uploadDocumentAsync = async url => {
+    const { token, type } = this.state;
+    let that = this;
+    let body = JSON.stringify({ url, type });
+    const settings = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body,
+    };
+
     try {
-      //this.setState({ uploading: true });
-      let { image } = this.state;
-      let body = JSON.stringify({
-        requests: [
-          {
-            features: [
-              { type: 'FACE_DETECTION', maxResults: 5 },
-              { type: 'LOGO_DETECTION', maxResults: 5 },
-              { type: 'TEXT_DETECTION', maxResults: 5 },
-              { type: 'DOCUMENT_TEXT_DETECTION', maxResults: 5 },
-            ],
-            image: {
-              source: {
-                imageUri: image,
-              },
-            },
-          },
-        ],
-      });
-      let response = await fetch(
-        `${'https://vision.googleapis.com/v1/images:annotate?key='}${'AIzaSyDxmgYB3yO_HCeR5x8CGuG_5iL85keiMyA'}`,
-        {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-          body: body,
-        },
-      );
-      let responseJson = await response.json();
-      console.log(responseJson);
-      this.setState({
-        googleResponse: responseJson,
-        showLoading: false,
-      });
+      const response = await fetch(AddDocumentEndpoint, settings);
+      const res = await response.json();
+      if (typeof res.data === 'undefined') {
+        return this.showNotification('error', 'Message', res.error.message);
+      }
+      that.showNotification('success', 'Message', 'Success');
+      that.setState({ image: { uri: url } });
+      that.props.addDocument(res.data);
+      return setTimeout(() => {
+        // that.handleBackPress();
+      }, 3000);
     } catch (error) {
-      console.log(error);
+      return this.showNotification('error', 'Hello', error.toString());
     }
   };
 
   render() {
-    const { params, firstName, photo, showLoading, image } = this.state;
+    const { showLoading, image } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -277,15 +185,18 @@ class DocumentUpload extends Component {
           defaultContainer={styles.alert}
           ref={ref => (this.dropDownAlertRef = ref)}
         />
-        <View style={styles.editIconWrapper}>
-          <Icons
-            name={Platform.OS === 'ios' ? 'angle-left' : 'long-arrow-left'}
-            iconColor={colors.blue}
-            iconSize={25}
-            onPress={this.handleProfileLink}
-            iconStyle={styles.editIcon}
-          />
-        </View>
+        <Navbar
+          size={hp('4%')}
+          layoutSize={3}
+          leftIconName={'ios-arrow-back'}
+          rightIconName={null}
+          rightIconColor={colors.blue}
+          leftIconColor={colors.iconColor}
+          headerTitle={null}
+          leftIconOnPress={this.handleBackPress}
+          rightIconOnPress={null}
+        />
+
         <View style={styles.wrapper}>
           <View style={styles.uploadLayout}>
             <Image style={styles.imageLayout} source={image} />
@@ -294,7 +205,7 @@ class DocumentUpload extends Component {
               <Paragraph
                 styles={[styles.headerText, { paddingBottom: '6%' }]}
                 text={
-                  'Upload a non expired goverment issued identity card or passport.'
+                  'Upload a non expired goverment issued identity card or passport \n to verify your personal details \n and any utility bill or postcard \nto verify physicaal address'
                 }
               />
 
@@ -302,9 +213,8 @@ class DocumentUpload extends Component {
                 <SubmitButton
                   title={'Use Camera'}
                   onPress={this.launchCamera}
-                  // imgSrc={require('assets/images/loginIcon.png')}
                   btnStyle={styles.button}
-                  // imgStyle={styles.btnIcon}
+                  disabled={false}
                   titleStyle={[styles.buttonTxt, { color: colors.blue }]}
                 />
               </View>
@@ -334,11 +244,15 @@ class DocumentUpload extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
   return {
-    program: state.ProgramReducer.program,
+    addDocument: document => {
+      dispatch(addDocument(document));
+    },
   };
 };
 
-export default connect(mapStateToProps)(DocumentUpload);
-
-// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IisyMzQ3MDM3MzI0MzIzIiwiaWF0IjoxNTg2NjkyODYzLCJleHAiOjE1ODY2OTY0NjN9.UjJN18hRp6wf2MXJPggrNfOq3zLWOxkFBYJqaLPVLS0"
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentUpload);

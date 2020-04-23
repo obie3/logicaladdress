@@ -10,59 +10,7 @@ import {
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ecf0f1',
-  },
-  navBar: {
-    flexDirection: 'row',
-    height: Platform.OS === 'ios' ? 40 : 60,
-    backgroundColor: theme.toolBarColor,
-    width: '100%',
-    alignItems: 'center',
-    paddingBottom: 4,
-    shadowColor: theme.secondaryTextColor,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 3,
-  },
-  headerIcon: {
-    height: 18,
-    width: 18,
-    tintColor: theme.primaryColor,
-  },
-  headerLogoIcon: {
-    height: 35,
-    width: 80,
-  },
-  headerImage: {
-    borderRadius: 30,
-    height: 40,
-    width: 40,
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 8,
-  },
-  balanceTxtView: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    width: '50%',
-  },
-  nameView: {
-    flexDirection: 'row',
-    width: '70%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  txtHeader: {
-    fontSize: 18,
-    color: theme.primaryTextColor,
-    marginLeft: 16,
-    alignSelf: 'center',
-    fontFamily: theme.secondaryFont,
+    //backgroundColor: '#ecf0f1',
   },
 
   profileRowItem: {
@@ -74,24 +22,20 @@ export default styles = StyleSheet.create({
   },
 
   flatListItem: {
-    backgroundColor: '#ecf0f1',
+    //backgroundColor: '#ecf0f1',
     justifyContent: 'space-around',
     paddingLeft: wp('10%'),
     paddingRight: wp('10%'),
-
     flexDirection: 'row',
     width: wp('100%'),
-
     height: hp('8%'),
-    //borderRadius: 52 / 2,
-    // borderColor: colors.backgroundColor,
     borderWidth: 0,
   },
 
   flatListText: {
-    fontFamily: theme.inputHintFont,
+    fontFamily: theme.secondaryFont,
     fontSize: hp('2.5%'),
-    color: colors.blue,
+    color: theme.primaryTextColor,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -104,7 +48,6 @@ export default styles = StyleSheet.create({
     borderColor: theme.primaryColor,
     justifyContent: 'center',
     alignItems: 'center',
-    //...elevation,
     backgroundColor: theme.colorAccent,
   },
 
@@ -117,6 +60,7 @@ export default styles = StyleSheet.create({
 
   btnView: {
     ...theme.buttonView,
+    marginBottom: hp('2%'),
   },
 
   buttonWithImage: {
@@ -136,7 +80,18 @@ export default styles = StyleSheet.create({
 
   hrLine: {
     width: '100%',
-    borderBottomWidth: 2,
-    borderBottomColor: 'white',
+    borderBottomWidth: hp('0.09%'),
+    borderBottomColor: colors.primaryTextColor,
+  },
+
+  introMessage: {
+    textAlign: 'center',
+    fontFamily: theme.secondaryFont,
+    fontSize: theme.SmallFont,
+    color: theme.primaryTextColor,
+  },
+
+  flatListLayout: {
+    flex: 1,
   },
 });

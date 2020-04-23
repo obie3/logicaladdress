@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingLeft: wp('2%'),
-    paddingRight: wp('2%'),
+    paddingLeft: wp('4%'),
+    paddingRight: wp('4%'),
 
     shadowColor: theme.secondaryTextColor,
     shadowOffset: {
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 2,
-    elevation: 1,
+    elevation: 0,
   },
 
   nameView: {

@@ -19,7 +19,7 @@ import {
 
 const BottomTab = createBottomTabNavigator(
   {
-    DashBoard: {
+    Dashboard: {
       screen: Dashboard,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (

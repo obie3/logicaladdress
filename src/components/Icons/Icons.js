@@ -3,7 +3,6 @@ import { PropTypes } from 'prop-types';
 import colors from 'assets/colors';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons';
-//import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class Icons extends Component {
   render() {
@@ -38,7 +37,6 @@ export default class Icons extends Component {
 Icons.propTypes = {
   disabled: PropTypes.bool,
   handleNextButton: PropTypes.func,
-  //onPress: PropTypes.func.isRequired,
   style: PropTypes.object,
 };
 

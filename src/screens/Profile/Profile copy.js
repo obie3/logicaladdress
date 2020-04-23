@@ -449,7 +449,7 @@ class Dashboard extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    program: state.ProgramReducer.program,
+    // program: state.ProgramReducer.program,
   };
 };
 

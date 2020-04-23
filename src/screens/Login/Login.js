@@ -11,13 +11,7 @@ import {
   Platform,
   Animated,
 } from 'react-native';
-import {
-  InputField,
-  SubmitButton,
-  Preloader,
-  Logo,
-  Paragraph,
-} from 'components';
+import { InputField, SubmitButton, Preloader, Paragraph } from 'components';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL } from './styles';
 import {
   isEmpty,

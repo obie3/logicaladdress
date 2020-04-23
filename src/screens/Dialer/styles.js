@@ -19,9 +19,9 @@ export default styles = StyleSheet.create({
   },
 
   fieldLabel: {
-    fontFamily: theme.inputHintFont,
+    fontFamily: theme.secondaryFont,
     fontSize: hp('3%'),
-    color: colors.blue,
+    color: theme.primaryTextColor,
   },
 
   profileRowItem: {
@@ -91,8 +91,9 @@ export default styles = StyleSheet.create({
   },
 
   requestMessage: {
-    fontSize: hp('3%'),
-    color: colors.blue,
+    fontSize: hp('2.5%'),
+    color: theme.primaryTextColor,
+    fontFamily: theme.secondaryFont,
     textAlign: 'center',
     justifyContent: 'center',
     marginBottom: hp('4%'),
@@ -114,8 +115,9 @@ export default styles = StyleSheet.create({
   },
 
   inputTextStyle: {
-    fontSize: hp('5%'),
-    color: colors.blue,
+    fontSize: hp('4%'),
+    fontFamily: theme.secondaryFont,
+    color: theme.primaryTextColor,
     textAlign: 'center',
     justifyContent: 'center',
   },

@@ -3,7 +3,14 @@ import React, { Component } from 'react';
 import { View, SafeAreaView, StatusBar, Platform } from 'react-native';
 import { Logo } from 'components';
 import styles from './styles';
-import { fetchToken, ProfileEndpoint, saveToLocalStorage } from 'utils';
+import {
+  fetchToken,
+  ProfileEndpoint,
+  saveToLocalStorage,
+  GetDocumentsEndpoint,
+  FetchProfileField,
+  ConnectionRequestEndpoint,
+} from 'utils';
 import {
   Placeholder,
   PlaceholderMedia,
@@ -12,8 +19,11 @@ import {
 } from 'rn-placeholder';
 import DropdownAlert from 'react-native-dropdownalert';
 import colors from 'assets/colors';
+import { connect } from 'react-redux';
+import { setProfile, setProfileFieldNames } from 'redux/actions/ProfileActions';
+import { setDocument } from 'redux/actions/DocumentActions';
 
-export default class Loader extends Component {
+class Loader extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,14 +39,14 @@ export default class Loader extends Component {
 
   getProfile = async () => {
     let response = await fetchToken();
-    if (response.token) this.getRemoteProfile(response.token);
+    if (response.token) this.getRemoteProfileandDocumentsAsync(response.token);
   };
 
   showNotification = (type, title, message) => {
     return this.dropDownAlertRef.alertWithType(type, title, message);
   };
 
-  getRemoteProfile = async token => {
+  getRemoteProfileandDocumentsAsync = token => {
     const settings = {
       method: 'GET',
       headers: {
@@ -46,35 +56,50 @@ export default class Loader extends Component {
       },
     };
 
-    //console.log({token})
+    const profileRequest = fetch(ProfileEndpoint, settings);
+    const documentRequest = fetch(GetDocumentsEndpoint, settings);
+    const profileFieldNameRequest = fetch(FetchProfileField, settings);
+    const connectionsRequest = fetch(ConnectionRequestEndpoint, settings);
 
-    try {
-      const response = await fetch(ProfileEndpoint, settings);
+    Promise.all([
+      profileRequest,
+      documentRequest,
+      profileFieldNameRequest,
+      connectionsRequest,
+    ])
+      .then(value => Promise.all(value.map(value => value.json())))
+      .then(serverResponse => {
+        let profileResponse = serverResponse[0].data,
+          documentsResponse = serverResponse[1],
+          profileFieldNameResponse = serverResponse[2].data,
+          connectionsRequestResponse = serverResponse[3];
+        //console.log(token);
 
-      const res = await response.json();
-      //console.log({res})
-      if (typeof res.data === 'undefined') {
-        return this.showNotification('error', 'Message', res.error);
-      }
-      let data = { params: {} };
-      data.params['LogicalAddress'] = res.data.logicalAddress;
-      data.params['isVerified'] = res.data.profileFields[0].isVerified;
-      data.params['profileData'] = res.data.profileFields;
-      data.params['userId'] = res.data.id;
+        let data = { params: {} };
+        data.params['LogicalAddress'] = profileResponse.logicalAddress;
+        data.params['isVerified'] = profileResponse.profileFields[0].isVerified;
+        data.params['profileData'] = profileResponse.profileFields;
+        data.params['userId'] = profileResponse.id;
 
-      res.data.profileFields.map(profile => {
-        let value = profile.value;
-        if (profile.key === 'phone') {
-          let phone = profile.value.substring(4);
-          value = `${'0'}${phone}`;
-        }
-        data.params[profile.key] = value;
-      });
-      await saveToLocalStorage(null, null, null, data);
-      return this.props.navigation.navigate('App');
-    } catch (error) {
-      return this.showNotification('error', 'Hello', error.toString());
-    }
+        profileResponse.profileFields.map(profile => {
+          let value = profile.value;
+          if (profile.key === 'phone') {
+            let phone = profile.value.substring(4);
+            value = `${'0'}${phone}`;
+          }
+          data.params[profile.key] = value;
+        });
+        saveToLocalStorage(null, null, null, data);
+        this.props.setData(
+          profileResponse,
+          documentsResponse,
+          profileFieldNameResponse,
+        );
+        return this.props.navigation.navigate('App');
+      })
+      .catch(error =>
+        this.showNotification('error', 'Hello', error.toString()),
+      );
   };
 
   render() {
@@ -123,15 +148,23 @@ export default class Loader extends Component {
             </Placeholder>
           </View>
         </View>
-        {/* <Modal
-            animationType={'fase'}
-            transparent={true}
-            onRequestClose={() => {}}
-            visible={true}
-          >
-            <View style={styles.overlay}></View>
-          </Modal> */}
       </SafeAreaView>
     );
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setData: (profile, documents, profileFieldNames) => {
+      dispatch(setProfile(profile));
+      dispatch(setDocument(documents));
+      dispatch(setProfileFieldNames(profileFieldNames));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Loader);

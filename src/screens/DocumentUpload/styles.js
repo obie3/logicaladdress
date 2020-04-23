@@ -1,12 +1,15 @@
 import { StyleSheet } from 'react-native';
 import theme from 'assets/theme';
 import colors from 'assets/colors';
-import Constants from 'expo-constants';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 export default styles = StyleSheet.create({
   container: {
     ...theme.container,
-    // backgroundColor: colors.blue,
+    //backgroundColor: colors.blue,
     justifyContent: 'center',
     alignContent: 'center',
   },
@@ -16,13 +19,12 @@ export default styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     justifyContent: 'center',
-    backgroundColor: 'green',
   },
 
   uploadLayout: {
-    flex: 2,
-    paddingLeft: 20,
-    paddingRight: 20,
+    flex: 3,
+    paddingLeft: wp('5%'),
+    paddingRight: wp('5%'),
     alignItems: 'center',
     justifyContent: 'space-around',
   },
@@ -41,22 +43,18 @@ export default styles = StyleSheet.create({
   },
 
   headerText: {
-    fontFamily: theme.inputHintFont,
-    color: colors.blue, //colors.headerFontColor,
-    fontWeight: 'bold',
+    fontFamily: theme.secondaryFont,
+    color: theme.primaryTextColor,
     paddingLeft: '2%',
     paddingRight: '2%',
-    //paddingBottom : '4%',
     textAlign: 'center',
-    fontSize: theme.headerThreeFont,
-    backgroundColor: 'transparent',
-    textAlign: 'center',
+    fontSize: theme.SmallFont,
   },
 
   button: {
     ...theme.button,
     width: '100%',
-    height: '100%',
+    height: '80%',
     marginTop: '2%',
     borderColor: 'white',
     borderWidth: 1,
@@ -69,14 +67,14 @@ export default styles = StyleSheet.create({
   button2: {
     ...theme.button,
     width: '100%',
-    height: '30%',
+    height: '35%',
     marginTop: '2%',
     //borderWidth: 1,
     borderRadius: 6,
   },
 
   buttonTxt: {
-    fontFamily: theme.headerFont,
+    fontFamily: theme.secondaryFont,
     color: theme.colorAccent,
     fontSize: theme.SmallFont,
     alignContent: 'center',
@@ -126,24 +124,5 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-  },
-
-  tabView: {
-    flex: 1,
-    //padding: 10,
-    //height: 20,
-    backgroundColor: 'rgba(0,0,0,0.01)',
-  },
-
-  card: {
-    flex: 1,
-    borderWidth: 1,
-    backgroundColor: 'black',
-    // shadowColor: '#ccc',
-    // shadowOffset: { width: 2, height: 2 },
-    // shadowOpacity: 0.5,
-    // shadowRadius: 3,
-    borderWidth: 0,
-    justifyContent: 'center',
   },
 });

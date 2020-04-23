@@ -10,10 +10,10 @@ import {
   zoomIn,
   zoomOut,
 } from 'react-navigation-transitions';
-import Home from '../screens/Home';
+import Home from 'screens/Home';
 import Register from 'screens/Register';
 import Logout from 'screens/Logout';
-import Login from '../screens/Login';
+import Login from 'screens/Login';
 import ContactTracing from 'screens/ContactTracing';
 import VerificationScreen from 'screens/Verification/VerificationScreen';
 import Dashboard from 'screens/Dashboard';
@@ -26,6 +26,8 @@ import Loader from 'screens/Loader/Loader';
 import DocumentUpload from 'screens/DocumentUpload/DocumentUpload';
 import Dialer from 'screens/Dialer/Dialer';
 import SelectFields from 'screens/SelectFields/SelectFields';
+import ContactLists from 'screens/ContactLists/ContactLists';
+import DocumentLists from 'screens/DocumentLists/DocumentLists';
 
 const handleCustomTransition = ({ scenes }) => {
   const prevScene = scenes[scenes.length - 2];
@@ -161,6 +163,20 @@ export const AppStack = createStackNavigator(
 
     SelectFields: {
       screen: SelectFields,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    ContactLists: {
+      screen: ContactLists,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    DocumentLists: {
+      screen: DocumentLists,
       navigationOptions: {
         header: null,
       },
