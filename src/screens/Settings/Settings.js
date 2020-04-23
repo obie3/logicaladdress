@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
+import { View, SafeAreaView, StatusBar } from 'react-native';
 import { Paragraph, Icons } from 'components';
 import styles from './styles';
 import colors from 'assets/colors';
@@ -18,6 +18,7 @@ export default class Settings extends Component {
   showContactTracingPage = () =>
     this.props.navigation.navigate('ContactTracing');
   handleBackPress = () => this.props.navigation.goBack();
+  handleLogoutPress = () => this.props.navigation.navigate('Logout');
 
   render() {
     return (
@@ -65,7 +66,7 @@ export default class Settings extends Component {
           <View style={styles.logoutLayout}>
             <Icons
               disabled={false}
-              onPress={() => console.log('logout pressed')}
+              onPress={this.handleLogoutPress}
               name={'ios-log-out'}
               iconStyle={styles.buttonStyle}
               iconColor={'#7f8c8d'}

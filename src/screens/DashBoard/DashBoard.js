@@ -2,19 +2,15 @@
 import React, { Component } from 'react';
 import { View, SafeAreaView, StatusBar, Platform } from 'react-native';
 import { Paragraph, Icons } from 'components';
-import { getProfile, fetchToken } from 'utils';
+import { fetchToken } from 'utils';
 import styles from './styles';
-import { connect } from 'react-redux';
 import colors from 'assets/colors';
 import DropdownAlert from 'react-native-dropdownalert';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import CustomTabBar from '../CustomTab';
 import ContactLists from '../ContactLists';
 import Permissions from '../Permissions';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -22,7 +18,6 @@ class Dashboard extends Component {
     this.state = {
       data: [],
       token: '',
-      showLoading: false,
       title: '',
     };
   }
@@ -32,24 +27,19 @@ class Dashboard extends Component {
   }
 
   getProfile = async () => {
-    let payload = await getProfile();
     let response = await fetchToken();
     return this.setState({
       token: response.token,
     });
   };
 
-  showLoadingDialogue = () => this.setState({ showLoading: true });
-  hideLoadingDialogue = () => this.setState({ showLoading: false });
-  handleProfileLink = () => this.props.navigation.navigate('Profile');
   showSettingspage = () => this.props.navigation.navigate('Settings');
+  showDialer = () => this.props.navigation.navigate('Dialer');
 
   showNotification = (type, title, message) => {
     this.hideLoadingDialogue();
     return this.dropDownAlertRef.alertWithType(type, title, message);
   };
-
-  showDialer = () => this.props.navigation.navigate('Dialer');
 
   _updateTitle(obj) {
     const { i } = obj;
@@ -68,7 +58,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { showLoading, data } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -121,10 +110,4 @@ class Dashboard extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    //program: state.ProgramReducer.program,
-  };
-};
-
-export default connect(mapStateToProps)(Dashboard);
+export default Dashboard;
