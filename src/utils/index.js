@@ -12,7 +12,7 @@ const GetDocumentsEndpoint = `${ENDPOINT}credentials`;
 const RequestConnectionEndpoint = `${ENDPOINT}permissions/requests`;
 const PermissionsEndpoint = `${ENDPOINT}permissions`;
 const FetchConnectionRequestEndpoint = `${ENDPOINT}permissions/requests`;
-const LookUpLogicalAddress = `${ENDPOINT}lookup/`;
+const LookupLogicalAddressEndpoint = `${ENDPOINT}lookup/`;
 
 export {
   generateOTPEndpoint,
@@ -26,7 +26,7 @@ export {
   GetDocumentsEndpoint,
   RequestConnectionEndpoint,
   PermissionsEndpoint,
-  LookUpLogicalAddress,
+  LookupLogicalAddressEndpoint,
   FetchConnectionRequestEndpoint,
 };
 

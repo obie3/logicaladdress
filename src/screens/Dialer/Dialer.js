@@ -12,6 +12,7 @@ import { Paragraph, Line, Icons, Navbar, Preloader } from 'components';
 import styles from './styles';
 import colors from 'assets/colors';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { LookupLogicalAddressEndpoint, fetchToken } from 'utils';
 import DropdownAlert from 'react-native-dropdownalert';
 
 const NUMBERS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
@@ -21,7 +22,6 @@ export default class Dialer extends Component {
     super(props);
     this.state = {
       value: 0,
-      token: '',
       logicalAddress: '',
       isDisabled: true,
       status: true,
@@ -81,10 +81,13 @@ export default class Dialer extends Component {
 
   handleBackPress = () => this.props.navigation.navigate('Navigations');
   onDialPress = async () => {
-    const { logicalAddress, token } = this.state;
+    this.showLoadingDialogue();
+    let res = await fetchToken();
+    let token = res.token;
+    const { logicalAddress } = this.state;
     let params = { token, logicalAddress };
     const settings = {
-      method: 'POST',
+      method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
