@@ -6,7 +6,7 @@ import {
   Platform,
 } from 'react-native';
 import React, { useState, memo, useEffect } from 'react';
-import { Paragraph, SubmitButton, Preloader, BackIcon } from 'components';
+import { Paragraph, SubmitButton, Preloader, Icons } from 'components';
 import CountDown from 'react-native-countdown-component';
 import colors from 'assets/colors';
 import WomanSvg from './WomanSvg';
@@ -16,7 +16,6 @@ import {
   saveToken,
   VerifyOTPEndpoint,
   generateOTPEndpoint,
-  RegistrationEndpoint,
   logout,
 } from 'utils';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -223,45 +222,6 @@ const VerificationScreen = ({ navigation }) => {
     return setStartTimer(false);
   };
 
-  let completeRegistration = async token => {
-    let nName = params.name.replace(/\b./g, function(m) {
-      return m.toUpperCase();
-    });
-    let name = nName.split(' ');
-    let defaultParams = {
-      firstName: name[0],
-      email: params.email ? params.email : '',
-    };
-    let body =
-      name.length == 2
-        ? { ...defaultParams, lastName: name[1] }
-        : { ...defaultParams, lastName: name[2], middleName: name[1] };
-
-    const settings = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        TempAuthorization: token,
-      },
-      body: JSON.stringify(body),
-    };
-
-    try {
-      const response = await fetch(RegistrationEndpoint, settings);
-      const res = await response.json();
-      if (typeof res.data === 'undefined') {
-        return showNotification('error', 'Message', res.error);
-      }
-      await saveToken(res.data.token);
-      hideLoadingDialogue();
-      return navigation.navigate('OnBoarding');
-      //return getProfile(result);
-    } catch (error) {
-      return showNotification('error', 'Hello', error.toString());
-    }
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -276,7 +236,16 @@ const VerificationScreen = ({ navigation }) => {
         defaultContainer={styles.alert}
         ref={ref => (dropDownAlertRef = ref)}
       />
-      <BackIcon onPress={handleBackPress} />
+
+      <View style={styles.navBar}>
+        <Icons
+          name={'ios-arrow-back'}
+          iconStyle={styles.backView}
+          iconColor={colors.blue}
+          iconSize={20}
+          onPress={handleBackPress}
+        />
+      </View>
       <View style={styles.textView}>
         <Paragraph
           text={' Verification Code Sent'}

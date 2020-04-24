@@ -10,7 +10,9 @@ const FetchProfileField = `${ENDPOINT}profile/fields`;
 const AddDocumentEndpoint = `${ENDPOINT}credentials`;
 const GetDocumentsEndpoint = `${ENDPOINT}credentials`;
 const RequestConnectionEndpoint = `${ENDPOINT}permissions/requests`;
-const ConnectionRequestEndpoint = `${ENDPOINT}permissions/requests`;
+const PermissionsEndpoint = `${ENDPOINT}permissions`;
+const FetchConnectionRequestEndpoint = `${ENDPOINT}permissions/requests`;
+const LookUpLogicalAddress = `${ENDPOINT}lookup/`;
 
 export {
   generateOTPEndpoint,
@@ -23,7 +25,9 @@ export {
   AddDocumentEndpoint,
   GetDocumentsEndpoint,
   RequestConnectionEndpoint,
-  ConnectionRequestEndpoint,
+  PermissionsEndpoint,
+  LookUpLogicalAddress,
+  FetchConnectionRequestEndpoint,
 };
 
 export const isEmailValid = email => {
@@ -112,7 +116,3 @@ export const getExpoToken = async () => {
     }
   });
 };
-
-/// fix splash screen for dashboard
-/// fix mult role for users,
-// switch not updating

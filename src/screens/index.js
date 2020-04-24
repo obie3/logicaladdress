@@ -15,6 +15,7 @@ import ContactLists from './ContactList';
 import Permissions from './Permissions';
 import Permissions from './Permissions';
 import DocumentLists from './DocumentLists';
+import ConnectionRequests from './ConnectionRequests';
 
 export default {
   ForgetPassword,
@@ -37,4 +38,5 @@ export default {
   ContactLists,
   Permissions,
   DocumentLists,
+  ConnectionRequests,
 };

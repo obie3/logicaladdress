@@ -1,20 +1,16 @@
 'use strict';
 import React, { Component } from 'react';
 import { View, SafeAreaView, FlatList, Image, ScrollView } from 'react-native';
-import { Paragraph, Line, Verified, Preloader } from 'components';
-import { getProfile, fetchToken } from 'utils';
+import { Paragraph, Line, Preloader } from 'components';
+import { fetchToken } from 'utils';
 import styles from './styles';
 import { connect } from 'react-redux';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 
 class Permissions extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      data: this.props.permissions,
       token: '',
       showLoading: false,
     };
@@ -25,7 +21,6 @@ class Permissions extends Component {
   }
 
   getProfile = async () => {
-    let payload = await getProfile();
     let response = await fetchToken();
     return this.setState({
       // params: res,
@@ -47,7 +42,6 @@ class Permissions extends Component {
   };
 
   renderRow = ({ item }) => {
-    let label = this.formatProfileKey(item.key);
     const { isVerified, value } = item;
     return (
       <View style={styles.profileRowItem}>
@@ -55,9 +49,9 @@ class Permissions extends Component {
           <Paragraph text={label} styles={styles.fieldLabel} />
           <Paragraph text={value} styles={styles.nameText} />
         </View>
-        <View style={styles.editIconLayout}>
+        {/* <View style={styles.editIconLayout}>
           {isVerified ? <Verified layoutSize={30} size={20} /> : null}
-        </View>
+        </View> */}
         <Line />
       </View>
     );
@@ -106,7 +100,7 @@ class Permissions extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    //program: state.ProgramReducer.program,
+    permissions: state.PermissionReducer.permissions,
   };
 };
 

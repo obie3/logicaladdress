@@ -220,7 +220,7 @@ export default class Map extends Component {
         />
         <View style={styles.navBar}>
           <Icons
-            name={Platform.OS === 'ios' ? 'angle-left' : 'long-arrow-left'}
+            name={'ios-arrow-back'}
             iconStyle={styles.backView}
             iconColor={colors.blue}
             iconSize={20}

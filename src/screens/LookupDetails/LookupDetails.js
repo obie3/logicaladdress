@@ -4,11 +4,7 @@ import { View, SafeAreaView, StatusBar } from 'react-native';
 import { Paragraph, Icons } from 'components';
 import styles from './styles';
 import colors from 'assets/colors';
-import { logout } from 'utils';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default class Settings extends Component {
   constructor(props) {

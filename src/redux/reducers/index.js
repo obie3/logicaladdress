@@ -4,6 +4,8 @@ import DocumentReducer from './DocumentReducer';
 import ProfileReducer from './ProfileReducer';
 import LoginReducer from './LoginReducer';
 import ContactReducer from './ContactReducer';
+import PermissionReducer from './PermissionReducer';
+import ConnectionRequestReducer from './ConnectionRequestReducer';
 
 export default rootReducer = combineReducers({
   AuthReducer,
@@ -11,4 +13,6 @@ export default rootReducer = combineReducers({
   LoginReducer,
   DocumentReducer,
   ContactReducer,
+  PermissionReducer,
+  ConnectionRequestReducer,
 });

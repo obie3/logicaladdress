@@ -3,6 +3,8 @@ import ProfileActions from './ProfileActions';
 import LoginActions from './LoginActions';
 import DocumentActions from './DocumentActions';
 import ContactActions from './ContactActions';
+import PermissionActions from './PermissionActions';
+import ConnectionRequestActions from './ConnectionRequestActions';
 
 export default {
   AuthActions,
@@ -10,4 +12,6 @@ export default {
   LoginActions,
   DocumentActions,
   ContactActions,
+  PermissionActions,
+  ConnectionRequestActions,
 };

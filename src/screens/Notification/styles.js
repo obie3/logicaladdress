@@ -11,7 +11,7 @@ export default styles = StyleSheet.create({
     ...theme.container,
     justifyContent: 'flex-start',
     alignContent: 'center',
-    backgroundColor: '#ccc',
+    backgroundColor: '#ecf0f1',
   },
 
   navBg: {
@@ -39,22 +39,22 @@ export default styles = StyleSheet.create({
 
   wrapper: {
     flex: 1,
-    marginTop: hp('3%'),
+    //marginTop: hp('3%'),
     paddingRight: wp('3%'),
     paddingLeft: wp('3%'),
   },
 
   cardLayout: {
-    height: hp('8%'),
+    flexDirection: 'column',
     backgroundColor: colors.white,
     elevation: 2,
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     shadowOffset: { height: 1, width: 0 },
+    marginTop: hp('1%'),
   },
 
-  cardContent: {
-    flex: 1,
+  cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingRight: wp('3%'),
@@ -64,8 +64,27 @@ export default styles = StyleSheet.create({
 
   cardText: {
     fontFamily: theme.secondaryFont,
-    color: '#95a5a6',
+    color: colors.label,
     fontSize: theme.smallFont,
+  },
+
+  messageLayout: {
+    paddingRight: wp('4%'),
+    paddingLeft: wp('4%'),
+    paddingBottom: wp('4%'),
+  },
+
+  messageTitle: {
+    fontFamily: theme.secondaryFont,
+    fontSize: theme.headerThreeFont,
+    color: theme.primaryTextColor,
+  },
+
+  messageBody: {
+    fontFamily: theme.secondaryFont,
+    fontSize: theme.smallFont,
+    color: theme.primaryTextColor,
+    textAlign: 'justify',
   },
 
   buttonStyle: {
