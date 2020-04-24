@@ -62,7 +62,8 @@
     "reanimated-bottom-sheet": "^1.0.0-alpha.19",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "rn-placeholder": "^3.0.0"
+    "rn-placeholder": "^3.0.0",
+    "rn-sliding-up-panel": "^2.4.0"
   },
   "husky": {
     "hooks": {

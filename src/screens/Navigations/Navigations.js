@@ -1,17 +1,12 @@
 'use strict';
 import React from 'react';
-import { Image } from 'react-native';
 import colors from 'assets/colors';
 import theme from 'assets/theme';
 import Dashboard from '../Dashboard';
 import Profile from '../Profile';
+import Notification from '../Notification';
 import { Icons } from 'components';
-import {
-  createDrawerNavigator,
-  createAppContainer,
-  createStackNavigator,
-  createBottomTabNavigator,
-} from 'react-navigation';
+import { createAppContainer, createBottomTabNavigator } from 'react-navigation';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -48,7 +43,7 @@ const BottomTab = createBottomTabNavigator(
     },
 
     Notification: {
-      screen: Dashboard,
+      screen: Notification,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
           <Icons

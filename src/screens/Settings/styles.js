@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import colors from 'assets/colors';
 import theme from 'assets/theme';
 import {
@@ -11,7 +11,7 @@ export default styles = StyleSheet.create({
     ...theme.container,
     justifyContent: 'flex-start',
     alignContent: 'center',
-    backgroundColor: '#ccc',
+    backgroundColor: '#ecf0f1',
   },
 
   navBg: {

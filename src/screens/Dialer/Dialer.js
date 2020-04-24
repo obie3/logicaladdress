@@ -8,13 +8,11 @@ import {
   TouchableOpacity,
   BackHandler,
 } from 'react-native';
-import { Paragraph, Line, Icons, Navbar } from 'components';
+import { Paragraph, Line, Icons, Navbar, Preloader } from 'components';
 import styles from './styles';
 import colors from 'assets/colors';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import DropdownAlert from 'react-native-dropdownalert';
 
 const NUMBERS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
 let tempAddress = [];
@@ -27,6 +25,7 @@ export default class Dialer extends Component {
       logicalAddress: '',
       isDisabled: true,
       status: true,
+      showLoading: false,
     };
   }
 
@@ -81,14 +80,36 @@ export default class Dialer extends Component {
   };
 
   handleBackPress = () => this.props.navigation.navigate('Navigations');
-
-  onDialPress = () => {
+  onDialPress = async () => {
     const { logicalAddress, token } = this.state;
-    let params = {
-      token: token,
-      logicalAddress: logicalAddress,
+    let params = { token, logicalAddress };
+    const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
     };
-    return this.props.navigation.navigate('SelectFields', { params });
+
+    try {
+      const response = await fetch(
+        `${LookupLogicalAddressEndpoint}${logicalAddress}`,
+        settings,
+      );
+      const res = await response.json();
+      if (typeof res.data === 'undefined') {
+        this.hideLoadingDialogue();
+        return this.showNotification('error', 'Message', res.message);
+      } else if (res.data.length > 0) {
+        this.hideLoadingDialogue();
+        return this.props.navigation.navigate('LookupDetails', { params });
+      }
+      this.hideLoadingDialogue();
+      return this.props.navigation.navigate('SelectFields', { params });
+    } catch (error) {
+      return this.showNotification('error', 'Hello', error.toString());
+    }
   };
 
   renderRow = ({ item }) => {
@@ -112,7 +133,7 @@ export default class Dialer extends Component {
   };
 
   render() {
-    const { logicalAddress, isDisabled, status } = this.state;
+    const { logicalAddress, isDisabled, status, showLoading } = this.state;
     return (
       <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
         <StatusBar
@@ -121,6 +142,12 @@ export default class Dialer extends Component {
           backgroundColor={colors.blue}
           translucent={false}
           networkActivityIndicatorVisible={true}
+        />
+
+        <DropdownAlert
+          duration={5}
+          defaultContainer={styles.alert}
+          ref={ref => (this.dropDownAlertRef = ref)}
         />
 
         <Navbar
@@ -132,9 +159,7 @@ export default class Dialer extends Component {
           leftIconColor={colors.iconColor}
           headerTitle={null}
           leftIconOnPress={this.handleBackPress}
-          rightIconOnPress={() => {
-            console.log('hello...');
-          }}
+          rightIconOnPress={() => {}}
         />
 
         <View style={{ height: hp('25%'), justifyContent: 'center' }}>
@@ -153,13 +178,14 @@ export default class Dialer extends Component {
               <Icons
                 name={'ios-backspace'}
                 iconStyle={styles.deleteIcon}
-                iconColor={colors.blue}
+                iconColor={colors.label}
                 iconSize={hp('4%')}
                 onPress={this.onDeletePress}
                 disabled={status}
               />
             </View>
           </View>
+          {/* <View style={styles.hrLine}/> */}
           <View style={styles.dialerLayout}>
             <FlatList
               extraData={this.state}
@@ -171,6 +197,7 @@ export default class Dialer extends Component {
               showsVerticalScrollIndicator={false}
             />
           </View>
+          <Preloader modalVisible={showLoading} animationType='fade' />
           <View style={styles.dialIconLayout}>
             <Icons
               name={'ios-call'}

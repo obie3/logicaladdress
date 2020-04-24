@@ -9,8 +9,8 @@ import {
   saveToLocalStorage,
   GetDocumentsEndpoint,
   FetchProfileField,
-  ConnectionRequestEndpoint,
-  logout,
+  PermissionsEndpoint,
+  FetchConnectionRequestEndpoint,
 } from 'utils';
 import {
   Placeholder,
@@ -21,8 +21,10 @@ import {
 import DropdownAlert from 'react-native-dropdownalert';
 import colors from 'assets/colors';
 import { connect } from 'react-redux';
+import { setConnectionRequests } from 'redux/actions/ConnectionRequestActions';
 import { setProfile, setProfileFieldNames } from 'redux/actions/ProfileActions';
 import { setDocument } from 'redux/actions/DocumentActions';
+import { setPermissions } from 'redux/actions/PermissionActions';
 
 class Loader extends Component {
   constructor(props) {
@@ -60,20 +62,26 @@ class Loader extends Component {
     const profileRequest = fetch(ProfileEndpoint, settings);
     const documentRequest = fetch(GetDocumentsEndpoint, settings);
     const profileFieldNameRequest = fetch(FetchProfileField, settings);
-    const connectionsRequest = fetch(ConnectionRequestEndpoint, settings);
+    const permissionsRequests = fetch(PermissionsEndpoint, settings);
+    const fetchConnectionRequests = fetch(
+      FetchConnectionRequestEndpoint,
+      settings,
+    );
 
     Promise.all([
       profileRequest,
       documentRequest,
       profileFieldNameRequest,
-      connectionsRequest,
+      permissionsRequests,
+      fetchConnectionRequests,
     ])
       .then(value => Promise.all(value.map(value => value.json())))
       .then(serverResponse => {
         let profileResponse = serverResponse[0].data,
           documentsResponse = serverResponse[1],
           profileFieldNameResponse = serverResponse[2].data,
-          connectionsRequestResponse = serverResponse[3];
+          permissionsResponse = serverResponse[3],
+          connectionRequestResponse = serverResponse[4];
 
         let data = { params: {} };
         data.params['LogicalAddress'] = profileResponse.logicalAddress;
@@ -94,6 +102,8 @@ class Loader extends Component {
           profileResponse,
           documentsResponse,
           profileFieldNameResponse,
+          permissionsResponse,
+          connectionRequestResponse,
         );
         return this.props.navigation.navigate('App');
       })
@@ -159,10 +169,18 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setData: (profile, documents, profileFieldNames) => {
+    setData: (
+      profile,
+      documents,
+      profileFieldNames,
+      permissionsResponse,
+      connectionRequestResponse,
+    ) => {
       dispatch(setProfile(profile));
       dispatch(setDocument(documents));
       dispatch(setProfileFieldNames(profileFieldNames));
+      dispatch(setPermissions(permissionsResponse));
+      dispatch(setConnectionRequests(connectionRequestResponse));
     },
   };
 };

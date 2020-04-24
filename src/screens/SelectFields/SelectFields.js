@@ -40,7 +40,7 @@ class SelectFields extends Component {
   handleBackPress = () => this.props.navigation.goBack();
 
   showNotification = (type, title, message) => {
-    this.hideLoadingDialogue = () => this.setState({ showLoading: false });
+    this.hideLoadingDialogue();
     return this.dropDownAlertRef.alertWithType(type, title, message);
   };
 
@@ -221,4 +221,3 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default connect(mapStateToProps)(SelectFields);
-// 6966038855

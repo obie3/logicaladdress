@@ -241,32 +241,6 @@ export default class Register extends Component {
     } catch (error) {
       return this.showNotification('error', 'Hello', error.toString());
     }
-
-    // let body = {
-    //   action: 'auth',
-    //   contact: phone,
-    // }
-    // const settings = {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(body),
-    // };
-
-    // try {
-    //   const response = await fetch(generateOTPEndpoint, settings);
-    //   const res = await response.json();
-    //   if (typeof res.data === 'undefined') {
-    //     return this.showNotification('error', 'Message', res.meta.message);
-    //   }
-    //   await saveToLocalStorage(name, email, phone);
-    //   this.hideLoadingDialogue();
-    //   return this.props.navigation.navigate('OnBoarding');
-    // } catch (error) {
-    //   return this.showNotification('error', 'Hello', error.toString());
-    // }
   };
 
   render() {
@@ -404,24 +378,11 @@ export default class Register extends Component {
               title={'Submit'}
               disabled={!this.toggleButtonState()}
               onPress={this.formValidation}
-              imgSrc={require('assets/images/add_peopl.png')}
               btnStyle={styles.buttonWithImage}
               imgStyle={styles.iconDoor}
               titleStyle={styles.buttonTxt}
             />
 
-            {/* <View style={styles.signupLinkView}>
-              <Paragraph
-                text={'Already have an Account? '}
-                styles={styles.signupText}
-                onPress={this.handleLoginRoute}
-              />
-              <Paragraph
-                text={'Log In'}
-                styles={styles.createAccount}
-                onPress={this.handleLoginRoute}
-              />
-            </View> */}
             <Preloader modalVisible={showLoading} animationType='fade' />
           </View>
         </KeyboardAvoidingView>

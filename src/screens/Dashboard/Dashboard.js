@@ -10,6 +10,8 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import CustomTabBar from '../CustomTab';
 import ContactLists from '../ContactLists';
 import Permissions from '../Permissions';
+import ConnectionRequests from '../ConnectionRequests';
+
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class Dashboard extends Component {
@@ -33,7 +35,9 @@ class Dashboard extends Component {
     });
   };
 
-  showSettingspage = () => this.props.navigation.navigate('Settings');
+  showSettingsPage = () => this.props.navigation.navigate('Settings');
+  showNotificationPage = () => this.props.navigation.navigate('Notification');
+
   showDialer = () => this.props.navigation.navigate('Dialer');
 
   showNotification = (type, title, message) => {
@@ -50,6 +54,9 @@ class Dashboard extends Component {
         break;
       case 1:
         title = 'Permissions';
+        break;
+      case 2:
+        title = 'Connection Requests';
         break;
     }
     this.setState({
@@ -72,7 +79,7 @@ class Dashboard extends Component {
           <View style={styles.iconContainer}>
             <Icons
               disabled={false}
-              onPress={this.showSettingspage}
+              onPress={this.showSettingsPage}
               name={'ios-settings'}
               iconStyle={styles.navIcon}
               iconColor={colors.blue}
@@ -83,7 +90,7 @@ class Dashboard extends Component {
 
             <Icons
               disabled={false}
-              onPress={this.showSettingspage}
+              onPress={this.showNotificationPage}
               name={'ios-notifications'}
               iconStyle={styles.navIcon}
               iconColor={colors.blue}
@@ -104,6 +111,7 @@ class Dashboard extends Component {
         >
           <ContactLists {...this.props} tabLabel={'ios-people'} />
           <Permissions {...this.props} tabLabel={'ios-key'} />
+          <ConnectionRequests {...this.props} tabLabel={'ios-person-add'} />
         </ScrollableTabView>
       </SafeAreaView>
     );

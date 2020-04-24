@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     borderRadius: CELL_BORDER_RADIUS,
     color: '#3759b8',
     backgroundColor: '#fff',
-    // IOS
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -38,7 +37,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-    // Android
     elevation: 3,
   },
 
@@ -51,6 +49,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  navBar: {
+    marginTop: 20,
+    paddingLeft: 16,
+    paddingRight: 16,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
+
+  backView: {
+    height: 35,
+    width: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+    backgroundColor: colors.label,
   },
 
   textView: {
@@ -107,7 +122,6 @@ const styles = StyleSheet.create({
   },
 
   optView: {
-    //marginTop: '20%',
     justifyContent: 'center',
     padding: 10,
   },

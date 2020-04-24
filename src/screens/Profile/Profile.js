@@ -20,8 +20,8 @@ class Profile extends Component {
   }
 
   showProfileEditPage = () => this.props.navigation.navigate('DocumentUpload');
-  showNotificationPage = () => this.props.navigation.navigate('');
-  showSettingspage = () => this.props.navigation.navigate('Settings');
+  showNotificationPage = () => this.props.navigation.navigate('Notification');
+  showSettingsPage = () => this.props.navigation.navigate('Settings');
 
   _updateTitle(obj) {
     const { i } = obj;
@@ -65,7 +65,7 @@ class Profile extends Component {
           <View style={styles.iconContainer}>
             <Icons
               disabled={false}
-              onPress={this.showSettingspage}
+              onPress={this.showSettingsPage}
               name={'ios-settings'}
               iconStyle={styles.navIcon}
               iconColor={colors.blue}

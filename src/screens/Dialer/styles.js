@@ -107,6 +107,13 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
   },
 
+  hrLine: {
+    width: '80%',
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: colors.label,
+    alignSelf: 'center',
+  },
+
   contentInputLayout: {
     justifyContent: 'center',
     alignContent: 'center',

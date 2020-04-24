@@ -76,12 +76,16 @@ export default styles = StyleSheet.create({
     fontSize: hp('2%'),
   },
 
-  flatListName: { width: '50%', alignItems: 'center', flexDirection: 'row' },
+  flatListName: {
+    width: '50%',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
 
   hrLine: {
     width: '100%',
-    borderBottomWidth: hp('0.09%'),
-    borderBottomColor: colors.primaryTextColor,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.label,
   },
 
   introMessage: {

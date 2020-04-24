@@ -65,7 +65,6 @@ export default class DocumentLists extends Component {
           imageStyle={styles.cardImage}
         >
           <View style={styles.imageOverlay}>
-            {/* <View style={styles.cardTextLayout}> */}
             <View style={styles.cardTextRow1}>
               <Paragraph
                 text={item.type.toUpperCase()}
@@ -80,7 +79,6 @@ export default class DocumentLists extends Component {
               <Paragraph text={item.status} styles={styles.cardText2} />
               <Icon name={iconConfig.name} color={iconConfig.color} size={20} />
             </View>
-            {/* </View> */}
           </View>
         </ImageBackground>
       </View>

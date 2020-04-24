@@ -3,13 +3,7 @@ import {
   createStackNavigator,
   createAppContainer,
 } from 'react-navigation';
-import {
-  fromLeft,
-  fromRight,
-  fadeIn,
-  zoomIn,
-  zoomOut,
-} from 'react-navigation-transitions';
+import { fromLeft, zoomIn } from 'react-navigation-transitions';
 import Home from 'screens/Home';
 import Register from 'screens/Register';
 import Logout from 'screens/Logout';
@@ -28,6 +22,7 @@ import Dialer from 'screens/Dialer/Dialer';
 import SelectFields from 'screens/SelectFields/SelectFields';
 import ContactLists from 'screens/ContactLists/ContactLists';
 import DocumentLists from 'screens/DocumentLists/DocumentLists';
+import ConnectionRequests from 'screens/ConnectionRequests/ConnectionRequests';
 
 const handleCustomTransition = ({ scenes }) => {
   const prevScene = scenes[scenes.length - 2];
@@ -177,6 +172,13 @@ export const AppStack = createStackNavigator(
 
     DocumentLists: {
       screen: DocumentLists,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    ConnectionRequests: {
+      screen: ConnectionRequests,
       navigationOptions: {
         header: null,
       },
