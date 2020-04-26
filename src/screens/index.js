@@ -16,6 +16,7 @@ import Permissions from './Permissions';
 import Permissions from './Permissions';
 import DocumentLists from './DocumentLists';
 import ConnectionRequests from './ConnectionRequests';
+import LookupDetails from './LookupDetails';
 
 export default {
   ForgetPassword,
@@ -39,4 +40,5 @@ export default {
   Permissions,
   DocumentLists,
   ConnectionRequests,
+  LookupDetails,
 };

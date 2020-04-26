@@ -80,6 +80,7 @@ export default class Dialer extends Component {
   };
 
   handleBackPress = () => this.props.navigation.navigate('Navigations');
+
   onDialPress = async () => {
     this.showLoadingDialogue();
     let res = await fetchToken();
@@ -104,9 +105,11 @@ export default class Dialer extends Component {
       if (typeof res.data === 'undefined') {
         this.hideLoadingDialogue();
         return this.showNotification('error', 'Message', res.message);
-      } else if (res.data.length > 0) {
+      } else if (res.data.profileFields.length > 0) {
         this.hideLoadingDialogue();
-        return this.props.navigation.navigate('LookupDetails', { params });
+        return this.props.navigation.navigate('LookupDetails', {
+          params: res.data,
+        });
       }
       this.hideLoadingDialogue();
       return this.props.navigation.navigate('SelectFields', { params });

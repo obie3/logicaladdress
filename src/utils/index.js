@@ -13,6 +13,7 @@ const RequestConnectionEndpoint = `${ENDPOINT}permissions/requests`;
 const PermissionsEndpoint = `${ENDPOINT}permissions`;
 const FetchConnectionRequestEndpoint = `${ENDPOINT}permissions/requests`;
 const LookupLogicalAddressEndpoint = `${ENDPOINT}lookup/`;
+const ProcessPermissionRequestEndpoint = `${ENDPOINT}permissions/requests/`;
 
 export {
   generateOTPEndpoint,
@@ -28,6 +29,7 @@ export {
   PermissionsEndpoint,
   LookupLogicalAddressEndpoint,
   FetchConnectionRequestEndpoint,
+  ProcessPermissionRequestEndpoint,
 };
 
 export const isEmailValid = email => {

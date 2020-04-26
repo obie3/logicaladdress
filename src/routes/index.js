@@ -23,6 +23,7 @@ import SelectFields from 'screens/SelectFields/SelectFields';
 import ContactLists from 'screens/ContactLists/ContactLists';
 import DocumentLists from 'screens/DocumentLists/DocumentLists';
 import ConnectionRequests from 'screens/ConnectionRequests/ConnectionRequests';
+import LookupDetails from 'screens/LookupDetails/LookupDetails';
 
 const handleCustomTransition = ({ scenes }) => {
   const prevScene = scenes[scenes.length - 2];
@@ -179,6 +180,13 @@ export const AppStack = createStackNavigator(
 
     ConnectionRequests: {
       screen: ConnectionRequests,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    LookupDetails: {
+      screen: LookupDetails,
       navigationOptions: {
         header: null,
       },
