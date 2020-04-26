@@ -91,14 +91,6 @@ class ProfileDetail extends Component {
         val['isVerified'] = profile.isVerified;
         (val['value'] = profile.key === 'phone' ? `${'0'}${value}` : value),
           phoneArray.push(val);
-        //console.log({phoneArray})
-        // }
-        //else if (profile.key === 'email') {
-        // val['id'] = profile.id;
-        // val['key'] = label;
-        // val['value'] = profile.value;
-        // val['isVerified'] = profile.isVerified;
-        // emailArray.push(val);
       } else if (profile.key.includes('Name')) {
         val['id'] = profile.id;
         val['key'] = label;
