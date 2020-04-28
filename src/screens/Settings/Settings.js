@@ -1,7 +1,8 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, SafeAreaView, StatusBar } from 'react-native';
+import { View, SafeAreaView, StatusBar, FlatList } from 'react-native';
 import { Paragraph, Icons } from 'components';
+import { connect } from 'react-redux';
 import styles from './styles';
 import colors from 'assets/colors';
 import { logout } from 'utils';
@@ -10,10 +11,12 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-export default class Settings extends Component {
+class Settings extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      data: this.props.profileFieldNames,
+    };
   }
 
   showContactTracingPage = () =>
@@ -24,7 +27,55 @@ export default class Settings extends Component {
     return this.props.navigation.navigate('Home');
   };
 
+  renderRow = ({ item }) => {
+    if (item.id !== 'profilePhoto') {
+      return (
+        <View style={styles.cardLayout}>
+          <View style={styles.cardContent}>
+            <Paragraph styles={styles.cardText} text={item.title} />
+
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '50%',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <Icons
+                disabled={false}
+                onPress={this.showContactTracingPage}
+                name={'ios-add-circle-outline'}
+                iconStyle={[styles.forwardIcon]}
+                iconColor={'#95a5a6'}
+                iconSize={hp('3%')}
+              />
+
+              <Icons
+                disabled={false}
+                onPress={this.showContactTracingPage}
+                name={'ios-create'}
+                iconStyle={[styles.forwardIcon, { paddingLeft: '15%' }]}
+                iconColor={'#95a5a6'}
+                iconSize={hp('3%')}
+              />
+            </View>
+
+            {/* <Icons
+              disabled={false}
+              onPress={this.showContactTracingPage}
+              name={'ios-arrow-forward'}
+              iconStyle={styles.forwardIcon}
+              iconColor={'#95a5a6'}
+              iconSize={hp('3%')}
+            /> */}
+          </View>
+        </View>
+      );
+    }
+  };
+
   render() {
+    const { data } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -67,6 +118,15 @@ export default class Settings extends Component {
               />
             </View>
           </View>
+
+          <FlatList
+            extraData={this.state}
+            data={data}
+            renderItem={this.renderRow}
+            keyExtractor={data => data.id}
+            showsVerticalScrollIndicator={false}
+          />
+
           <View style={styles.logoutLayout}>
             <Icons
               disabled={false}
@@ -82,3 +142,11 @@ export default class Settings extends Component {
     );
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    profileFieldNames: state.ProfileReducer.profileFieldNames,
+  };
+};
+
+export default connect(mapStateToProps)(Settings);

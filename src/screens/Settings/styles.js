@@ -47,10 +47,11 @@ export default styles = StyleSheet.create({
   cardLayout: {
     height: hp('8%'),
     backgroundColor: colors.white,
-    elevation: 2,
+    elevation: 1,
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     shadowOffset: { height: 1, width: 0 },
+    marginBottom: 3,
   },
 
   cardContent: {
@@ -84,7 +85,7 @@ export default styles = StyleSheet.create({
 
   logoutLayout: {
     position: 'absolute',
-    bottom: hp('5%'),
+    bottom: hp('1%'),
     alignSelf: 'flex-end',
   },
 

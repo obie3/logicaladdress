@@ -5,11 +5,13 @@ import {
   SafeAreaView,
   FlatList,
   Image,
-  ScrollView,
+  TouchableOpacity,
   StatusBar,
 } from 'react-native';
-import { Paragraph, Line, Verified, Preloader, SubmitButton } from 'components';
-import { getProfile, fetchToken } from 'utils';
+import { Paragraph, Line, Preloader, SubmitButton } from 'components';
+import { fetchToken } from 'utils';
+import UserAvatar from 'react-native-user-avatar';
+
 import styles from './styles';
 import colors from 'assets/colors';
 import { connect } from 'react-redux';
@@ -21,7 +23,7 @@ class ContactLists extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      data: this.props.connections.data,
       token: '',
       showLoading: false,
     };
@@ -32,10 +34,8 @@ class ContactLists extends Component {
   }
 
   getProfile = async () => {
-    let payload = await getProfile();
     let response = await fetchToken();
     return this.setState({
-      // params: res,
       token: response.token,
     });
   };
@@ -54,19 +54,37 @@ class ContactLists extends Component {
   };
 
   renderRow = ({ item }) => {
-    let label = this.formatProfileKey(item.key);
-    const { isVerified, value } = item;
+    console.log({ item });
+    let title = item.profileFields.length > 0 ? 'Name' : 'Logical Address';
+    let name =
+      item.profileFields.length > 0
+        ? item.profileFields[0].firstName
+        : item.logicalAddress;
     return (
-      <View style={styles.profileRowItem}>
+      <TouchableOpacity
+        onPress={() => this.showRequestDetails(item)}
+        style={styles.profileRowItem}
+      >
+        <View style={styles.iconLayout}>
+          <UserAvatar
+            size={hp('5%')}
+            name={'Eddie'}
+            bgColors={['#ccc', '#fafafa', '#ccaabb']}
+          />
+        </View>
         <View style={styles.profileItem}>
-          <Paragraph text={label} styles={styles.fieldLabel} />
-          <Paragraph text={value} styles={styles.nameText} />
+          <Paragraph
+            text={title}
+            styles={styles.fieldLabel}
+            onPress={() => this.showRequestDetails(item)}
+          />
+          <Paragraph
+            text={name}
+            styles={styles.nameText}
+            onPress={() => this.showRequestDetails(item)}
+          />
         </View>
-        <View style={styles.editIconLayout}>
-          {isVerified ? <Verified layoutSize={30} size={20} /> : null}
-        </View>
-        <Line />
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -83,12 +101,9 @@ class ContactLists extends Component {
           translucent={false}
           networkActivityIndicatorVisible={true}
         />
-        <ScrollView
-          contentContainerStyle={styles.scrollViewStyle}
-          style={styles.tabView}
-        >
-          <View style={styles.card}>
-            {data.length > 0 ? (
+        <View style={styles.wrapper}>
+          {data.length > 0 ? (
+            <View>
               <FlatList
                 extraData={this.state}
                 data={data}
@@ -97,34 +112,35 @@ class ContactLists extends Component {
                 ItemSeparatorComponent={this.renderSeparator}
                 showsVerticalScrollIndicator={false}
               />
-            ) : (
-              <View style={styles.emptyListLayout}>
-                <Image
-                  style={styles.contactsImage}
-                  resizeMode={'contain'}
-                  source={require('assets/images/addcontact2.png')}
+              <Line />
+            </View>
+          ) : (
+            <View style={styles.emptyListLayout}>
+              <Image
+                style={styles.contactsImage}
+                resizeMode={'contain'}
+                source={require('assets/images/addcontact2.png')}
+              />
+              <Paragraph
+                text={
+                  'Once you establish a connection, \nit will show up here, \ngo ahead and request \n a new connection'
+                }
+                styles={styles.connectMessage}
+              />
+              <View style={styles.btnView}>
+                <SubmitButton
+                  title={'Request'}
+                  disabled={false}
+                  onPress={this.showDialer}
+                  btnStyle={styles.button}
+                  titleStyle={styles.buttonTxt}
                 />
-                <Paragraph
-                  text={
-                    'Once you establish a connection, \nit will show up here, \ngo ahead and request \n a new connection'
-                  }
-                  styles={styles.connectMessage}
-                />
-                <View style={styles.btnView}>
-                  <SubmitButton
-                    title={'Request'}
-                    disabled={false}
-                    onPress={this.showDialer}
-                    btnStyle={styles.button}
-                    titleStyle={styles.buttonTxt}
-                  />
-                </View>
               </View>
-            )}
+            </View>
+          )}
 
-            <Preloader modalVisible={showLoading} animationType='fade' />
-          </View>
-        </ScrollView>
+          <Preloader modalVisible={showLoading} animationType='fade' />
+        </View>
       </SafeAreaView>
     );
   }
@@ -132,7 +148,7 @@ class ContactLists extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    //program: state.ProgramReducer.program,
+    connections: state.ConnectionReducer.connections,
   };
 };
 

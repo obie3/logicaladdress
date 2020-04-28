@@ -14,7 +14,7 @@ export default styles = StyleSheet.create({
 
   wrapper: {
     flex: 1,
-    justifyContent: 'center',
+    //justifyContent: 'center',
   },
 
   nameText: {
@@ -39,18 +39,6 @@ export default styles = StyleSheet.create({
     justifyContent: 'flex-end',
     flex: 1,
     alignItems: 'flex-end',
-  },
-
-  tabView: {
-    flex: 1,
-  },
-
-  card: {
-    flex: 1,
-    borderWidth: 1,
-    backgroundColor: '#fff',
-    borderWidth: 0,
-    justifyContent: 'flex-start',
   },
 
   contactsImage: {
