@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { Text, View, Image, Animated, ScrollView } from 'react-native';
-
-import { Icon } from 'react-native-elements';
-
+import { Icons } from 'components';
+import colors from 'assets/colors';
+import theme from 'assets/theme';
 import {
   USER,
   SCREEN_WIDTH,
@@ -14,7 +13,7 @@ import {
 } from './Constants';
 
 import styles from './styles';
-
+import { ThemeColors } from 'react-navigation';
 const ScrollViewPropTypes = ScrollView.propTypes;
 
 export default class ParallaxScrollView extends Component {
@@ -174,9 +173,9 @@ export default class ParallaxScrollView extends Component {
         {navBarTitleComponent || (
           <Text
             style={{
-              fontSize: 18,
-              fontWeight: '600',
-              color: navBarTitleColor || 'white',
+              fontSize: theme.SmallFont,
+              color: colors.blue,
+              fontFamily: theme.secondaryFont,
             }}
           >
             {this.props.navBarTitle || USER.name}
@@ -192,12 +191,8 @@ export default class ParallaxScrollView extends Component {
       backgroundSource,
       leftIcon,
       rightIcon,
-      leftIconOnPress,
-      rightIconOnPress,
       navBarColor,
       navBarHeight,
-      leftIconUnderlayColor,
-      rightIconUnderlayColor,
     } = this.props;
     const { scrollY } = this.state;
     if (!windowHeight || !backgroundSource) {
@@ -260,13 +255,12 @@ export default class ParallaxScrollView extends Component {
                 alignItems: 'center',
               }}
             >
-              <Icon
-                name={(leftIcon && leftIcon.name) || 'menu'}
-                type={(leftIcon && leftIcon.type) || 'simple-line-icon'}
-                color={(leftIcon && leftIcon.color) || 'white'}
-                size={(leftIcon && leftIcon.size) || 23}
-                onPress={leftIconOnPress}
-                underlayColor={leftIconUnderlayColor || 'transparent'}
+              <Icons
+                name={leftIcon.name}
+                iconSize={leftIcon.iconSize}
+                iconStyle={leftIcon.iconStyle}
+                iconColor={colors.blue}
+                onPress={leftIcon.onPress}
               />
             </View>
           )}
@@ -288,13 +282,11 @@ export default class ParallaxScrollView extends Component {
                 alignItems: 'center',
               }}
             >
-              <Icon
-                name={(rightIcon && rightIcon.name) || null}
-                type={(rightIcon && rightIcon.type) || 'simple-line-icon'}
-                color={(rightIcon && rightIcon.color) || 'white'}
-                size={(rightIcon && rightIcon.size) || 23}
-                onPress={rightIconOnPress}
-                underlayColor={rightIconUnderlayColor || 'transparent'}
+              <Icons
+                name={rightIcon.name}
+                color={rightIcon && rightIcon.color}
+                size={rightIcon.iconSize}
+                iconStyle={rightIcon.iconStyle}
               />
             </View>
           )}
@@ -334,8 +326,6 @@ export default class ParallaxScrollView extends Component {
 ParallaxScrollView.defaultProps = {
   backgroundSource: { uri: 'http://i.imgur.com/6Iej2c3.png' },
   windowHeight: SCREEN_HEIGHT * DEFAULT_WINDOW_MULTIPLIER,
-  leftIconOnPress: () => console.log('Left icon pressed'),
-  rightIconOnPress: () => console.log('Right icon pressed'),
 };
 
 ParallaxScrollView.propTypes = {

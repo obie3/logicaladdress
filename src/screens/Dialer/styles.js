@@ -105,6 +105,8 @@ export default styles = StyleSheet.create({
     backgroundColor: '#ecf0f1',
     justifyContent: 'center',
     flexDirection: 'row',
+    paddingRight: wp('4%'),
+    paddingLeft: wp('4%'),
   },
 
   hrLine: {
@@ -132,7 +134,7 @@ export default styles = StyleSheet.create({
   deleteIconView: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: wp('4%'),
+    marginRight: wp('15%'),
   },
 
   dialerLayout: { height: hp('50%'), alignItems: 'flex-end' },

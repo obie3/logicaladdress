@@ -307,7 +307,7 @@ class ProfileDetail extends Component {
   showEdit = () => this.props.navigation.navigate('Profile');
 
   handleCustomIndexSelect = index => {
-    const { nameArray, phoneArray, emailArray } = this.state;
+    const { nameArray, phoneArray } = this.state;
     let filter = [];
     let tabTitle = '';
     if (index === 0) {

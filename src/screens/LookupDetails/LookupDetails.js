@@ -1,14 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
-import {
-  View,
-  SafeAreaView,
-  StatusBar,
-  TouchableOpacity,
-  Dimensions,
-  ScrollView,
-} from 'react-native';
-import { Paragraph, Icons } from 'components';
+import { View, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { Paragraph } from 'components';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles';
 import {
@@ -18,121 +11,147 @@ import {
 let no_image =
   'https://gravatar.com/avatar/02bf38fddbfe9f82b94203336f9ebc41?s=200&d=retro';
 import ParallaxScrollView from '../beta-src/ParallaxScrollView';
-export const SCREEN_HEIGHT = Dimensions.get('window').height / 2;
+import Communications from 'react-native-communications';
+
+const SCREEN_HEIGHT = Dimensions.get('window').height / 2;
 
 export default class Settings extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      tempArray: [],
+      nameArray: [],
+      addressArray: [],
+      phoneArray: [],
+      logicalAddress: 'Logical Address',
+    };
   }
 
-  render() {
-    let data = {
-      data: {
-        id: 24,
-        logicalAddress: '7391240396',
-        createdAt: '2020-03-29T10:00:56.083Z',
-        updatedAt: '2020-03-29T10:00:56.083Z',
-        profileFields: [
-          {
-            id: 53,
-            key: 'profilePhoto',
-            value:
-              'https://gravatar.com/avatar/02bf38fddbfe9f82b94203336f9ebc41?s=200&d=retro',
-            isVerified: false,
-            userId: 24,
-            createdAt: '2020-04-01T19:23:31.740Z',
-            updatedAt: '2020-04-01T19:23:31.740Z',
-          },
-          {
-            id: 54,
-            key: 'firstName',
-            value: 'Kator',
-            isVerified: false,
-            userId: 24,
-            createdAt: '2020-04-01T19:23:31.842Z',
-            updatedAt: '2020-04-01T19:23:31.842Z',
-          },
-          {
-            id: 55,
-            key: 'lastName',
-            value: 'James',
-            isVerified: false,
-            userId: 24,
-            createdAt: '2020-04-01T19:23:31.844Z',
-            updatedAt: '2020-04-01T19:23:31.844Z',
-          },
-          {
-            id: 56,
-            key: 'middleName',
-            value: 'Bryan',
-            isVerified: false,
-            userId: 24,
-            createdAt: '2020-04-01T19:23:31.849Z',
-            updatedAt: '2020-04-01T19:23:31.849Z',
-          },
-          {
-            id: 57,
-            key: 'email',
-            value: 'kator95@gmail.com',
-            isVerified: false,
-            userId: 24,
-            createdAt: '2020-04-01T19:23:31.850Z',
-            updatedAt: '2020-04-01T19:23:31.850Z',
-          },
-          {
-            id: 58,
-            key: 'phone',
-            value: '+2348181484568',
-            isVerified: false,
-            userId: 24,
-            createdAt: '2020-04-01T19:23:31.851Z',
-            updatedAt: '2020-04-01T19:23:31.851Z',
-          },
-        ],
-      },
-    }; //this.props.navigation.getParam('params');
-    let profileImage = data.data.profileFields.find(
+  componentDidMount() {
+    let phoneArray = [],
+      nameArray = [],
+      addressArray = [],
+      res = this.props.navigation.getParam('params'),
+      data = res.item;
+
+    let profileImage = data.profileFields.find(
       element => element.key === 'profilePhoto',
     );
-    let img = profileImage ? profileImage.value : no_image;
 
+    data.profileFields.map(profile => {
+      data[profile.key] = profile.id;
+      let label = this.formatProfileKey(profile.key);
+      let val = {};
+
+      if (profile.key.includes('Name')) {
+        val['id'] = profile.id;
+        val['key'] = label;
+        val['value'] = profile.value;
+        nameArray.push(val);
+      } else if (profile.key === 'phone' || profile.key === 'email') {
+        let icon = profile.key === 'phone' ? 'phone' : 'message';
+        val['id'] = profile.id;
+        val['key'] = label;
+        val['value'] = profile.value;
+        val['icon'] = icon;
+
+        phoneArray.push(val);
+      } else if (profile.key.includes('Address')) {
+        val['id'] = profile.id;
+        val['key'] = label;
+        val['icon'] = 'location-city';
+        val['value'] = profile.value;
+        addressArray.push(val);
+      }
+
+      this.setState({
+        nameArray,
+        addressArray,
+        phoneArray,
+        logicalAddress: data.logicalAddress,
+        img: profileImage ? profileImage.value : no_image,
+      });
+    });
+  }
+
+  handleBackPress = () => this.props.navigation.goBack();
+
+  formatProfileKey = key => {
+    let nLabel = key.charAt(0).toUpperCase() + key.slice(1);
+    return nLabel.replace(/([a-z])([A-Z])/g, '$1 $2');
+  };
+
+  link = (key, value) => {
+    return key === 'Phone'
+      ? Communications.phonecall(value, true)
+      : key === 'Email'
+      ? Communications.email([value], null, null, 'My Subject', 'My body text')
+      : null;
+  };
+
+  renderRow = item => {
+    return (
+      <View style={styles.encrypt}>
+        <View>
+          <Paragraph text={item.key} styles={styles.subText} />
+          <Paragraph text={item.value} styles={styles.text} />
+        </View>
+        <TouchableOpacity onPress={() => this.link(item.key, item.value)}>
+          <Icon
+            name={item.icon}
+            color='#075e54'
+            size={23}
+            style={{ padding: 5 }}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  emptyItem = () => {
+    return (
+      <View style={styles.encrypt}>
+        <View>
+          <Paragraph text={'Not Available'} styles={styles.text} />
+        </View>
+        <Icon name='lock' color='#075e54' size={23} style={{ padding: 5 }} />
+      </View>
+    );
+  };
+
+  render() {
+    const {
+      nameArray,
+      phoneArray,
+      addressArray,
+      logicalAddress,
+      img,
+    } = this.state;
     return (
       <ParallaxScrollView
         windowHeight={SCREEN_HEIGHT}
         backgroundSource={{ uri: img }}
-        navBarTitle={data.data.logicalAddress}
-        navBarTitleColor='black'
+        navBarTitle={logicalAddress}
         navBarColor='white'
         headerView={
           <View style={styles.headerView}>
-            <View style={styles.headerTextView}>
-              <Paragraph text={'My APp'} styles={styles.headerTextViewTitle} />
-              <Paragraph
-                text={'Subtitle Custom Header View'}
-                styles={styles.headerTextViewSubtitle}
-              />
-            </View>
+            <View style={styles.headerTextView}></View>
           </View>
         }
         leftIcon={{
-          name: 'rocket',
-          color: 'rgba(228, 117, 125, 1)',
-          size: 30,
-          type: 'font-awesome',
+          disabled: false,
+          name: 'ios-arrow-back',
+          iconStyle: [styles.headerIcons, { backgroundColor: 'white' }],
+          iconSize: hp('3%'),
+          onPress: () => this.handleBackPress(),
         }}
-        leftIconOnPress={() =>
-          this.setState({ index: (this.state.index + 1) % 3 })
-        }
         rightIcon={{
-          name: 'present',
-          color: 'rgba(228, 117, 125, 1)',
-          size: 30,
-          type: 'font-awesome',
+          disabled: true,
+          name: null,
+          iconStyle: styles.headerIcons,
+          iconSize: 24,
         }}
-        rightIconOnPress={() =>
-          this.setState({ index: (this.state.index + 1) % 3 })
-        }
+        leftIconOnPress={() => {}}
       >
         <ScrollView
           style={{
@@ -148,42 +167,9 @@ export default class Settings extends Component {
           </View>
 
           <View style={styles.card}>
-            <View style={styles.encrypt}>
-              <View>
-                <Paragraph text={'Last Name'} styles={styles.subText} />
-                <Paragraph text={'Obeya'} styles={styles.text} />
-              </View>
-              <Icon
-                name='lock'
-                color='#075e54'
-                size={23}
-                style={{ padding: 5 }}
-              />
-            </View>
-            <View style={styles.encrypt}>
-              <View>
-                <Paragraph text={'Middle Name'} styles={styles.subText} />
-                <Paragraph text={'Obeya'} styles={styles.text} />
-              </View>
-              <Icon
-                name='lock'
-                color='#075e54'
-                size={23}
-                style={{ padding: 5 }}
-              />
-            </View>
-            <View style={styles.encrypt}>
-              <View>
-                <Paragraph text={'First Name'} styles={styles.subText} />
-                <Paragraph text={'Obeya'} styles={styles.text} />
-              </View>
-              <Icon
-                name='lock'
-                color='#075e54'
-                size={23}
-                style={{ padding: 5 }}
-              />
-            </View>
+            {nameArray.length > 0
+              ? nameArray.map(item => this.renderRow(item))
+              : this.emptyItem()}
           </View>
 
           <View style={styles.sectionHeaderView}>
@@ -191,43 +177,11 @@ export default class Settings extends Component {
           </View>
 
           <View style={styles.card}>
-            <View style={styles.encrypt}>
-              <View>
-                <Paragraph text={'Phone'} styles={styles.subText} />
-                <Paragraph text={'07038602624'} styles={styles.text} />
-              </View>
-              <Icon
-                name='call'
-                color='#075e54'
-                size={23}
-                style={{ padding: 5 }}
-              />
+            <View style={styles.card}>
+              {phoneArray.length > 0
+                ? phoneArray.map(item => this.renderRow(item))
+                : this.emptyItem()}
             </View>
-            <View style={styles.encrypt}>
-              <View>
-                <Paragraph text={'Phone 2'} styles={styles.subText} />
-                <Paragraph text={'07038602624'} styles={styles.text} />
-              </View>
-              <Icon
-                name='call'
-                color='#075e54'
-                size={23}
-                style={{ padding: 5 }}
-              />
-            </View>
-            <View style={styles.encrypt}>
-              <View>
-                <Paragraph text={'Email'} styles={styles.subText} />
-                <Paragraph text={'dretnan@gmail.com'} styles={styles.text} />
-              </View>
-              <Icon
-                name='chat'
-                color='#075e54'
-                size={23}
-                style={{ padding: 5 }}
-              />
-            </View>
-
             <View style={styles.sectionHeaderView}>
               <Paragraph
                 text={'Physical Address'}
@@ -236,42 +190,9 @@ export default class Settings extends Component {
             </View>
 
             <View style={styles.card}>
-              <View style={styles.encrypt}>
-                <View>
-                  <Paragraph text={'Home Address'} styles={styles.subText} />
-                  <Paragraph text={'Goverment House'} styles={styles.text} />
-                </View>
-                <Icon
-                  name='call'
-                  color='#075e54'
-                  size={23}
-                  style={{ padding: 5 }}
-                />
-              </View>
-              <View style={styles.encrypt}>
-                <View>
-                  <Paragraph text={'Work Address'} styles={styles.subText} />
-                  <Paragraph text={'Home'} styles={styles.text} />
-                </View>
-                <Icon
-                  name='call'
-                  color='#075e54'
-                  size={23}
-                  style={{ padding: 5 }}
-                />
-              </View>
-              <View style={styles.encrypt}>
-                <View>
-                  <Paragraph text={'Club Address'} styles={styles.subText} />
-                  <Paragraph text={'dretnan@gmail.com'} styles={styles.text} />
-                </View>
-                <Icon
-                  name='chat'
-                  color='#075e54'
-                  size={23}
-                  style={{ padding: 5 }}
-                />
-              </View>
+              {addressArray.length > 0
+                ? addressArray.map(item => this.renderRow(item))
+                : this.emptyItem()}
             </View>
           </View>
 
@@ -283,10 +204,10 @@ export default class Settings extends Component {
             <View style={styles.encrypt}>
               <View>
                 <Paragraph text={'LogicalAddress'} styles={styles.subText} />
-                <Paragraph text={'0136702323'} styles={styles.text} />
+                <Paragraph text={logicalAddress} styles={styles.text} />
               </View>
               <Icon
-                name='call'
+                name='place'
                 color='#075e54'
                 size={23}
                 style={{ padding: 5 }}

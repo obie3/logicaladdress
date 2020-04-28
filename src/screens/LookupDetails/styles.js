@@ -10,6 +10,7 @@ export default styles = StyleSheet.create({
   headerTextView: {
     backgroundColor: 'transparent',
   },
+
   headerTextViewTitle: {
     fontSize: 35,
     color: 'white',
@@ -96,5 +97,13 @@ export default styles = StyleSheet.create({
   green: {
     color: '#075e54',
     fontSize: 10,
+  },
+
+  headerIcons: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    width: 40,
+    borderRadius: 20,
   },
 });
