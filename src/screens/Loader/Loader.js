@@ -11,6 +11,7 @@ import {
   FetchProfileField,
   PermissionsEndpoint,
   FetchConnectionRequestEndpoint,
+  FetchConnectionEndpoint,
 } from 'utils';
 import {
   Placeholder,
@@ -25,6 +26,7 @@ import { setConnectionRequests } from 'redux/actions/ConnectionRequestActions';
 import { setProfile, setProfileFieldNames } from 'redux/actions/ProfileActions';
 import { setDocument } from 'redux/actions/DocumentActions';
 import { setPermissions } from 'redux/actions/PermissionActions';
+import { setConnections } from 'redux/actions/ConnectionActions';
 
 class Loader extends Component {
   constructor(props) {
@@ -67,13 +69,14 @@ class Loader extends Component {
       FetchConnectionRequestEndpoint,
       settings,
     );
-
+    const fetchConnections = fetch(FetchConnectionEndpoint, settings);
     Promise.all([
       profileRequest,
       documentRequest,
       profileFieldNameRequest,
       permissionsRequests,
       fetchConnectionRequests,
+      fetchConnections,
     ])
       .then(value => Promise.all(value.map(value => value.json())))
       .then(serverResponse => {
@@ -81,8 +84,8 @@ class Loader extends Component {
           documentsResponse = serverResponse[1],
           profileFieldNameResponse = serverResponse[2].data,
           permissionsResponse = serverResponse[3],
-          connectionRequestResponse = serverResponse[4];
-
+          connectionRequestResponse = serverResponse[4],
+          connectionsResponse = serverResponse[5];
         let data = { params: {} };
         data.params['LogicalAddress'] = profileResponse.logicalAddress;
         data.params['isVerified'] = profileResponse.profileFields[0].isVerified;
@@ -104,6 +107,7 @@ class Loader extends Component {
           profileFieldNameResponse,
           permissionsResponse,
           connectionRequestResponse,
+          connectionsResponse,
         );
         return this.props.navigation.navigate('App');
       })
@@ -175,12 +179,14 @@ const mapDispatchToProps = dispatch => {
       profileFieldNames,
       permissionsResponse,
       connectionRequestResponse,
+      connectionsResponse,
     ) => {
       dispatch(setProfile(profile));
       dispatch(setDocument(documents));
       dispatch(setProfileFieldNames(profileFieldNames));
       dispatch(setPermissions(permissionsResponse));
       dispatch(setConnectionRequests(connectionRequestResponse));
+      dispatch(setConnections(connectionsResponse));
     },
   };
 };

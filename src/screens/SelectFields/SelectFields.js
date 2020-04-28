@@ -85,10 +85,10 @@ class SelectFields extends Component {
   };
 
   submitForm = async () => {
+    this.showLoadingDialogue();
     const { logicalAddress, token } = this.state;
     let profileFields = this.getSelectedItems();
     let body = JSON.stringify({ logicalAddress, profileFields });
-    this.showLoadingDialogue();
     const settings = {
       method: 'POST',
       headers: {

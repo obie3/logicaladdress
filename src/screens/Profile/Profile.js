@@ -19,9 +19,11 @@ class Profile extends Component {
     };
   }
 
-  showProfileEditPage = () => this.props.navigation.navigate('DocumentUpload');
+  showDocumentUploadPage = () =>
+    this.props.navigation.navigate('DocumentUpload');
   showNotificationPage = () => this.props.navigation.navigate('Notification');
   showSettingsPage = () => this.props.navigation.navigate('Settings');
+  showProfileEditPage = () => this.props.navigation.navigate('');
 
   _updateTitle(obj) {
     const { i } = obj;
@@ -50,6 +52,8 @@ class Profile extends Component {
     let link =
       title === 'Profile'
         ? this.showProfileEditPage
+        : title === 'Documents'
+        ? this.showDocumentUploadPage
         : this.showNotificationPage;
     return (
       <SafeAreaView style={styles.container}>

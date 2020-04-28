@@ -418,21 +418,17 @@ class ProfileDetail extends Component {
           translucent={false}
           networkActivityIndicatorVisible={true}
         />
-        <DropdownAlert
-          duration={5}
-          defaultContainer={styles.alert}
-          ref={ref => (this.dropDownAlertRef = ref)}
-        />
+
         <View style={styles.wrapper}>
           <View style={styles.avatarLayout}>
-            <TouchableOpacity onPress={this.getImage}>
-              <UserAvatar
-                size='120'
-                name={firstName}
-                color={colors.buttonBlue}
-                src={photo}
-              />
-            </TouchableOpacity>
+            {/* <TouchableOpacity onPress={this.getImage}> */}
+            <UserAvatar
+              size='120'
+              name={firstName}
+              color={colors.buttonBlue}
+              src={photo}
+            />
+            {/* </TouchableOpacity> */}
 
             <View style={styles.verificationIndicators}>
               <Paragraph
@@ -473,10 +469,6 @@ class ProfileDetail extends Component {
                 lastTabStyle={styles.lastTabStyle}
               />
             </View>
-            {/* <View style={styles.segmentHeader}>
-              <Paragraph text={'Add'} styles={styles.verificationText}
-                onPress={()=>this.props.navigation.navigate('Profile')}/>
-            </View> */}
 
             <View style={styles.profileLayout}>
               <FlatList

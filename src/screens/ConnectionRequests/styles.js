@@ -8,23 +8,16 @@ import {
 export default styles = StyleSheet.create({
   container: {
     ...theme.container,
-    backgroundColor: colors.backgroundColor,
     justifyContent: 'center',
     alignContent: 'center',
   },
 
   wrapper: {
     flex: 1,
-    justifyContent: 'center',
-  },
-
-  avatarLayout: {
-    alignSelf: 'center',
-    alignItems: 'center',
   },
 
   nameText: {
-    fontSize: theme.headerOneFont,
+    fontSize: theme.SmallFont,
     fontFamily: theme.headerFont,
     color: colors.blue,
   },
@@ -75,77 +68,10 @@ export default styles = StyleSheet.create({
     color: theme.primaryTextColor,
   },
 
-  introMessage: {
-    marginTop: hp('1%'),
-    textAlign: 'center',
-    fontFamily: theme.secondaryFont,
-    fontSize: theme.SmallFont,
-    color: theme.primaryTextColor,
-  },
-
-  scrollViewStyle: {
-    flex: 1,
-  },
-
   emptyListLayout: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  panel: {
-    height: hp('55%'),
-    padding: wp('3%'),
-    backgroundColor: '#f7f5eee8',
-  },
-
-  header: {
-    width: '100%',
-    height: hp('20%'),
-  },
-  panelHeader: {
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    height: hp('20%'),
-    justifyContent: 'center',
-  },
-  panelHandle: {
-    width: wp('10%'),
-    height: hp('1%'),
-    borderRadius: wp('2%'),
-    backgroundColor: '#00000040',
-    marginBottom: hp('1%'),
-  },
-  panelTitle: {
-    color: theme.primaryTextColor,
-    fontFamily: theme.secondaryFont,
-    fontSize: theme.SmallFont,
-    height: hp('5%'),
-    textAlign: 'left',
-  },
-
-  panelButton: {
-    padding: 13,
-    borderRadius: 10,
-    backgroundColor: '#292929',
-    alignItems: 'center',
-    marginVertical: 7,
-  },
-  panelButtonTitle: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-
-  panelButton: {
-    ...theme.buttonView,
-  },
-
-  button: {
-    ...theme.button,
-  },
-  panelButtonTitle: {
-    ...theme.buttonText,
   },
 
   flatListItem: {
@@ -163,24 +89,6 @@ export default styles = StyleSheet.create({
     color: theme.primaryTextColor,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  radioButtonLayout: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: theme.primaryColor,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: theme.colorAccent,
-  },
-
-  radioButton: {
-    width: '80%',
-    height: '80%',
-    alignSelf: 'center',
-    borderRadius: 10,
   },
 
   flatListName: {

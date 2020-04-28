@@ -14,6 +14,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import SwitchSelector from 'react-native-switch-selector';
 
 import {
   CLOUDINARY_UPLOAD_URL,
@@ -207,6 +208,23 @@ class DocumentUpload extends Component {
                 text={
                   'Upload a non expired goverment issued identity card or passport \n to verify your personal details \n and any utility bill or postcard \nto verify physicaal address'
                 }
+              />
+
+              <SwitchSelector
+                initial={0}
+                onPress={value => this.setState({ type: value })}
+                textColor={colors.blue}
+                selectedColor={colors.white}
+                buttonColor={colors.blue}
+                borderRadius={4}
+                height={50}
+                hasPadding
+                selectedTextStyle={[styles.buttonTxt]}
+                textStyle={[styles.buttonTxt, { color: colors.blue }]}
+                options={[
+                  { label: 'Identity Card', value: 'idCard' },
+                  { label: 'utitlity | PostCard', value: 'postCard' },
+                ]}
               />
 
               <View style={styles.btnView}>

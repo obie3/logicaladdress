@@ -9,7 +9,6 @@ import {
 export default styles = StyleSheet.create({
   container: {
     ...theme.container,
-    //backgroundColor: colors.blue,
     justifyContent: 'center',
     alignContent: 'center',
   },
@@ -31,14 +30,14 @@ export default styles = StyleSheet.create({
 
   imageLayout: {
     width: '100%',
-    height: '50%',
+    height: '45%',
     justifyContent: 'center',
     alignContent: 'center',
     resizeMode: 'contain',
   },
 
   documentMsgLayout: {
-    height: '40%',
+    height: '55%',
     justifyContent: 'flex-end',
   },
 
@@ -112,7 +111,7 @@ export default styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '35%',
+    height: '25%',
   },
 
   btnIcon: {

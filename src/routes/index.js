@@ -24,6 +24,7 @@ import ContactLists from 'screens/ContactLists/ContactLists';
 import DocumentLists from 'screens/DocumentLists/DocumentLists';
 import ConnectionRequests from 'screens/ConnectionRequests/ConnectionRequests';
 import LookupDetails from 'screens/LookupDetails/LookupDetails';
+import RequestDetails from 'screens/RequestDetails/RequestDetails';
 
 const handleCustomTransition = ({ scenes }) => {
   const prevScene = scenes[scenes.length - 2];
@@ -187,6 +188,13 @@ export const AppStack = createStackNavigator(
 
     LookupDetails: {
       screen: LookupDetails,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    RequestDetails: {
+      screen: RequestDetails,
       navigationOptions: {
         header: null,
       },
