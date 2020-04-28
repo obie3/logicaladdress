@@ -84,6 +84,21 @@ export default styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+
+  locationButton: {
+    height: 35,
+    width: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: colors.background,
+    elevation: 5,
+    textShadowColor: colors.black,
+    shadowOpacity: 0.4,
+    shadowRadius: 15,
+    textShadowOffset: { width: 5, height: 2 },
   },
 });

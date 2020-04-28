@@ -6,8 +6,13 @@ import {
   SafeAreaView,
   Platform,
   BackHandler,
+  TouchableOpacity,
 } from 'react-native';
-import MapView, { Marker, ProviderPropType } from 'react-native-maps';
+import MapView, {
+  Marker,
+  ProviderPropType,
+  PROVIDER_GOOGLE,
+} from 'react-native-maps';
 import BottomSheet from 'reanimated-bottom-sheet';
 import styles from './styles';
 import { Paragraph, SubmitButton, Preloader, Icons } from 'components';
@@ -18,13 +23,18 @@ import * as Permissions from 'expo-permissions';
 import colors from 'assets/colors';
 import { UpdateProfileEndpoint, fetchToken, getProfile } from 'utils';
 
+/**
+ * @typedef {Object} Position
+ * @property {number} latitude
+ * @property {number} longitude
+ */
+
 const ASPECT_RATIO = width / height;
 const LATITUDE = 9.061965;
 const LONGITUDE = 7.489856;
-const LATITUDE_DELTA = 20.9922;
+const LATITUDE_DELTA = 0.015;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
-// let map = null;
 
 export default class Map extends Component {
   constructor(props) {
@@ -36,7 +46,7 @@ export default class Map extends Component {
         longitude: LONGITUDE - SPACE,
       },
       token: '',
-      fieldId: '',
+      fieldId: undefined,
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -48,6 +58,7 @@ export default class Map extends Component {
   map = null;
 
   componentDidMount() {
+    this.initToken();
     this.getLocationAsync();
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
@@ -147,39 +158,55 @@ export default class Map extends Component {
     </View>
   );
 
-  getLocationAsync = async () => {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION);
-    let res = await fetchToken();
+  initToken = async () => {
+    let { token } = await fetchToken();
     let profile = await getProfile();
     let filteredArray = profile.data.params.profileData.filter(record => {
       return record.key == 'homeLocation';
     });
+    const fieldId = (filteredArray[0] || {}).id;
+    this.setState({
+      token,
+      fieldId,
+    });
+  };
+
+  getLocationAsync = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status === 'granted') {
-      let { coords } = await Location.getCurrentPositionAsync({
+      const { coords } = await Location.getCurrentPositionAsync({
         enableHighAccuracy: true,
       });
-      let region = {
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-        latitudeDelta: 0.0992,
-        longitudeDelta: 0.0992 * ASPECT_RATIO,
-      };
-      this.setState({
-        coordinates: {
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-        },
-        region,
-        token: res.token,
-        fieldId: filteredArray[0].id,
-      });
-      return this.map.animateToRegion(region, 4000);
+      this.setMapRegion(coords);
     } else {
       return this.showNotification(
         'info',
         'Message',
         'Location permission denied',
       );
+    }
+  };
+
+  /**
+   * @param {Position} position
+   * @param {boolean} animate
+   */
+  setMapRegion = (position, animate = true) => {
+    const region = {
+      latitude: position.latitude,
+      longitude: position.longitude,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    };
+    this.setState({
+      coordinates: {
+        latitude: position.latitude,
+        longitude: region.longitude,
+      },
+      region,
+    });
+    if (animate) {
+      this.map.animateToRegion(region, 4000);
     }
   };
 
@@ -200,11 +227,13 @@ export default class Map extends Component {
           ref={map => {
             this.map = map;
           }}
-          provider={this.props.provider}
+          provider={PROVIDER_GOOGLE}
           style={styles.map}
           showsPointsOfInterest
           loadingEnabled={true}
           showsUserLocation={true}
+          followUserLocation={true}
+          zoomControlEnabled={true}
           initialRegion={region}
         >
           <Marker
@@ -225,6 +254,14 @@ export default class Map extends Component {
             iconColor={colors.blue}
             iconSize={20}
             onPress={this.handleBackPress}
+          />
+          <Icons
+            name={'ios-locate'}
+            iconColor={colors.blue}
+            iconSize={20}
+            iconStyle={styles.locationButton}
+            style={styles.shadow}
+            onPress={() => this.getLocationAsync()}
           />
         </View>
         <Preloader modalVisible={showLoading} animationType='fade' />
