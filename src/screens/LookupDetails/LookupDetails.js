@@ -91,7 +91,7 @@ export default class Settings extends Component {
 
   renderRow = item => {
     return (
-      <View style={styles.encrypt}>
+      <View key={item.id} style={styles.encrypt}>
         <View>
           <Paragraph text={item.key} styles={styles.subText} />
           <Paragraph text={item.value} styles={styles.text} />
