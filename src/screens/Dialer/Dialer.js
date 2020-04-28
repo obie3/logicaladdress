@@ -177,6 +177,17 @@ export default class Dialer extends Component {
 
         <View style={styles.formLayout}>
           <View style={styles.textInput}>
+            <View style={styles.deleteIconView}>
+              <Icons
+                name={null}
+                iconStyle={styles.deleteIcon}
+                iconColor={colors.label}
+                iconSize={hp('4%')}
+                onPress={this.onDeletePress}
+                disabled={status}
+              />
+            </View>
+
             <View style={styles.contentInputLayout}>
               <Paragraph text={logicalAddress} styles={styles.inputTextStyle} />
             </View>

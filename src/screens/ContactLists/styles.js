@@ -14,6 +14,9 @@ export default styles = StyleSheet.create({
 
   wrapper: {
     flex: 1,
+    paddingLeft: wp('3%'),
+    paddingRight: wp('3%'),
+
     //justifyContent: 'center',
   },
 
@@ -31,14 +34,22 @@ export default styles = StyleSheet.create({
 
   profileRowItem: {
     flexDirection: 'row',
-    marginTop: 15,
-    paddingBottom: 10,
+    alignItems: 'center',
+    height: hp('8%'),
+    justifyContent: 'space-between',
   },
 
-  editIconLayout: {
+  avatarIconLayout: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    paddingRight: wp('4%'),
+  },
+
+  iconLayout: {
     justifyContent: 'flex-end',
-    flex: 1,
+    flexDirection: 'row',
     alignItems: 'flex-end',
+    marginRight: wp('3%'),
   },
 
   contactsImage: {

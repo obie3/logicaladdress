@@ -65,6 +65,12 @@ class Dashboard extends Component {
   }
 
   render() {
+    const { title } = this.state;
+    let iconName =
+      title === 'Contacts' ? 'ios-add-circle' : 'ios-notifications';
+    let link =
+      title === 'Contacts' ? this.showDialer : this.showNotificationPage;
+
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -90,8 +96,8 @@ class Dashboard extends Component {
 
             <Icons
               disabled={false}
-              onPress={this.showNotificationPage}
-              name={'ios-notifications'}
+              onPress={link}
+              name={iconName}
               iconStyle={styles.navIcon}
               iconColor={colors.blue}
               iconSize={hp('3%')}
