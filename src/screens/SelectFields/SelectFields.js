@@ -78,7 +78,7 @@ class SelectFields extends Component {
     let tempArray = [];
     this.state.data.map(item => {
       if (item.selected === true) {
-        tempArray.push(item.key);
+        tempArray.push(item.id);
       }
     });
     return tempArray;
