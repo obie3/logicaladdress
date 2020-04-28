@@ -62,7 +62,7 @@ class ContactLists extends Component {
         element.key === 'lastName',
     );
     let name =
-      typeof profile.value !== 'undefined'
+      typeof (profile || {}).value !== 'undefined'
         ? profile.value
         : item.logicalAddress;
     return (
