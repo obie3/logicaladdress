@@ -1,5 +1,4 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
-const window = Dimensions.get('window');
+import { StyleSheet } from 'react-native';
 import colors from 'assets/colors';
 import theme from 'assets/theme';
 import {
@@ -10,11 +9,29 @@ import {
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ecf0f1',
   },
 
   wrapper: {
-    padding: wp('3%'),
+    paddingRight: wp('3%'),
+    paddingLeft: wp('3%'),
     flex: 1,
+  },
+
+  navBar: {
+    marginTop: 15,
+    paddingHorizontal: 16,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
+
+  backView: {
+    height: 30,
+    width: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 25,
+    backgroundColor: colors.label,
   },
 
   buttonTxt: {
@@ -31,56 +48,89 @@ export default styles = StyleSheet.create({
   introMessage: {
     textAlign: 'center',
     fontFamily: theme.secondaryFont,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: theme.primaryTextColor,
   },
 
-  bottomSheetRowItem: {
+  cardLayout: {
+    flexDirection: 'column',
+    backgroundColor: colors.white,
+    // elevation: 2,
+    // shadowOpacity: 0.23,
+    // shadowRadius: 2.62,
+    // shadowOffset: { height: 1, width: 0 },
+    // marginTop: hp('1%'),
+    paddingRight: wp('3%'),
+    paddingLeft: wp('3%'),
+    //marginHorizontal: wp('5%'),
+  },
+
+  cardHeader: {
     flexDirection: 'row',
-    paddingLeft: wp('1%'),
-    paddingRight: wp('1%'),
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
 
-  bottomSheetListItem: {
-    justifyContent: 'space-around',
+  statusLayout: {
     flexDirection: 'row',
-    height: hp('8%'),
-  },
-
-  flatListName: {
-    width: '50%',
+    flex: 1,
     alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
 
-  requestFieldNames: {
-    fontSize: theme.headerFourFont,
+  cardText: {
     fontFamily: theme.secondaryFont,
-    color: colors.primaryTextColor,
+    color: colors.label,
+    fontSize: theme.smallFont,
+  },
+
+  statusIcon: {
+    height: hp('4%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  messageLayout: {
+    paddingBottom: wp('2%'),
+  },
+
+  messageTitle: {
+    fontFamily: theme.secondaryFont,
+    fontSize: theme.headerThreeFont,
+    color: theme.primaryTextColor,
+    fontWeight: '700',
+    paddingVertical: '1.5%',
+  },
+
+  messageBody: {
+    fontFamily: theme.secondaryFont,
+    fontSize: theme.smallFont,
+    color: theme.primaryTextColor,
+    textAlign: 'justify',
   },
 
   buttonLayout: {
     borderColor: theme.primaryColor,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',
-    width: '50%',
+    //width: '50%',
   },
 
   panelButtonTitle: {
-    fontSize: 12,
-    color: colors.white,
-    fontFamily: 'Poppins-Regular',
+    fontSize: 15,
+    color: '#00000055',
+    fontFamily: theme.secondaryFont,
   },
 
   button: {
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    width: '50%',
-    height: hp('5%'),
-    borderColor: 'white',
-    //borderWidth: 3,
+    width: '45%',
+    height: 45,
+    borderColor: '#00000055',
+    borderWidth: 2,
+    borderRadius: 23,
   },
 });

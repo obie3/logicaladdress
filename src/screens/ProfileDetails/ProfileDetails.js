@@ -28,7 +28,6 @@ import { connect } from 'react-redux';
 import UserAvatar from 'react-native-user-avatar';
 import colors from 'assets/colors';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import DropdownAlert from 'react-native-dropdownalert';
 import * as ImagePicker from 'expo-image-picker';
 import {
   CLOUDINARY_UPLOAD_URL,
@@ -66,7 +65,6 @@ class ProfileDetail extends Component {
 
   componentDidMount() {
     this.getProfile();
-    console.log({ props: this.props.profile });
   }
 
   getProfile = async () => {
@@ -83,7 +81,6 @@ class ProfileDetail extends Component {
       let label = this.formatProfileKey(profile.key);
       let val = {};
       if (profile.key === 'phone' || profile.key === 'email') {
-        // console.log({ profile });
         let value =
           profile.key === 'phone' ? profile.value.substring(4) : profile.value;
         val['id'] = profile.id;
@@ -98,13 +95,12 @@ class ProfileDetail extends Component {
         val['isVerified'] = profile.isVerified;
         nameArray.push(val);
       }
-      filteredArray = filteredArray.filter(record => {
-        return (
+      filteredArray = filteredArray.filter(
+        record =>
           record.key !== 'homeLocation' &&
           record.key !== 'profilePhoto' &&
-          record.id !== val.id
-        );
-      });
+          record.id !== val.id,
+      );
     });
     return this.setState({
       params: res,
@@ -495,5 +491,3 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default connect(mapStateToProps)(ProfileDetail);
-
-// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IisyMzQ3MDM3MzI0MzIzIiwiaWF0IjoxNTg2NjkyODYzLCJleHAiOjE1ODY2OTY0NjN9.UjJN18hRp6wf2MXJPggrNfOq3zLWOxkFBYJqaLPVLS0"

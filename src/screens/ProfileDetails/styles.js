@@ -87,7 +87,7 @@ export default styles = StyleSheet.create({
   buttonTxt: {
     fontFamily: theme.headerFont,
     color: theme.colorAccent,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
   },
 
   tabsContainerStyle: {

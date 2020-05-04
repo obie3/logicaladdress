@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Image, Animated, ScrollView } from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  Animated,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { Icons } from 'components';
 import colors from 'assets/colors';
 import theme from 'assets/theme';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   USER,
   SCREEN_WIDTH,
@@ -13,7 +21,6 @@ import {
 } from './Constants';
 
 import styles from './styles';
-import { ThemeColors } from 'react-navigation';
 const ScrollViewPropTypes = ScrollView.propTypes;
 
 export default class ParallaxScrollView extends Component {
@@ -173,7 +180,7 @@ export default class ParallaxScrollView extends Component {
         {navBarTitleComponent || (
           <Text
             style={{
-              fontSize: theme.SmallFont,
+              fontSize: theme.smallFont,
               color: colors.blue,
               fontFamily: theme.secondaryFont,
             }}
@@ -255,13 +262,21 @@ export default class ParallaxScrollView extends Component {
                 alignItems: 'center',
               }}
             >
-              <Icons
+              <TouchableOpacity style={styles.icon} onPress={leftIcon.onPress}>
+                <Icon
+                  name={leftIcon.name}
+                  color={colors.blue}
+                  size={23}
+                  style={{ padding: 5 }}
+                />
+              </TouchableOpacity>
+              {/* <Icon
                 name={leftIcon.name}
                 iconSize={leftIcon.iconSize}
                 iconStyle={leftIcon.iconStyle}
                 iconColor={colors.blue}
                 onPress={leftIcon.onPress}
-              />
+              /> */}
             </View>
           )}
           <View
@@ -282,12 +297,20 @@ export default class ParallaxScrollView extends Component {
                 alignItems: 'center',
               }}
             >
-              <Icons
+              <TouchableOpacity style={styles.icon} onPress={rightIcon.onPress}>
+                <Icon
+                  name={rightIcon.name}
+                  color='#075e54'
+                  size={23}
+                  style={{ padding: 5 }}
+                />
+              </TouchableOpacity>
+              {/* <Icon
                 name={rightIcon.name}
                 color={rightIcon && rightIcon.color}
                 size={rightIcon.iconSize}
                 iconStyle={rightIcon.iconStyle}
-              />
+              /> */}
             </View>
           )}
         </Animated.View>

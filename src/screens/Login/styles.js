@@ -9,11 +9,12 @@ export const IMAGE_HEIGHT_SMALL = window.width / 10;
 export default styles = StyleSheet.create({
   container: {
     ...theme.container,
+    justifyContent: 'center',
   },
 
   wrapper: {
     ...theme.wrapper,
-    //justifyContent: 'space-evenly',
+    justifyContent: 'center',
   },
 
   btnView: {
@@ -23,76 +24,6 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     marginTop: 16,
-  },
-  signupText: {
-    ...theme.buttonText,
-  },
-
-  signupLink: {
-    fontSize: 15,
-    color: colors.gold,
-    marginTop: 20,
-    fontWeight: 'bold',
-    fontFamily: 'Poppins-Regular',
-    alignSelf: 'center',
-  },
-
-  logo: {
-    height: IMAGE_HEIGHT,
-    resizeMode: 'contain',
-    marginBottom: 20,
-    padding: 10,
-    marginTop: 30,
-    alignSelf: 'center',
-  },
-  backgroundImage: {
-    flex: 1,
-    width: '100%',
-    height: null,
-  },
-  createAccount: {
-    fontSize: theme.SmallFont,
-    color: theme.primaryColor,
-    fontFamily: theme.secondaryFont,
-    alignSelf: 'center',
-  },
-
-  signupText: {
-    fontSize: theme.SmallFont,
-    color: theme.primaryTextColor,
-    fontFamily: theme.secondaryFont,
-    alignSelf: 'center',
-    marginBottom: 4,
-  },
-  signupWith: {
-    color: theme.primaryTextColor,
-    marginBottom: 8,
-    fontFamily: theme.subHeaderFont,
-    fontSize: theme.thinyFont,
-  },
-  signWithView: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    marginTop: 16,
-  },
-  socialIconView: {
-    flexDirection: 'row',
-    paddingTop: 8,
-  },
-  socialIcons: {
-    height: 24,
-    width: 24,
-    tintColor: theme.primaryTextColor,
-    marginLeft: 2,
-  },
-  logoTxt: {
-    fontFamily: 'Poppins-ExtraBold',
-    color: colors.white,
-    fontSize: 55,
-    alignSelf: 'center',
-    marginTop: '25%',
   },
 
   textInputView: {
@@ -135,24 +66,6 @@ export default styles = StyleSheet.create({
     padding: 10,
     marginTop: '20%',
     width: '100%',
-  },
-
-  footerView: {
-    width: '100%',
-    height: '20%',
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-  },
-
-  termCondition: {
-    fontSize: theme.thinyFont,
-    color: theme.darkGray,
-    // marginTop: 8,
-    fontFamily: theme.subHeaderFont,
-    alignSelf: 'center',
-    position: 'absolute',
-    right: Platform.OS === 'ios' ? 75 : 65,
   },
 
   alert: {

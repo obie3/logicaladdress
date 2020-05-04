@@ -7,9 +7,12 @@ import { connect } from 'react-redux';
 import colors from 'assets/colors';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import CustomTabBar from '../CustomTab';
-import ProfileDetails from '../ProfileDetails';
+import UserProfile from '../UserProfile';
 import DocumentLists from '../DocumentLists';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import DropdownAlert from 'react-native-dropdownalert';
+import { deleteProfileItem } from 'redux/actions/ProfileActions';
+import { editProfileItem } from 'redux/actions/ProfileActions';
 
 class Profile extends Component {
   constructor(props) {
@@ -25,6 +28,10 @@ class Profile extends Component {
   showSettingsPage = () => this.props.navigation.navigate('Settings');
   showProfileEditPage = () => this.props.navigation.navigate('');
 
+  showNotification = response => {
+    let { handle, title, message } = response;
+    return this.dropDownAlertRef.alertWithType(handle, title, message);
+  };
   _updateTitle(obj) {
     const { i } = obj;
     let title = '';
@@ -66,6 +73,11 @@ class Profile extends Component {
         />
 
         <View style={styles.navBg}>
+          <DropdownAlert
+            duration={5}
+            defaultContainer={styles.alert}
+            ref={ref => (this.dropDownAlertRef = ref)}
+          />
           <View style={styles.iconContainer}>
             <Icons
               disabled={false}
@@ -94,8 +106,13 @@ class Profile extends Component {
           onChangeTab={obj => this._updateTitle(obj)}
           renderTabBar={() => <CustomTabBar {...this.props} />}
         >
-          <ProfileDetails {...this.props} tabLabel={'ios-person'} />
-          <DocumentLists {...this.props} tabLabel={'ios-paper'} />
+          <UserProfile
+            {...this.props}
+            parentProps={this.props}
+            showResponse={this.showNotification}
+            tabLabel={'ios-person'}
+          />
+          <DocumentLists parentProps={this.props} tabLabel={'ios-paper'} />
         </ScrollableTabView>
       </SafeAreaView>
     );
@@ -109,4 +126,11 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(Profile);
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteItem: item => dispatch(deleteProfileItem(item)),
+    editProfile: item => dispatch(editProfileItem(item)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

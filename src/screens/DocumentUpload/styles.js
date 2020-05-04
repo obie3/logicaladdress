@@ -47,7 +47,7 @@ export default styles = StyleSheet.create({
     paddingLeft: '2%',
     paddingRight: '2%',
     textAlign: 'center',
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
   },
 
   button: {
@@ -75,7 +75,7 @@ export default styles = StyleSheet.create({
   buttonTxt: {
     fontFamily: theme.secondaryFont,
     color: theme.colorAccent,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     alignContent: 'center',
     justifyContent: 'center',
     textAlign: 'center',

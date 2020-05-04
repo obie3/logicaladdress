@@ -271,9 +271,15 @@ export default class Map extends Component {
           snapPoints={[150, 100, 30]}
           renderContent={this.renderInner}
           renderHeader={this.renderHeader}
-          enabledInnerScrolling={false}
-          enabledContentGestureInteraction={false}
-          initialSnap={1}
+          initialSnap={2}
+          enabledBottomClamp={true}
+          springConfig={{
+            mass: 0.3,
+            damping: 5,
+            stiffness: 80,
+            overshootClamping: false,
+          }}
+          overdragResistanceFactor={2}
         />
       </SafeAreaView>
     );

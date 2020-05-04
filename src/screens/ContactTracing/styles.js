@@ -39,7 +39,7 @@ export default styles = StyleSheet.create({
   },
 
   messageText: {
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: theme.primaryTextColor,
     backgroundColor: 'transparent',
     textAlign: 'center',
@@ -64,7 +64,7 @@ export default styles = StyleSheet.create({
 
   buttonTxt: {
     ...theme.buttonText,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
   },
 
   btnView: {

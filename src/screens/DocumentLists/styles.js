@@ -66,7 +66,7 @@ export default styles = StyleSheet.create({
   connectMessage: {
     textAlign: 'center',
     fontFamily: theme.secondaryFont,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: theme.primaryTextColor,
   },
 
@@ -84,7 +84,7 @@ export default styles = StyleSheet.create({
   upladMessage: {
     textAlign: 'center',
     fontFamily: theme.secondaryFont,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: theme.primaryTextColor,
   },
 
@@ -130,13 +130,13 @@ export default styles = StyleSheet.create({
   cardText1: {
     fontFamily: theme.secondaryFonts,
     color: theme.primaryTextColor,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
   },
 
   cardText2: {
     fontFamily: theme.secondaryFonts,
     color: theme.primaryTextColor,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     paddingRight: wp('3%'),
   },
 

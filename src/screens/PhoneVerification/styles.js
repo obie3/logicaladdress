@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
 
   navBar: {
     marginTop: 20,
-    paddingHorizontal: 16,
+    paddingLeft: 16,
+    paddingRight: 16,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },

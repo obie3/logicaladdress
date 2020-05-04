@@ -34,7 +34,7 @@ export default class SubmitButton extends Component {
         style={[{ opacity: opacityStyle }, style]}
         disabled={disabled}
       >
-        <Text style={textStyle} onPress={onPress}>
+        <Text style={textStyle} onPress={disabled ? null : onPress}>
           {title}
         </Text>
         <Image source={imgSrc} style={imgStyle} />

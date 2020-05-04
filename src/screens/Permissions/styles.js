@@ -14,6 +14,8 @@ export default styles = StyleSheet.create({
 
   wrapper: {
     flex: 1,
+    paddingLeft: wp('3%'),
+    paddingRight: wp('3%'),
   },
 
   avatarLayout: {
@@ -22,7 +24,7 @@ export default styles = StyleSheet.create({
   },
 
   nameText: {
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     fontFamily: theme.headerFont,
     color: colors.blue, //colors.headerFontColor,
   },
@@ -35,11 +37,26 @@ export default styles = StyleSheet.create({
 
   profileRowItem: {
     flexDirection: 'row',
-    marginTop: hp('1%'),
-    paddingLeft: wp('3%'),
-    paddingRight: wp('3%'),
     alignItems: 'center',
-    alignContent: 'center',
+    height: hp('8%'),
+    justifyContent: 'space-between',
+  },
+
+  avatarIconLayout: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    //paddingRight: wp('4%'),
+  },
+
+  listName: {
+    marginLeft: wp('5%'),
+  },
+
+  iconLayout: {
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginRight: wp('3%'),
   },
 
   headerStyle: {
@@ -51,14 +68,8 @@ export default styles = StyleSheet.create({
   title: {
     color: colors.blue,
     fontFamily: theme.headerFont,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     padding: 10,
-  },
-
-  iconLayout: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    paddingRight: wp('4%'),
   },
 
   contactsImage: {
@@ -69,7 +80,7 @@ export default styles = StyleSheet.create({
   connectMessage: {
     textAlign: 'center',
     fontFamily: theme.secondaryFont,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: theme.primaryTextColor,
   },
 

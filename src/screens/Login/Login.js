@@ -11,7 +11,7 @@ import {
   Platform,
   Animated,
 } from 'react-native';
-import { InputField, SubmitButton, Preloader, Paragraph } from 'components';
+import { InputField, SubmitButton, Preloader } from 'components';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL } from './styles';
 import {
   isEmpty,
@@ -20,7 +20,6 @@ import {
   saveToLocalStorage,
 } from 'utils';
 import colors from 'assets/colors';
-import WomanSvg from './WomanSvg';
 import logicallogo from 'assets/images/logo.png';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -204,10 +203,7 @@ class Login extends Component {
         />
         {/* <BackIcon onPress={this.handleBackPress} /> */}
         <KeyboardAvoidingView style={styles.wrapper}>
-          <Animated.Image
-            source={logicallogo}
-            style={[styles.logo, { height: this.imageHeight }]}
-          />
+          <Image source={logicallogo} style={[styles.logo]} />
 
           <View>
             <View
@@ -261,24 +257,9 @@ class Login extends Component {
                 titleStyle={styles.buttonTxt}
               />
             </View>
-            {/* <View style={styles.signupLinkView}>
-              <Paragraph
-                text={'Dont have an Account? '}
-                styles={styles.signupText}
-                onPress={this.handleLoginRoute}
-              />
-              <Paragraph
-                text={'Signup'}
-                styles={styles.createAccount}
-                onPress={this.handleBackPress}
-              />
-            </View> */}
           </View>
           <Preloader modalVisible={showLoading} animationType='fade' />
         </KeyboardAvoidingView>
-        <View style={styles.footerView}>
-          <WomanSvg />
-        </View>
       </SafeAreaView>
     );
   }

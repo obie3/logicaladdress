@@ -174,7 +174,7 @@ export default styles = StyleSheet.create({
   },
 
   formHeaderTxt: {
-    fontSize: Platform.OS === 'ios' ? theme.MediumFont : theme.SmallFont,
+    fontSize: Platform.OS === 'ios' ? theme.MediumFont : theme.smallFont,
     color: theme.secondaryTextColor,
     fontFamily: theme.inputHintFont,
   },
@@ -228,7 +228,7 @@ export default styles = StyleSheet.create({
   },
 
   titleText: {
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: theme.primaryTextColor,
     fontFamily: theme.subHeaderFont,
     // marginTop : (Platform.OS === 'ios') ? 20 : 2
@@ -241,17 +241,17 @@ export default styles = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? 8 : 2,
   },
   nameText: {
-    fontSize: Platform.OS === 'ios' ? theme.MediumFont : theme.SmallFont,
+    fontSize: Platform.OS === 'ios' ? theme.MediumFont : theme.smallFont,
     color: theme.secondaryTextColor,
     fontFamily: theme.inputHintFont,
   },
   jobtitleText: {
-    fontSize: Platform.OS === 'ios' ? theme.MediumFont : theme.SmallFont,
+    fontSize: Platform.OS === 'ios' ? theme.MediumFont : theme.smallFont,
     color: theme.secondaryTextColor,
     fontFamily: theme.inputHintFont,
   },
   pickerLabel: {
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: theme.secondaryTextColor,
     fontFamily: theme.inputHintFont,
   },
@@ -297,7 +297,7 @@ export default styles = StyleSheet.create({
     marginTop: 60,
   },
   txtNext: {
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: theme.primaryTextColor,
   },
   nextIcon: {

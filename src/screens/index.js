@@ -18,6 +18,7 @@ import DocumentLists from './DocumentLists';
 import ConnectionRequests from './ConnectionRequests';
 import LookupDetails from './LookupDetails';
 import RequestDetails from './RequestDetails';
+import PhoneVerification from './PhoneVerification';
 
 export default {
   ForgetPassword,
@@ -43,4 +44,5 @@ export default {
   ConnectionRequests,
   LookupDetails,
   RequestDetails,
+  PhoneVerification,
 };

@@ -1,73 +1,257 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, SafeAreaView, StatusBar, FlatList } from 'react-native';
-import { Paragraph, Icons } from 'components';
+import {
+  View,
+  SafeAreaView,
+  StatusBar,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
+import { Paragraph, Icons, Preloader } from 'components';
 import { connect } from 'react-redux';
 import styles from './styles';
 import colors from 'assets/colors';
-import { logout } from 'utils';
+import {
+  logout,
+  fetchToken,
+  AddProfileFieldEndpoint,
+  generateOTPEndpoint,
+} from 'utils';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import DialogInput from 'react-native-dialog-input';
+import { addProfile } from 'redux/actions/ProfileActions';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import DropdownAlert from 'react-native-dropdownalert';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
 class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: this.props.profileFieldNames,
+      isDialogVisible: false,
+      showLoading: false,
+      token: '',
+      fieldName: '',
+      label: '',
+      currentValue: '',
+      showDate: false,
+      date: moment()
+        .subtract(18, 'years')
+        .valueOf(),
     };
   }
 
+  async componentDidMount() {
+    let { token } = await fetchToken();
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('didFocus', () => {
+      this.initData();
+    });
+    this.setState({
+      token,
+    });
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
+  }
+
+  showLoadingDialogue = () =>
+    this.setState({
+      showLoading: true,
+      isDialogVisible: false,
+      showDate: false,
+    });
+  hideLoadingDialogue = () => this.setState({ showLoading: false });
+  showNotification = (type, title, message) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
+  };
+
   showContactTracingPage = () =>
     this.props.navigation.navigate('ContactTracing');
+
+  showMap = () => this.props.navigation.navigate('Map');
+
   handleBackPress = () => this.props.navigation.goBack();
   handleLogoutPress = async () => {
     await logout();
     return this.props.navigation.navigate('Home');
   };
 
+  showInputDialog = (isDialogVisible, fieldName, label) => {
+    let field = fieldName.includes('Name') ? 'middleName' : fieldName,
+      nLabel = label.includes('name') ? 'Middle name' : label;
+    return this.setState({ isDialogVisible, fieldName: field, label: nLabel });
+  };
+
+  initData = () => {
+    let response = this.props.navigation.getParam('params');
+    if (response) {
+      let { params } = response;
+      let result = params[0];
+      let tempData = params[0].value;
+      result.value = JSON.parse(tempData);
+      result.isVerified = true;
+      return this.props.addProfile(result);
+    }
+  };
+
+  showDialog(isShow) {
+    this.setState({ isDialogVisible: isShow });
+  }
+
+  showDatepicker = () => {
+    return this.setState(prevState => ({
+      showDate: !prevState.showDate,
+    }));
+  };
+
+  onChange = (event, selectedDate) => {
+    let { type } = event;
+    if (type === 'set') {
+      return this.selectRoute(selectedDate);
+    }
+    return this.showDatepicker();
+  };
+
+  canAddItem = item => {
+    let profileData = this.props.profileFields;
+    let { profileFields } = profileData;
+    let { id, title, maxValues } = item;
+    let newTitle = id === 'firstName' ? 'middleName' : id;
+    let result = profileFields.filter(item => item.key === newTitle);
+    if (result.length < maxValues) {
+      id === 'dob'
+        ? this.showDatepicker()
+        : this.showInputDialog(true, id, title);
+    } else {
+      return this.showNotification(
+        'info',
+        'Message',
+        `${'You have reached maximum entries for '}${newTitle}`,
+      );
+    }
+  };
+
+  selectRoute = text => {
+    this.showLoadingDialogue();
+    let { fieldName, token } = this.state;
+    if (!fieldName.includes('email') && !fieldName.includes('phone')) {
+      return this.submitForm(text, 'dob');
+    } else {
+      return this.requestToken(fieldName, text, token);
+    }
+  };
+
+  requestToken = async (fieldName, text, token) => {
+    let value = text;
+    if (fieldName.includes('phone')) {
+      let stripedPhone = text.substring(1);
+      value = `${'+234'}${stripedPhone}`;
+    }
+
+    let body = {
+      contact: value,
+      action: 'auth',
+    };
+    const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    };
+
+    try {
+      const response = await fetch(generateOTPEndpoint, settings);
+      const res = await response.json();
+      if (typeof res.data === 'undefined') {
+        return this.showNotification(
+          'error',
+          'Message',
+          res.error.message.message,
+        );
+      }
+      let params = { value, token, fieldName };
+      this.showDialog(false);
+      this.hideLoadingDialogue();
+      return this.props.navigation.navigate('PhoneVerification', { params });
+    } catch (error) {
+      return this.showNotification('error', 'Hello', error.toString());
+    }
+  };
+
+  submitForm = async (value, fname = null) => {
+    const { fieldName, token } = this.state;
+    let name = fname ? fname : fieldName;
+    let request = { fieldName: name, value, action: 'create' };
+    let body = {
+      fields: [request],
+    };
+    const settings = {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify(body),
+    };
+
+    try {
+      const response = await fetch(AddProfileFieldEndpoint, settings);
+      const res = await response.json();
+      if (typeof res.data === 'undefined') {
+        return this.showNotification('error', 'Message', res.error.message);
+      }
+      let result = res.data[0];
+      let tempData = res.data[0].value;
+      result.value = JSON.parse(tempData);
+      this.props.addProfile(result);
+      return this.showNotification('success', 'Message', 'Success');
+    } catch (error) {
+      return this.showNotification('error', 'Message', error.toString());
+    }
+  };
+
   renderRow = ({ item }) => {
-    if (item.id !== 'profilePhoto') {
+    let { title, id } = item;
+    if (id !== 'middleName' && id !== 'lastName') {
       return (
-        <View style={styles.cardLayout}>
+        <View key={id} style={styles.cardLayout}>
           <View style={styles.cardContent}>
-            <Paragraph styles={styles.cardText} text={item.title} />
+            <Paragraph
+              styles={styles.cardText}
+              text={title === 'First name' ? 'Name' : title}
+            />
 
             <View
               style={{
                 flexDirection: 'row',
-                width: '50%',
+                width: '20%',
                 justifyContent: 'flex-end',
               }}
             >
-              <Icons
-                disabled={false}
-                onPress={this.showContactTracingPage}
-                name={'ios-add-circle-outline'}
-                iconStyle={[styles.forwardIcon]}
-                iconColor={'#95a5a6'}
-                iconSize={hp('3%')}
-              />
-
-              <Icons
-                disabled={false}
-                onPress={this.showContactTracingPage}
-                name={'ios-create'}
-                iconStyle={[styles.forwardIcon, { paddingLeft: '15%' }]}
-                iconColor={'#95a5a6'}
-                iconSize={hp('3%')}
-              />
+              <TouchableOpacity
+                onPress={() =>
+                  id === 'homeLocation' ? this.showMap() : this.canAddItem(item)
+                }
+              >
+                <Icon
+                  name={'add-circle'}
+                  color={colors.label}
+                  size={20}
+                  style={{ padding: 5 }}
+                />
+              </TouchableOpacity>
             </View>
-
-            {/* <Icons
-              disabled={false}
-              onPress={this.showContactTracingPage}
-              name={'ios-arrow-forward'}
-              iconStyle={styles.forwardIcon}
-              iconColor={'#95a5a6'}
-              iconSize={hp('3%')}
-            /> */}
           </View>
         </View>
       );
@@ -75,7 +259,14 @@ class Settings extends Component {
   };
 
   render() {
-    const { data } = this.state;
+    const {
+      data,
+      isDialogVisible,
+      showLoading,
+      label,
+      showDate,
+      date,
+    } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -87,6 +278,11 @@ class Settings extends Component {
         />
 
         <View style={styles.navBg}>
+          <DropdownAlert
+            duration={5}
+            defaultContainer={styles.alert}
+            ref={ref => (this.dropDownAlertRef = ref)}
+          />
           <View style={styles.iconContainer}>
             <Icons
               disabled={false}
@@ -137,7 +333,29 @@ class Settings extends Component {
               iconSize={hp('3%')}
             />
           </View>
+          <DialogInput
+            isDialogVisible={isDialogVisible}
+            title={`${'Add '}${label}`}
+            hintInput={`${'Enter '}${label}`}
+            submitInput={inputText => this.selectRoute(inputText)}
+            closeDialog={() => {
+              this.showDialog(false);
+            }}
+          />
+          {showDate && (
+            <DateTimePicker
+              testID='dateTimePicker'
+              timeZoneOffsetInMinutes={0}
+              value={date}
+              maximumDate={date}
+              mode={'date'}
+              is24Hour={true}
+              display='default'
+              onChange={this.onChange}
+            />
+          )}
         </View>
+        <Preloader modalVisible={showLoading} animationType='fade' />
       </SafeAreaView>
     );
   }
@@ -146,7 +364,14 @@ class Settings extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     profileFieldNames: state.ProfileReducer.profileFieldNames,
+    profileFields: state.ProfileReducer.profile,
   };
 };
 
-export default connect(mapStateToProps)(Settings);
+const mapDispatchToProps = dispatch => {
+  return {
+    addProfile: data => dispatch(addProfile(data)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

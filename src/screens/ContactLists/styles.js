@@ -42,7 +42,11 @@ export default styles = StyleSheet.create({
   avatarIconLayout: {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    paddingRight: wp('4%'),
+    //paddingRight: wp('4%'),
+  },
+
+  listName: {
+    marginLeft: wp('5%'),
   },
 
   iconLayout: {
@@ -60,7 +64,7 @@ export default styles = StyleSheet.create({
   connectMessage: {
     textAlign: 'center',
     fontFamily: theme.secondaryFont,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: theme.primaryTextColor,
   },
 
@@ -81,7 +85,7 @@ export default styles = StyleSheet.create({
     ...theme.buttonText,
     fontFamily: theme.headerFont,
     color: theme.colorAccent,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
   },
 
   scrollViewStyle: {

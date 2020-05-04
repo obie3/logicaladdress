@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     // borderBottomWidth : 1,
     paddingTop: 1,
     fontFamily: theme.subHeaderFont,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     // backgroundColor: colors.white
     // height :40,
   },

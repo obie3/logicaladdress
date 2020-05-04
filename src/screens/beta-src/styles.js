@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-
 import { SCREEN_WIDTH } from './Constants';
+import colors from 'assets/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -35,10 +35,14 @@ const styles = StyleSheet.create({
   listView: {
     backgroundColor: 'rgba(247,247, 250, 1)',
   },
-  logoutText: {
-    color: 'red',
-    textAlign: 'center',
-    fontWeight: 'bold',
+
+  icon: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    backgroundColor: '#99999111',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
