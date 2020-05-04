@@ -7,33 +7,21 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { Paragraph, Line, Preloader } from 'components';
-import { fetchToken } from 'utils';
+import { Paragraph, Line, Icons } from 'components';
 import styles from './styles';
 import { connect } from 'react-redux';
 import UserAvatar from 'react-native-user-avatar';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 class Permissions extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: this.props.permissions.data,
-      token: '',
-      showLoading: false,
     };
   }
-
-  componentDidMount() {
-    this.getProfile();
-  }
-
-  getProfile = async () => {
-    let response = await fetchToken();
-    return this.setState({
-      token: response.token,
-    });
-  };
 
   showLoadingDialogue = () => this.setState({ showLoading: true });
   hideLoadingDialogue = () => this.setState({ showLoading: false });
@@ -44,43 +32,67 @@ class Permissions extends Component {
     return this.dropDownAlertRef.alertWithType(type, title, message);
   };
 
-  showRequestDetails = item => {
-    let params = { item };
+  showRequestDetails = (item, value) => {
+    let message = `${'Revoke or Grant '}${value}${'\n access to your profile details, \nyou can select multiple items.'}`;
+    let params = { item, message };
     return this.props.navigation.navigate('RequestDetails', { params });
   };
 
   renderSeparator = () => {
-    return <Line />;
+    return <Line marginLeft={wp('15%')} />;
   };
 
   renderRow = ({ item }) => {
-    let title = item.user.profileFields.length > 0 ? 'Name' : 'Logical Address';
-    let name =
-      item.user.profileFields.length > 0
-        ? item.user.profileFields[0].firstName
-        : item.user.logicalAddress;
+    let title, value;
+    let profile = item.user.profileFields.find(
+      element =>
+        element.key === 'firstName' ||
+        element.key === 'middleName' ||
+        element.key === 'lastName',
+    );
+
+    if (typeof (profile || {}).value !== 'undefined') {
+      title = 'Name';
+      value = profile.value;
+    } else {
+      title = 'Logical Address';
+      value = item.user.logicalAddress;
+    }
+
     return (
       <TouchableOpacity
-        onPress={() => this.showRequestDetails(item)}
+        onPress={() => this.showRequestDetails(item, value)}
         style={styles.profileRowItem}
       >
-        <View style={styles.iconLayout}>
-          <UserAvatar
-            size={hp('5%')}
-            name={name}
-            bgColors={['#ccc', '#fafafa', '#ccaabb']}
-          />
+        <View style={{ flexDirection: 'row' }}>
+          <View style={styles.avatarIconLayout}>
+            <UserAvatar
+              size={hp('5%')}
+              name={title}
+              bgColors={['#ccc', '#fafafa', '#ccaabb']}
+            />
+          </View>
+          <View style={styles.listName}>
+            <Paragraph
+              text={title}
+              styles={styles.fieldLabel}
+              onPress={() => this.showRequestDetails(item, value)}
+            />
+            <Paragraph
+              text={value}
+              styles={styles.nameText}
+              onPress={() => this.showRequestDetails(item, value)}
+            />
+          </View>
         </View>
-        <View style={styles.profileItem}>
-          <Paragraph
-            text={title}
-            styles={styles.fieldLabel}
-            onPress={() => this.showRequestDetails(item)}
-          />
-          <Paragraph
-            text={name}
-            styles={styles.nameText}
-            onPress={() => this.showRequestDetails(item)}
+        <View style={styles.iconLayout}>
+          <Icons
+            disabled={false}
+            onPress={() => this.showRequestDetails(item, value)}
+            name={'ios-arrow-forward'}
+            iconStyle={[styles.forwardIcon, { paddingLeft: '15%' }]}
+            iconColor={'#95a5a6'}
+            iconSize={hp('3%')}
           />
         </View>
       </TouchableOpacity>
@@ -88,7 +100,7 @@ class Permissions extends Component {
   };
 
   render() {
-    const { showLoading, data } = this.state;
+    const { data } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.wrapper}>
@@ -102,7 +114,7 @@ class Permissions extends Component {
                 ItemSeparatorComponent={this.renderSeparator}
                 showsVerticalScrollIndicator={false}
               />
-              <Line />
+              <Line marginLeft={wp('15%')} />
             </View>
           ) : (
             <View style={styles.emptyListLayout}>
@@ -119,7 +131,6 @@ class Permissions extends Component {
               />
             </View>
           )}
-          <Preloader modalVisible={showLoading} animationType='fade' />
         </View>
       </SafeAreaView>
     );

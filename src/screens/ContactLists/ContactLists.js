@@ -33,9 +33,9 @@ class ContactLists extends Component {
   }
 
   getProfile = async () => {
-    let response = await fetchToken();
+    let { token } = await fetchToken();
     return this.setState({
-      token: response.token,
+      token,
     });
   };
 
@@ -49,22 +49,25 @@ class ContactLists extends Component {
   };
 
   renderSeparator = () => {
-    return <Line />;
+    return <Line marginLeft={wp('15%')} />;
   };
 
   renderRow = ({ item }) => {
-    let title = item.profileFields.length > 0 ? 'Name' : 'Logical Address';
-
+    let title, value;
     let profile = item.profileFields.find(
       element =>
         element.key === 'firstName' ||
         element.key === 'middleName' ||
         element.key === 'lastName',
     );
-    let name =
-      typeof (profile || {}).value !== 'undefined'
-        ? profile.value
-        : item.logicalAddress;
+
+    if (typeof (profile || {}).value !== 'undefined') {
+      title = 'Name';
+      value = profile.value;
+    } else {
+      title = 'Logical Address';
+      value = item.logicalAddress;
+    }
     return (
       <TouchableOpacity
         onPress={() => this.showRequestDetails(item)}
@@ -74,18 +77,18 @@ class ContactLists extends Component {
           <View style={styles.avatarIconLayout}>
             <UserAvatar
               size={hp('5%')}
-              name={name}
+              name={value}
               bgColors={['#ccc', '#fafafa', '#ccaabb']}
             />
           </View>
-          <View style={styles.profileItem}>
+          <View style={styles.listName}>
             <Paragraph
               text={title}
               styles={styles.fieldLabel}
               onPress={() => this.showRequestDetails(item)}
             />
             <Paragraph
-              text={name}
+              text={value}
               styles={styles.nameText}
               onPress={() => this.showRequestDetails(item)}
             />
@@ -135,7 +138,7 @@ class ContactLists extends Component {
                 ItemSeparatorComponent={this.renderSeparator}
                 showsVerticalScrollIndicator={false}
               />
-              <Line />
+              <Line marginLeft={wp('15%')} />
             </View>
           ) : (
             <View style={styles.emptyListLayout}>

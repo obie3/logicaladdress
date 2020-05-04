@@ -11,7 +11,10 @@ import { Paragraph, Line } from 'components';
 import styles from './styles';
 import { connect } from 'react-redux';
 import UserAvatar from 'react-native-user-avatar';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 class ConnectionRequests extends Component {
   constructor(props) {
@@ -24,29 +27,41 @@ class ConnectionRequests extends Component {
   }
 
   renderSeparator = () => {
-    return <Line />;
+    return <Line marginLeft={wp('15%')} />;
   };
 
-  showRequestDetails = item => {
-    let params = { item };
+  showRequestDetails = (item, value) => {
+    let message = `${'Select the information you would like \nto share with '}${value}${'\nyou can select multiple items.'}`;
+    let params = { item, message };
     return this.props.navigation.navigate('RequestDetails', { params });
   };
 
   renderRow = ({ item }) => {
-    let title = item.user.profileFields.length > 0 ? 'Name' : 'Logical Address';
-    let name =
-      item.user.profileFields.length > 0
-        ? item.user.profileFields[0].firstName
-        : item.user.logicalAddress;
+    let title, value;
+    let profile = item.user.profileFields.find(
+      element =>
+        element.key === 'firstName' ||
+        element.key === 'middleName' ||
+        element.key === 'lastName',
+    );
+
+    if (typeof (profile || {}).value !== 'undefined') {
+      title = 'Name';
+      value = profile.value;
+    } else {
+      title = 'Logical Address';
+      value = item.user.logicalAddress;
+    }
+
     return (
       <TouchableOpacity
-        onPress={() => this.showRequestDetails(item)}
+        onPress={() => this.showRequestDetails(item, value)}
         style={styles.profileRowItem}
       >
         <View style={styles.iconLayout}>
           <UserAvatar
             size={hp('5%')}
-            name={name}
+            name={value}
             bgColors={['#ccc', '#fafafa', '#ccaabb']}
           />
         </View>
@@ -54,12 +69,12 @@ class ConnectionRequests extends Component {
           <Paragraph
             text={title}
             styles={styles.fieldLabel}
-            onPress={() => this.showRequestDetails(item)}
+            onPress={() => this.showRequestDetails(item, value)}
           />
           <Paragraph
-            text={name}
+            text={value}
             styles={styles.nameText}
-            onPress={() => this.showRequestDetails(item)}
+            onPress={() => this.showRequestDetails(item, value)}
           />
         </View>
       </TouchableOpacity>
@@ -81,7 +96,7 @@ class ConnectionRequests extends Component {
                 ItemSeparatorComponent={this.renderSeparator}
                 showsVerticalScrollIndicator={false}
               />
-              <Line />
+              <Line marginLeft={wp('15%')} />
             </View>
           ) : (
             <View style={styles.emptyListLayout}>

@@ -23,6 +23,7 @@ export default class Settings extends Component {
       nameArray: [],
       addressArray: [],
       phoneArray: [],
+      emailArray: [],
       logicalAddress: 'Logical Address',
     };
   }
@@ -31,8 +32,9 @@ export default class Settings extends Component {
     let phoneArray = [],
       nameArray = [],
       addressArray = [],
+      emailArray = [],
       res = this.props.navigation.getParam('params'),
-      data = res.item;
+      data = res.item || res;
 
     let profileImage = data.profileFields.find(
       element => element.key === 'profilePhoto',
@@ -48,14 +50,18 @@ export default class Settings extends Component {
         val['key'] = label;
         val['value'] = profile.value;
         nameArray.push(val);
-      } else if (profile.key === 'phone' || profile.key === 'email') {
-        let icon = profile.key === 'phone' ? 'phone' : 'message';
+      } else if (profile.key === 'phone') {
         val['id'] = profile.id;
         val['key'] = label;
         val['value'] = profile.value;
-        val['icon'] = icon;
-
+        val['icon'] = 'phone';
         phoneArray.push(val);
+      } else if (profile.key === 'email') {
+        val['id'] = profile.id;
+        val['key'] = label;
+        val['value'] = profile.value;
+        val['icon'] = 'message';
+        emailArray.push(val);
       } else if (profile.key.includes('Address')) {
         val['id'] = profile.id;
         val['key'] = label;
@@ -68,6 +74,7 @@ export default class Settings extends Component {
         nameArray,
         addressArray,
         phoneArray,
+        emailArray,
         logicalAddress: data.logicalAddress,
         img: profileImage ? profileImage.value : no_image,
       });
@@ -90,13 +97,14 @@ export default class Settings extends Component {
   };
 
   renderRow = item => {
+    const { id, key, value } = item;
     return (
-      <View key={item.id} style={styles.encrypt}>
-        <View>
-          <Paragraph text={item.key} styles={styles.subText} />
-          <Paragraph text={item.value} styles={styles.text} />
+      <View key={id} style={styles.encrypt}>
+        <View style={{ width: '70%' }}>
+          <Paragraph text={key} styles={styles.subText} />
+          <Paragraph text={value} styles={styles.text} />
         </View>
-        <TouchableOpacity onPress={() => this.link(item.key, item.value)}>
+        <TouchableOpacity onPress={() => this.link(key, value)}>
           <Icon
             name={item.icon}
             color='#075e54'
@@ -124,6 +132,7 @@ export default class Settings extends Component {
       nameArray,
       phoneArray,
       addressArray,
+      emailArray,
       logicalAddress,
       img,
     } = this.state;
@@ -140,9 +149,8 @@ export default class Settings extends Component {
         }
         leftIcon={{
           disabled: false,
-          name: 'ios-arrow-back',
+          name: 'keyboard-arrow-left',
           iconStyle: [styles.headerIcons, { backgroundColor: 'white' }],
-          iconSize: hp('3%'),
           onPress: () => this.handleBackPress(),
         }}
         rightIcon={{
@@ -177,23 +185,31 @@ export default class Settings extends Component {
           </View>
 
           <View style={styles.card}>
-            <View style={styles.card}>
-              {phoneArray.length > 0
-                ? phoneArray.map(item => this.renderRow(item))
-                : this.emptyItem()}
-            </View>
-            <View style={styles.sectionHeaderView}>
-              <Paragraph
-                text={'Physical Address'}
-                styles={styles.sectionHeader}
-              />
-            </View>
+            {phoneArray.length > 0
+              ? phoneArray.map(item => this.renderRow(item))
+              : this.emptyItem()}
+          </View>
 
-            <View style={styles.card}>
-              {addressArray.length > 0
-                ? addressArray.map(item => this.renderRow(item))
-                : this.emptyItem()}
-            </View>
+          <View style={styles.sectionHeaderView}>
+            <Paragraph text={'Emails'} styles={styles.sectionHeader} />
+          </View>
+
+          <View style={styles.card}>
+            {emailArray.length > 0
+              ? emailArray.map(item => this.renderRow(item))
+              : this.emptyItem()}
+          </View>
+          <View style={styles.sectionHeaderView}>
+            <Paragraph
+              text={'Physical Address'}
+              styles={styles.sectionHeader}
+            />
+          </View>
+
+          <View style={styles.card}>
+            {addressArray.length > 0
+              ? addressArray.map(item => this.renderRow(item))
+              : this.emptyItem()}
           </View>
 
           <View style={styles.sectionHeaderView}>

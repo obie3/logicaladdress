@@ -1,4 +1,5 @@
 import * as types from './types';
+
 export const addProfile = profile => dispatch => {
   dispatch({
     type: types.ADD_PROFILE,
@@ -13,9 +14,23 @@ export const setProfile = profile => dispatch => {
   });
 };
 
-export const setProfileFieldNames = profile => dispatch => {
+export const editProfileItem = item => dispatch => {
+  dispatch({
+    type: types.EDIT_PROFILE_ITEM,
+    item,
+  });
+};
+
+export const deleteProfileItem = item => dispatch => {
+  dispatch({
+    type: types.DELETE_PROFILE_ITEM,
+    item,
+  });
+};
+
+export const setProfileFieldNames = profileFieldNames => dispatch => {
   dispatch({
     type: types.SET_PROFILE_FIELD_NAMES,
-    profile,
+    profileFieldNames,
   });
 };

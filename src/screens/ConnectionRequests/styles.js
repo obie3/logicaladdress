@@ -17,7 +17,7 @@ export default styles = StyleSheet.create({
   },
 
   nameText: {
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     fontFamily: theme.headerFont,
     color: colors.blue,
   },
@@ -52,7 +52,7 @@ export default styles = StyleSheet.create({
   title: {
     color: colors.blue,
     fontFamily: theme.headerFont,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     padding: 10,
   },
 
@@ -64,7 +64,7 @@ export default styles = StyleSheet.create({
   connectMessage: {
     textAlign: 'center',
     fontFamily: theme.secondaryFont,
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: theme.primaryTextColor,
   },
 

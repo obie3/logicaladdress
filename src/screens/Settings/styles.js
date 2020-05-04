@@ -65,7 +65,7 @@ export default styles = StyleSheet.create({
 
   cardText: {
     fontFamily: theme.secondaryFont,
-    color: '#95a5a6',
+    color: theme.primaryTextColor, //'#95a5a6',
     fontSize: theme.smallFont,
   },
 
@@ -93,5 +93,6 @@ export default styles = StyleSheet.create({
     height: hp('8%'),
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: 12,
   },
 });

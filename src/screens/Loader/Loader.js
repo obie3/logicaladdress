@@ -92,6 +92,8 @@ class Loader extends Component {
         data.params['profileData'] = profileResponse.profileFields;
         data.params['userId'] = profileResponse.id;
 
+        console.log(profileResponse);
+
         profileResponse.profileFields.map(profile => {
           let value = profile.value;
           if (profile.key === 'phone') {

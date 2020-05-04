@@ -6,7 +6,7 @@ export default defaultTheme = {
   XlargeFont: 35,
   LargeFont: 24,
   MediumFont: 20,
-  SmallFont: 16,
+  smallFont: 16,
   SmallerFont: 14,
   thinyFont: 12,
 

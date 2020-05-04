@@ -49,10 +49,10 @@ class SelectFields extends Component {
 
   getNavParams = async () => {
     let response = this.props.navigation.getParam('params');
-    let res = await fetchToken();
+    let { token } = await fetchToken();
     return this.setState({
       data: this.props.profileFieldNames,
-      token: res.token,
+      token: token,
       logicalAddress: response.logicalAddress,
     });
   };
@@ -105,7 +105,11 @@ class SelectFields extends Component {
       if (typeof res.data === 'undefined') {
         return this.showNotification('error', 'Message', res.message);
       }
-      return this.showNotification('success', 'Message', 'Success');
+      this.showNotification('success', 'Message', 'Success');
+      return setTimeout(
+        () => this.props.navigation.navigate('Dashboard'),
+        3000,
+      );
     } catch (error) {
       return this.showNotification('error', 'Hello', error.toString());
     }
@@ -169,9 +173,7 @@ class SelectFields extends Component {
           leftIconColor={colors.iconColor}
           headerTitle={null}
           leftIconOnPress={this.handleBackPress}
-          rightIconOnPress={() => {
-            console.log('hello...');
-          }}
+          rightIconOnPress={() => {}}
         />
 
         <View

@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
 
   Alert_Message: {
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: colors.green,
     textAlign: 'center',
     fontFamily: theme.subHeaderFont,

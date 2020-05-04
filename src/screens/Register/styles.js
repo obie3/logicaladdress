@@ -52,14 +52,14 @@ let styles = StyleSheet.create({
   },
 
   createAccount: {
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: theme.primaryColor,
     fontFamily: theme.secondaryFont,
     alignSelf: 'center',
   },
 
   signupText: {
-    fontSize: theme.SmallFont,
+    fontSize: theme.smallFont,
     color: theme.primaryTextColor,
     fontFamily: theme.secondaryFont,
     alignSelf: 'center',

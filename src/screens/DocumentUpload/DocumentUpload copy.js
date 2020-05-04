@@ -251,14 +251,11 @@ class DocumentUpload extends Component {
         },
       );
       let responseJson = await response.json();
-      console.log(responseJson);
       this.setState({
         googleResponse: responseJson,
         showLoading: false,
       });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   render() {

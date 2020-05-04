@@ -26,6 +26,7 @@ export default class Dialer extends Component {
       isDisabled: true,
       status: true,
       showLoading: false,
+      disableNumbers: false,
     };
   }
 
@@ -49,12 +50,13 @@ export default class Dialer extends Component {
     const { logicalAddress } = this.state;
     tempAddress.push(text);
     let newAddress = `${logicalAddress}${text}`;
-    let btnStatus = newAddress.length > 5 ? false : true;
+    let btnStatus = newAddress.length > 9 ? false : true;
     let delStatus = tempAddress.length > 0 ? false : true;
     return this.setState({
       logicalAddress: newAddress,
       isDisabled: btnStatus,
       status: delStatus,
+      disableNumbers: !btnStatus,
     });
   };
 
@@ -68,7 +70,7 @@ export default class Dialer extends Component {
         return `${prev}${cur}`;
       });
 
-      btnStatus = logicalAddress.length > 5 ? false : true;
+      btnStatus = logicalAddress.length > 9 ? false : true;
       delStatus = logicalAddress.length > 0 ? false : true;
     }
 
@@ -76,6 +78,7 @@ export default class Dialer extends Component {
       logicalAddress,
       isDisabled: btnStatus,
       status: delStatus,
+      disableNumbers: !btnStatus,
     });
   };
 
@@ -119,17 +122,21 @@ export default class Dialer extends Component {
   };
 
   renderRow = ({ item }) => {
+    const { disableNumbers } = this.state;
+    const opacityStyle = disableNumbers ? 0.2 : null;
+
     return (
       <TouchableOpacity
         key={item}
-        style={styles.profileRowItem}
+        style={[{ opacity: opacityStyle }, styles.profileRowItem]}
         onPress={() => this.onChangeText(item)}
+        disabled={disableNumbers}
       >
         <View style={styles.numberItem}>
           <Paragraph
             text={item}
             styles={styles.fieldLabel}
-            onPress={() => this.onChangeText(item)}
+            onPress={() => (disableNumbers ? this.onChangeText(item) : null)}
           />
         </View>
 

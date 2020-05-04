@@ -15,7 +15,6 @@ export default styles = StyleSheet.create({
     fontSize: 35,
     color: 'white',
     fontWeight: '300',
-    //paddingBottom: 10,
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
@@ -28,21 +27,72 @@ export default styles = StyleSheet.create({
     fontFamily: theme.secondaryFont,
   },
 
+  avatarLayout: {
+    flex: 1,
+    flexDirection: 'column',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: '20%',
+    marginTop: '5%',
+  },
+
+  navBar: {
+    marginTop: 10,
+    paddingLeft: 16,
+    paddingRight: 16,
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+  },
+
+  editButton: {
+    height: 35,
+    width: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: colors.background,
+    elevation: 5,
+    textShadowColor: colors.black,
+    shadowOpacity: 0.4,
+    shadowRadius: 15,
+    textShadowOffset: { width: 5, height: 2 },
+  },
+
+  cameraButton: {
+    height: 35,
+    width: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: colors.background,
+    elevation: 5,
+    textShadowColor: colors.black,
+    shadowOpacity: 0.4,
+    shadowRadius: 15,
+    textShadowOffset: { width: 5, height: 2 },
+    position: 'absolute',
+    right: '10%',
+    bottom: '0%',
+  },
+
   sectionHeader: {
     fontFamily: theme.secondaryFont,
     color: colors.blue,
-    fontSize: theme.headerThreeFont,
+    fontSize: theme.headerFourFont,
   },
 
   sectionHeaderView: {
     height: hp('6%'),
     paddingLeft: wp('5%'),
     alignItems: 'flex-start',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
     fontSize: 20,
-    color: colors.white,
+    color: '#fff',
     fontWeight: '600',
     marginTop: 270,
     padding: 20,
@@ -105,5 +155,49 @@ export default styles = StyleSheet.create({
     height: 40,
     width: 40,
     borderRadius: 20,
+  },
+
+  panel: {
+    height: hp('60%'),
+    padding: wp('3%'),
+    // backgroundColor: '#f7f5eee8',
+    backgroundColor: colors.white,
+  },
+
+  header: {
+    width: '100%',
+    //height: hp('20%'),
+  },
+  panelHeader: {
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    height: hp('10%'),
+    justifyContent: 'center',
+  },
+  panelHandle: {
+    width: wp('10%'),
+    height: hp('1%'),
+    borderRadius: wp('2%'),
+    backgroundColor: '#00000040',
+    marginBottom: hp('1%'),
+  },
+  // panelTitle: {
+  //   color: theme.primaryTextColor,
+  //   fontFamily: theme.secondaryFont,
+  //   fontSize: theme.smallFont,
+  //   height: hp('5%'),
+  //   textAlign: 'left',
+  // },
+
+  panelButton: {
+    borderRadius: 10,
+    backgroundColor: '#292929',
+    alignItems: 'center',
+  },
+
+  panelButtonTitle: {
+    fontSize: 12,
+    color: colors.white,
+    fontFamily: 'Poppins-Regular',
   },
 });

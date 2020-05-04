@@ -8,13 +8,17 @@ import {
   BackHandler,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Paragraph, SubmitButton, Preloader, Line } from 'components';
+import { Paragraph, SubmitButton, Preloader, Line, Icons } from 'components';
 import styles from './styles';
 import colors from 'assets/colors';
 import { Navbar } from 'components';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 import DropdownAlert from 'react-native-dropdownalert';
 import { ProcessPermissionRequestEndpoint, fetchToken } from 'utils';
+import moment from 'moment';
 
 class RequestDetails extends Component {
   constructor(props) {
@@ -24,6 +28,7 @@ class RequestDetails extends Component {
       showLoading: false,
       logicalAddress: '',
       data: [],
+      message: '',
     };
   }
 
@@ -52,11 +57,12 @@ class RequestDetails extends Component {
   };
 
   getNavParams = async () => {
-    let response = this.props.navigation.getParam('params');
-    let res = await fetchToken();
+    let { item, message } = this.props.navigation.getParam('params');
+    let { token } = await fetchToken();
     return this.setState({
-      data: response.item,
-      token: res.token,
+      data: item,
+      token: token,
+      message,
     });
   };
 
@@ -112,39 +118,51 @@ class RequestDetails extends Component {
     let title = this.formatProfileKey(item.profileField.key);
     let action = status === 'requested' ? 'reject' : 'revoke';
     let posButton = status === 'granted' ? true : false;
+    let iconName = 'ios-alert',
+      color = colors.errorRed;
     let negButton = false;
-    let btnTitle = 'Reject';
+    let btnTitle = 'REJECT';
     if (status === 'granted') {
-      btnTitle = 'Revoke';
+      btnTitle = 'REVOKE';
+      iconName = 'ios-checkmark-circle';
+      color = colors.green;
       negButton = false;
     } else if (status === 'revoked') {
       negButton = true;
-      btnTitle = 'Revoke';
+      btnTitle = 'REVOKE';
     } else if (status === 'rejected') {
       negButton = true;
     }
+    let initialDate = item.profileField.updatedAt;
+    let date = moment(initialDate).format('MMMM, Do');
 
     return (
-      <View key={item.id} style={styles.bottomSheetRowItem}>
-        <View style={styles.bottomSheetListItem}>
-          <View style={styles.flatListName}>
-            <Paragraph text={title} styles={styles.requestFieldNames} />
+      <View key={item.id} style={styles.cardLayout}>
+        <View style={styles.cardHeader}>
+          <Paragraph styles={styles.messageTitle} text={title} />
+          <View style={styles.statusLayout}>
+            <Paragraph styles={styles.cardText} text={date} />
           </View>
+        </View>
+        <View style={styles.messageLayout}>
           <View style={styles.buttonLayout}>
-            <SubmitButton
-              title={btnTitle}
-              onPress={() => this.submitForm(item.id, action)}
-              btnStyle={[styles.button, { backgroundColor: colors.errorRed }]}
-              titleStyle={styles.panelButtonTitle}
-              disabled={negButton}
-            />
-            <SubmitButton
-              title={'Grant'}
-              onPress={() => this.submitForm(item.id, 'grant')}
-              btnStyle={[styles.button, { backgroundColor: colors.green }]}
-              titleStyle={styles.panelButtonTitle}
-              disabled={posButton}
-            />
+            {!negButton ? (
+              <SubmitButton
+                title={btnTitle}
+                onPress={() => this.submitForm(item.id, action)}
+                btnStyle={[styles.button]}
+                titleStyle={styles.panelButtonTitle}
+                disabled={negButton}
+              />
+            ) : (
+              <SubmitButton
+                title={'GRANT'}
+                onPress={() => this.submitForm(item.id, 'grant')}
+                btnStyle={[styles.button, { borderColor: colors.blue }]}
+                titleStyle={[styles.panelButtonTitle, { color: colors.blue }]}
+                disabled={posButton}
+              />
+            )}
           </View>
         </View>
       </View>
@@ -152,7 +170,7 @@ class RequestDetails extends Component {
   };
 
   render() {
-    const { data, showLoading } = this.state;
+    const { data, showLoading, message } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -167,7 +185,16 @@ class RequestDetails extends Component {
           defaultContainer={styles.alert}
           ref={ref => (this.dropDownAlertRef = ref)}
         />
-        <Navbar
+        <View style={styles.navBar}>
+          <Icons
+            name={'ios-arrow-back'}
+            iconStyle={styles.backView}
+            iconColor={colors.blue}
+            iconSize={20}
+            onPress={this.handleBackPress}
+          />
+        </View>
+        {/* <Navbar
           size={hp('4%')}
           layoutSize={3}
           leftIconName={'ios-arrow-back'}
@@ -177,7 +204,8 @@ class RequestDetails extends Component {
           headerTitle={null}
           leftIconOnPress={this.handleBackPress}
           rightIconOnPress={() => {}}
-        />
+        /> */}
+
         <View style={styles.wrapper}>
           <View
             style={{
@@ -186,24 +214,17 @@ class RequestDetails extends Component {
               justifyContent: 'center',
             }}
           >
-            <Paragraph
-              text={
-                'Select the information you would like \nto share with this connection \nyou can select multiple items.'
-              }
-              styles={styles.introMessage}
-            />
+            <Paragraph text={message} styles={styles.introMessage} />
           </View>
-          <View>
-            <FlatList
-              extraData={this.state}
-              data={data.requests}
-              renderItem={this.renderRow}
-              keyExtractor={data => data.id.toString()}
-              ItemSeparatorComponent={this.renderSeparator}
-              showsVerticalScrollIndicator={false}
-            />
-            <Line />
-          </View>
+          <FlatList
+            extraData={this.state}
+            data={data.requests}
+            renderItem={this.renderRow}
+            keyExtractor={data => data.id.toString()}
+            ItemSeparatorComponent={this.renderSeparator}
+            showsVerticalScrollIndicator={false}
+          />
+
           <Preloader modalVisible={showLoading} animationType='fade' />
         </View>
       </SafeAreaView>
