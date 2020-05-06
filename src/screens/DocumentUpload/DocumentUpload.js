@@ -40,8 +40,8 @@ class DocumentUpload extends Component {
   }
 
   getProfile = async () => {
-    let response = await fetchToken();
-    return this.setState({ token: response.token });
+    let { token } = await fetchToken();
+    return this.setState({ token });
   };
 
   showLoadingDialogue = () => this.setState({ showLoading: true });
@@ -163,7 +163,7 @@ class DocumentUpload extends Component {
       that.setState({ image: { uri: url } });
       that.props.addDocument(res.data);
       return setTimeout(() => {
-        // that.handleBackPress();
+        that.handleBackPress();
       }, 3000);
     } catch (error) {
       return this.showNotification('error', 'Hello', error.toString());
@@ -189,7 +189,7 @@ class DocumentUpload extends Component {
         <Navbar
           size={hp('4%')}
           layoutSize={3}
-          leftIconName={'ios-arrow-back'}
+          leftIconName={'keyboard-arrow-left'}
           rightIconName={null}
           rightIconColor={colors.blue}
           leftIconColor={colors.iconColor}

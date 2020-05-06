@@ -35,7 +35,7 @@ export default class SubmitButton extends Component {
         disabled={disabled}
       >
         <Text style={textStyle} onPress={disabled ? null : onPress}>
-          {title}
+          {title.toUpperCase()}
         </Text>
         <Image source={imgSrc} style={imgStyle} />
       </TouchableOpacity>

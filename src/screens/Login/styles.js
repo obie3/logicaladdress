@@ -1,10 +1,9 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
-import colors from 'assets/colors';
+import { StyleSheet } from 'react-native';
 import theme from 'assets/theme';
-const window = Dimensions.get('window');
-
-export const IMAGE_HEIGHT = window.width / 3;
-export const IMAGE_HEIGHT_SMALL = window.width / 10;
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 export default styles = StyleSheet.create({
   container: {
@@ -13,17 +12,13 @@ export default styles = StyleSheet.create({
   },
 
   wrapper: {
-    ...theme.wrapper,
-    justifyContent: 'center',
+    flex: 1,
+    paddingHorizontal: wp('6%'),
+    paddingVertical: wp('6%'),
   },
 
   btnView: {
     ...theme.buttonView,
-  },
-  signupLinkView: {
-    justifyContent: 'center',
-    flexDirection: 'row',
-    marginTop: 16,
   },
 
   textInputView: {
@@ -36,8 +31,8 @@ export default styles = StyleSheet.create({
 
   buttonWithImage: {
     ...theme.button,
-    borderRadius: 30,
-    width: '60%',
+    borderRadius: 6,
+    width: '100%',
     height: 45,
     marginTop: 25,
   },
@@ -46,26 +41,51 @@ export default styles = StyleSheet.create({
     ...theme.buttonText,
   },
 
-  iconDoor: {
-    height: 18,
-    width: 18,
-    resizeMode: 'contain',
-    marginLeft: 24,
-  },
-
-  logoIcon: {
-    width: '60%',
-    height: '50%',
-    resizeMode: 'contain',
+  logoLayout: {
+    backgroundColor: 'green',
+    height: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   logo: {
-    height: IMAGE_HEIGHT,
+    height: '20%',
     resizeMode: 'contain',
-    marginBottom: 20,
     padding: 10,
-    marginTop: '20%',
+  },
+
+  welcomeTextLayout: {
+    height: '30%',
+    justifyContent: 'center',
+    marginTop: hp('5%'),
+  },
+
+  introText: {
+    fontFamily: theme.headerFont,
+    color: theme.primaryTextColor,
+    fontSize: 36,
+  },
+
+  labelText: {
+    fontFamily: theme.secondaryFont,
+    fontSize: theme.smallFont,
+    color: '#00000033',
+  },
+
+  footerImageLayout: {
+    flexDirection: 'row',
+    height: '30%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
     width: '100%',
+  },
+
+  footerImage: {
+    height: '100%',
+    width: '100%',
+    resizeMode: 'contain',
   },
 
   alert: {

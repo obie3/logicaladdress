@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import colors from 'assets/colors';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from '@expo/vector-icons/Ionicons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 
 export default class Icons extends Component {
   render() {
@@ -23,12 +23,7 @@ export default class Icons extends Component {
         disabled={disabled}
         onPress={onPress}
       >
-        <Icon
-          name={name}
-          color={iconColor}
-          size={iconSize}
-          style={styles.icon}
-        />
+        <Icon name={name} color={iconColor} size={iconSize} />
       </TouchableOpacity>
     );
   }
@@ -49,10 +44,5 @@ const styles = StyleSheet.create({
     width: 60,
     marginTop: 16,
     backgroundColor: colors.white,
-  },
-
-  icon: {
-    marginRight: -2,
-    marginTop: -2,
   },
 });

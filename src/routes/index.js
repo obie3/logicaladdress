@@ -26,6 +26,7 @@ import ConnectionRequests from 'screens/ConnectionRequests/ConnectionRequests';
 import LookupDetails from 'screens/LookupDetails/LookupDetails';
 import RequestDetails from 'screens/RequestDetails/RequestDetails';
 import PhoneVerification from 'screens/PhoneVerification/PhoneVerification';
+import Permissions from 'screens/Permissions/Permissions';
 
 const handleCustomTransition = ({ scenes }) => {
   const prevScene = scenes[scenes.length - 2];
@@ -203,6 +204,13 @@ export const AppStack = createStackNavigator(
 
     PhoneVerification: {
       screen: PhoneVerification,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    Permissions: {
+      screen: Permissions,
       navigationOptions: {
         header: null,
       },

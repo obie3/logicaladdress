@@ -7,7 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import { Paragraph, Icons, Preloader } from 'components';
+import { Paragraph, Icons, Preloader, Navbar } from 'components';
 import { connect } from 'react-redux';
 import styles from './styles';
 import colors from 'assets/colors';
@@ -75,10 +75,13 @@ class Settings extends Component {
 
   showContactTracingPage = () =>
     this.props.navigation.navigate('ContactTracing');
+  showPermissionsPage = () => this.props.navigation.navigate('Permissions');
 
   showMap = () => this.props.navigation.navigate('Map');
 
   handleBackPress = () => this.props.navigation.goBack();
+  showNotificationPage = () => this.props.navigation.navigate('Notification');
+
   handleLogoutPress = async () => {
     await logout();
     return this.props.navigation.navigate('Home');
@@ -223,37 +226,51 @@ class Settings extends Component {
 
   renderRow = ({ item }) => {
     let { title, id } = item;
-    if (id !== 'middleName' && id !== 'lastName') {
+    if (id !== 'profilePhoto' && id !== 'middleName' && id !== 'lastName') {
+      let iconName;
+      switch (id) {
+        case 'email':
+          iconName = 'contact-mail';
+          break;
+        case 'phone':
+          iconName = 'phone-iphone';
+          break;
+        case 'humanHomeAddress':
+          iconName = 'home';
+          break;
+        case 'homeLocation':
+          iconName = 'location-city';
+          break;
+        case 'dob':
+          iconName = 'date-range';
+          break;
+        default:
+          iconName = 'assignment-ind';
+      }
+
       return (
-        <View key={id} style={styles.cardLayout}>
+        <TouchableOpacity
+          key={id}
+          style={styles.cardLayout}
+          onPress={() =>
+            id === 'homeLocation' ? this.showMap() : this.canAddItem(item)
+          }
+        >
           <View style={styles.cardContent}>
             <Paragraph
               styles={styles.cardText}
               text={title === 'First name' ? 'Name' : title}
             />
 
-            <View
-              style={{
-                flexDirection: 'row',
-                width: '20%',
-                justifyContent: 'flex-end',
-              }}
-            >
-              <TouchableOpacity
-                onPress={() =>
-                  id === 'homeLocation' ? this.showMap() : this.canAddItem(item)
-                }
-              >
-                <Icon
-                  name={'add-circle'}
-                  color={colors.label}
-                  size={20}
-                  style={{ padding: 5 }}
-                />
-              </TouchableOpacity>
-            </View>
+            <Icons
+              name={iconName}
+              color={colors.label}
+              iconStyle={styles.forwardIcon}
+              iconColor={'#95a5a6'}
+              iconSize={hp('3%')}
+            />
           </View>
-        </View>
+        </TouchableOpacity>
       );
     }
   };
@@ -283,20 +300,18 @@ class Settings extends Component {
             defaultContainer={styles.alert}
             ref={ref => (this.dropDownAlertRef = ref)}
           />
-          <View style={styles.iconContainer}>
-            <Icons
-              disabled={false}
-              onPress={this.handleBackPress}
-              name={'ios-arrow-back'}
-              iconStyle={styles.forwardIcon}
-              iconColor={colors.blue}
-              iconSize={hp('3%')}
-            />
 
-            <Paragraph styles={styles.headerText} text={'Settings'} />
-
-            <Paragraph styles={styles.headerText} text={''} />
-          </View>
+          <Navbar
+            size={hp('3%')}
+            layoutSize={3}
+            leftIconName={'keyboard-arrow-left'}
+            rightIconName={'notifications'}
+            rightIconColor={colors.blue}
+            leftIconColor={colors.blue}
+            headerTitle={'Settings'}
+            leftIconOnPress={this.handleBackPress}
+            rightIconOnPress={this.showNotificationPage}
+          />
         </View>
 
         <View style={styles.wrapper}>
@@ -306,14 +321,32 @@ class Settings extends Component {
 
               <Icons
                 disabled={false}
-                onPress={this.showContactTracingPage}
-                name={'ios-arrow-forward'}
+                onPress={this.showPermissionsPage}
+                name={'location-searching'}
                 iconStyle={styles.forwardIcon}
                 iconColor={'#95a5a6'}
                 iconSize={hp('3%')}
               />
             </View>
           </View>
+
+          <TouchableOpacity
+            onPress={this.showPermissionsPage}
+            style={styles.cardLayout}
+          >
+            <View style={styles.cardContent}>
+              <Paragraph styles={styles.cardText} text={'Permissions'} />
+
+              <Icons
+                disabled={false}
+                onPress={this.showPermissionsPage}
+                name={'lock-open'}
+                iconStyle={styles.forwardIcon}
+                iconColor={'#95a5a6'}
+                iconSize={hp('3%')}
+              />
+            </View>
+          </TouchableOpacity>
 
           <FlatList
             extraData={this.state}
@@ -327,7 +360,7 @@ class Settings extends Component {
             <Icons
               disabled={false}
               onPress={this.handleLogoutPress}
-              name={'ios-log-out'}
+              name={'exit-to-app'}
               iconStyle={styles.buttonStyle}
               iconColor={'#7f8c8d'}
               iconSize={hp('3%')}
@@ -349,8 +382,7 @@ class Settings extends Component {
               value={date}
               maximumDate={date}
               mode={'date'}
-              is24Hour={true}
-              display='default'
+              display='spinner'
               onChange={this.onChange}
             />
           )}

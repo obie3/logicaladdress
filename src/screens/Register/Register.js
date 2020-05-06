@@ -5,101 +5,101 @@ import {
   SafeAreaView,
   StatusBar,
   Image,
-  StyleSheet,
-  KeyboardAvoidingView,
   Keyboard,
   Platform,
-  Animated,
 } from 'react-native';
 import { Paragraph, InputField, SubmitButton, Preloader } from 'components';
 import colors from 'assets/colors';
-import logicallogo from 'assets/images/logo.png';
-import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL } from './styles';
+import styles from './styles';
 import {
-  isEmailValid,
   RegistrationEndpoint,
-  isPhoneValid,
   saveToLocalStorage,
   isEmpty,
   fetchToken,
   saveToken,
 } from 'utils';
-import WomanSvg from './WomanSvg';
 import DropdownAlert from 'react-native-dropdownalert';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      name: '',
-      phone: '',
-      isEmailValid: false,
-      isNameValid: false,
-      isPhoneValid: false,
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      isFirstNameValid: false,
+      isLastNameValid: false,
       showLoading: false,
       isActive: false,
-      isEmailFocused: false,
       isNameFocused: false,
-      isPasswordFocused: false,
-      isPhoneFocused: false,
+      showFooter: true,
     };
-    this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
-    this.fullname = React.createRef();
-    this.email = React.createRef();
-    this.phone = React.createRef();
   }
+
+  componentDidMount() {
+    Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
+  componentWillUnmount() {
+    Keyboard.removeListener('keyboardDidShow', this.keyboardDidShow);
+    Keyboard.removeListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
+  keyboardDidShow = () => this.showFooterImage();
+
+  keyboardDidHide = () => this.showFooterImage();
+
+  showFooterImage = () =>
+    this.setState(prevState => ({
+      showFooter: !prevState.showFooter,
+    }));
 
   handleLoginRoute = () => this.props.navigation.navigate('Login');
 
-  handleNameChange = name => {
+  handleFirstNameChange = name => {
     if (name.length > 0) {
       this.setState({
-        isNameValid: true,
-        name: name,
+        isFirstNameValid: true,
+        firstName: name,
       });
     } else {
-      if (name.length < 1) {
-        this.setState({
-          isNameValid: false,
-        });
-      }
+      this.setState({
+        isFirstNameValid: false,
+      });
     }
   };
-  handleEmailChange = email => {
-    if (email.length > 0) {
+  handleMiddleNameChange = name => {
+    if (name.length > 0) {
       this.setState({
-        isEmailValid: true,
-        email: email,
+        isMiddleNameValid: true,
+        middleName: name,
       });
     } else {
-      if (email.length < 1) {
-        this.setState({
-          isEmailValid: false,
-        });
-      }
+      this.setState({
+        isMiddleNameValid: false,
+      });
     }
   };
 
-  handlePhoneChange = phone => {
-    if (phone.length > 0) {
+  handleLastNameChange = name => {
+    if (name.length > 0) {
       this.setState({
-        isPhoneValid: true,
-        phone: phone,
+        isLastNameValid: true,
+        lastName: name,
       });
     } else {
-      if (phone.length < 1) {
-        this.setState({
-          isPhoneValid: false,
-        });
-      }
+      this.setState({
+        isLastNameValid: false,
+      });
     }
   };
 
   toggleButtonState = () => {
-    const { isEmailValid, isPhoneValid, isNameValid } = this.state;
+    const { isFirstNameValid, isLastNameValid } = this.state;
 
-    if (isEmailValid && isNameValid && isPhoneValid) {
+    if (isFirstNameValid && isLastNameValid) {
       return true;
     } else {
       return false;
@@ -115,109 +115,43 @@ export default class Register extends Component {
     return this.dropDownAlertRef.alertWithType(type, title, message);
   };
 
-  componentDidMount() {
-    if (Platform.OS == 'ios') {
-      this.keyboardWillShowSub = Keyboard.addListener(
-        'keyboardWillShow',
-        this.keyboardWillShow,
-      );
-      this.keyboardWillHideSub = Keyboard.addListener(
-        'keyboardWillHide',
-        this.keyboardWillHide,
-      );
-    } else {
-      this.keyboardWillShowSub = Keyboard.addListener(
-        'keyboardDidShow',
-        this.keyboardDidShow,
-      );
-      this.keyboardWillHideSub = Keyboard.addListener(
-        'keyboardDidHide',
-        this.keyboardDidHide,
-      );
-    }
-  }
-
-  componentWillUnmount() {
-    this.keyboardWillShowSub.remove();
-    this.keyboardWillHideSub.remove();
-  }
-
-  keyboardWillShow = event => {
-    Animated.timing(this.imageHeight, {
-      duration: event.duration,
-      toValue: IMAGE_HEIGHT_SMALL,
-    }).start();
-  };
-
-  keyboardWillHide = event => {
-    Animated.timing(this.imageHeight, {
-      duration: event.duration,
-      toValue: IMAGE_HEIGHT,
-    }).start();
-  };
-
-  keyboardDidShow = event => {
-    Animated.timing(this.imageHeight, {
-      toValue: IMAGE_HEIGHT_SMALL,
-    }).start();
-  };
-
-  keyboardDidHide = event => {
-    Animated.timing(this.imageHeight, {
-      toValue: IMAGE_HEIGHT,
-    }).start();
-  };
-
   formValidation = async () => {
     this.showLoadingDialogue();
-    let res = await fetchToken();
-    const { email, name, phone } = this.state;
-    let params = {
-      email,
-      name,
-      phone,
+    let { token } = await fetchToken();
+    const { firstName, lastName, middleName, isMiddleNameValid } = this.state;
+    let item1 = { fieldName: 'firstName', value: firstName, action: 'create' };
+    let item2 = {
+      fieldName: 'middleName',
+      value: middleName,
+      action: 'create',
     };
-    if (isEmpty(name)) {
-      return this.showNotification('error', 'Message', 'Enter valid name');
-    }
+    let item3 = { fieldName: 'lastName', value: lastName, action: 'create' };
 
-    if (name.split(' ').length < 2) {
+    if (firstName.length < 2) {
       return this.showNotification(
         'error',
         'Message',
-        'Enter more than one name',
+        'First Name is too short',
       );
-    } else if (!isEmailValid(email)) {
-      return this.showNotification('error', 'Message', 'Invalid email address');
-    } else if (!isEmpty(phone) && !isPhoneValid(phone)) {
+    } else if (isMiddleNameValid && middleName.length < 2) {
       return this.showNotification(
         'error',
         'Message',
-        'Enter valid phone number',
+        'Middle Name is too short',
+      );
+    } else if (lastName.length < 2) {
+      return this.showNotification(
+        'error',
+        'Message',
+        'Last Name is too short',
       );
     }
-    return this.completeRegistration(params, res.token);
+    let params = isMiddleNameValid ? [item1, item2, item3] : [item1, item3];
+    return this.completeRegistration(params, token);
   };
 
   completeRegistration = async (params, token) => {
-    let { phone, email, name } = params;
-    let stripedPhone = phone.substring(1);
-    phone = `${'+234'}${stripedPhone}`;
-
-    let nName = name.replace(/\b./g, function(m) {
-      return m.toUpperCase();
-    });
-
-    name = nName.split(' ');
-    let defaultParams = {
-      firstName: name[0],
-      email: email ? email : '',
-    };
-    let body =
-      name.length == 2
-        ? { ...defaultParams, lastName: name[1] }
-        : { ...defaultParams, lastName: name[2], middleName: name[1] };
-
+    let body = { fields: params };
     const settings = {
       method: 'POST',
       headers: {
@@ -244,7 +178,7 @@ export default class Register extends Component {
   };
 
   render() {
-    const { showLoading } = this.state;
+    const { showLoading, showFooter } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -259,136 +193,105 @@ export default class Register extends Component {
           defaultContainer={styles.alert}
           ref={ref => (this.dropDownAlertRef = ref)}
         />
-        <KeyboardAvoidingView style={styles.wrapper} behavior='padding'>
-          <Animated.Image
-            source={logicallogo}
-            style={[styles.logo, { height: this.imageHeight }]}
-          />
-          <View
-            style={[
-              styles.textInputView,
-              {
-                borderColor: this.state.isNameFocused
-                  ? colors.green
-                  : colors.whiteShade,
-              },
-            ]}
-          >
-            <Image
-              source={require('assets/images/name.png')}
-              style={styles.iconForm}
-            />
+        <KeyboardAwareScrollView
+          behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+          style={styles.wrapper}
+        >
+          {/* <View style={styles.logoLayout}>
+          <Image source={logicallogo} style={[styles.logo]} />
+
+          </View> */}
+
+          <View style={styles.welcomeTextLayout}>
+            <Paragraph text={"Let's know you"} styles={styles.introText} />
+          </View>
+          <View style={styles.formLayout}>
+            <View style={styles.labelLayout}>
+              <Paragraph text={'First Name'} styles={styles.labelText} />
+              <Paragraph
+                text={'*'}
+                styles={[styles.labelText, { color: 'red' }]}
+              />
+            </View>
+
             <InputField
-              placeholder={'Full Name'}
-              placeholderTextColor={colors.blackShade}
+              placeholder={'John'}
+              placeholderTextColor={'#00000033'}
               textColor={colors.blackShade}
               inputType={'text'}
-              onChangeText={this.handleNameChange}
+              onChangeText={this.handleFirstNameChange}
               autoCapitalize='words'
-              height={40}
-              width={'90%'}
-              borderWidth={1}
-              borderColor={colors.white}
+              autoCompleteType='name'
+              textContentType='givenName'
+              keyboardType='name-phone-pad'
+              width={'100%'}
+              borderBottomColor={'#00000033'}
+              maxLength={11}
               returnKeyType={'next'}
               blurOnSubmit={false}
-              onFocus={() => this.setState({ isNameFocused: true })}
-              onBlur={() => this.setState({ isNameFocused: false })}
-              onSubmitEditing={() => {
-                this.email && this.email.focus();
-              }}
             />
-          </View>
-          <View
-            style={[
-              styles.textInputView,
-              {
-                borderColor: this.state.isEmailFocused
-                  ? colors.blue
-                  : colors.whiteShade,
-              },
-            ]}
-          >
-            <Image
-              source={require('assets/images/email.png')}
-              style={StyleSheet.flatten(styles.iconForm)}
-            />
-            <InputField
-              placeholder={'Email'}
-              placeholderTextColor={colors.blackShade}
-              textColor={colors.blackShade}
-              inputType={'email'}
-              onChangeText={this.handleEmailChange}
-              autoCapitalize='none'
-              height={40}
-              width={'90%'}
-              borderColor={colors.white}
-              refs={input => {
-                this.email = input;
-              }}
-              returnKeyType={'next'}
-              blurOnSubmit={false}
-              onFocus={() => this.setState({ isEmailFocused: true })}
-              onBlur={() => this.setState({ isEmailFocused: false })}
-              onSubmitEditing={() => {
-                this.phone && this.phone.focus();
-              }}
-            />
-          </View>
-          <View
-            style={[
-              styles.textInputView,
-              {
-                borderColor: this.state.isEmailFocused
-                  ? colors.blue
-                  : colors.whiteShade,
-              },
-            ]}
-          >
-            <Image
-              source={require('assets/images/call.png')}
-              style={StyleSheet.flatten(styles.iconForm)}
-            />
-            <InputField
-              placeholder={'Phone Number'}
-              placeholderTextColor={colors.blackShade}
-              textColor={colors.blackShade}
-              inputType={'phone'}
-              onChangeText={this.handlePhoneChange}
-              autoCapitalize='none'
-              autoCompleteType='tel'
-              textContentType='telephoneNumber'
-              height={40}
-              width={'90%'}
-              borderColor={colors.white}
-              refs={input => {
-                this.phone = input;
-              }}
-              returnKeyType={'done'}
-              blurOnSubmit={false}
-              onFocus={() => this.setState({ isPhoneFocused: true })}
-              onBlur={() => this.setState({ isPhoneFocused: false })}
-              onSubmitEditing={() => {
-                this.formValidation();
-              }}
-            />
-          </View>
 
-          <View style={styles.btnView}>
+            <View style={styles.labelLayout}>
+              <Paragraph text={'Middle Name'} styles={styles.labelText} />
+            </View>
+            <InputField
+              placeholder={'Doe'}
+              placeholderTextColor={'#00000033'}
+              textColor={colors.blackShade}
+              inputType={'text'}
+              onChangeText={this.handleMiddleNameChange}
+              autoCapitalize='words'
+              autoCompleteType='name'
+              textContentType='middleName'
+              keyboardType='name-phone-pad'
+              width={'100%'}
+              borderBottomColor={'#00000033'}
+              maxLength={11}
+              returnKeyType={'next'}
+              blurOnSubmit={true}
+            />
+            <View style={styles.labelLayout}>
+              <Paragraph text={'Last Name'} styles={styles.labelText} />
+              <Paragraph
+                text={'*'}
+                styles={[styles.labelText, { color: 'red' }]}
+              />
+            </View>
+
+            <InputField
+              placeholder={'John'}
+              placeholderTextColor={'#00000033'}
+              textColor={colors.blackShade}
+              inputType={'text'}
+              onChangeText={this.handleLastNameChange}
+              autoCapitalize='words'
+              autoCompleteType='name'
+              textContentType='familyName'
+              width={'100%'}
+              borderBottomColor={'#00000033'}
+              maxLength={11}
+              returnKeyType={'next'}
+              blurOnSubmit={true}
+            />
             <SubmitButton
               title={'Submit'}
               disabled={!this.toggleButtonState()}
               onPress={this.formValidation}
-              btnStyle={styles.buttonWithImage}
-              imgStyle={styles.iconDoor}
+              btnStyle={styles.buttonStyle}
               titleStyle={styles.buttonTxt}
             />
-
-            <Preloader modalVisible={showLoading} animationType='fade' />
           </View>
-        </KeyboardAvoidingView>
-        {/* <View style={styles.footerView}>
-          <WomanSvg />
-        </View> */}
+
+          <Preloader modalVisible={showLoading} animationType='fade' />
+        </KeyboardAwareScrollView>
+        {showFooter ? (
+          <View style={styles.footerImageLayout}>
+            <Image
+              style={styles.footerImage}
+              source={require('assets/images/loginImage.png')}
+            />
+          </View>
+        ) : null}
       </SafeAreaView>
     );
   }

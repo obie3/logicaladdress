@@ -19,6 +19,7 @@ class Profile extends Component {
     super(props);
     this.state = {
       title: '',
+      isEditable: false,
     };
   }
 
@@ -31,6 +32,12 @@ class Profile extends Component {
   showNotification = response => {
     let { handle, title, message } = response;
     return this.dropDownAlertRef.alertWithType(handle, title, message);
+  };
+
+  changeEditStatus = () => {
+    return this.setState(prevState => ({
+      isEditable: !prevState.isEditable,
+    }));
   };
   _updateTitle(obj) {
     const { i } = obj;
@@ -50,18 +57,9 @@ class Profile extends Component {
 
   render() {
     const { title } = this.state;
-    let iconName =
-      title === 'Profile'
-        ? 'ios-create'
-        : title == 'Documents'
-        ? 'ios-add-circle'
-        : 'ios-notifications';
+    let iconName = title === 'Profile' ? 'edit' : 'create-new-folder';
     let link =
-      title === 'Profile'
-        ? this.showProfileEditPage
-        : title === 'Documents'
-        ? this.showDocumentUploadPage
-        : this.showNotificationPage;
+      title === 'Profile' ? this.changeEditStatus : this.showDocumentUploadPage;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -82,7 +80,7 @@ class Profile extends Component {
             <Icons
               disabled={false}
               onPress={this.showSettingsPage}
-              name={'ios-settings'}
+              name={'settings'}
               iconStyle={styles.navIcon}
               iconColor={colors.blue}
               iconSize={hp('3%')}
@@ -110,6 +108,7 @@ class Profile extends Component {
             {...this.props}
             parentProps={this.props}
             showResponse={this.showNotification}
+            isEditable={this.state.isEditable}
             tabLabel={'ios-person'}
           />
           <DocumentLists parentProps={this.props} tabLabel={'ios-paper'} />

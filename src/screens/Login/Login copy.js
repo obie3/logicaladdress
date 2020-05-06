@@ -3,13 +3,15 @@ import React, { Component } from 'react';
 import {
   View,
   Image,
+  StyleSheet,
+  KeyboardAvoidingView,
   SafeAreaView,
   StatusBar,
   Keyboard,
   Platform,
   Animated,
 } from 'react-native';
-import { InputField, SubmitButton, Preloader, Paragraph } from 'components';
+import { InputField, SubmitButton, Preloader } from 'components';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL } from './styles';
 import {
   isEmpty,
@@ -31,7 +33,6 @@ class Login extends Component {
       isPhoneValid: false,
       showLoading: false,
       isPhoneFocused: false,
-      showFooter: true,
     };
     this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
   }
@@ -84,23 +85,57 @@ class Login extends Component {
   };
 
   componentDidMount() {
-    Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-    Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+    if (Platform.OS == 'ios') {
+      this.keyboardWillShowSub = Keyboard.addListener(
+        'keyboardWillShow',
+        this.keyboardWillShow,
+      );
+      this.keyboardWillHideSub = Keyboard.addListener(
+        'keyboardWillHide',
+        this.keyboardWillHide,
+      );
+    } else {
+      this.keyboardWillShowSub = Keyboard.addListener(
+        'keyboardDidShow',
+        this.keyboardDidShow,
+      );
+      this.keyboardWillHideSub = Keyboard.addListener(
+        'keyboardDidHide',
+        this.keyboardDidHide,
+      );
+    }
   }
 
   componentWillUnmount() {
-    Keyboard.removeListener('keyboardDidShow', this.keyboardDidShow);
-    Keyboard.removeListener('keyboardDidHide', this.keyboardDidHide);
+    this.keyboardWillShowSub.remove();
+    this.keyboardWillHideSub.remove();
   }
 
-  keyboardDidShow = () => this.showFooterImage();
+  keyboardWillShow = event => {
+    Animated.timing(this.imageHeight, {
+      duration: event.duration,
+      toValue: IMAGE_HEIGHT_SMALL,
+    }).start();
+  };
 
-  keyboardDidHide = () => this.showFooterImage();
+  keyboardWillHide = event => {
+    Animated.timing(this.imageHeight, {
+      duration: event.duration,
+      toValue: IMAGE_HEIGHT,
+    }).start();
+  };
 
-  showFooterImage = () =>
-    this.setState(prevState => ({
-      showFooter: !prevState.showFooter,
-    }));
+  keyboardDidShow = event => {
+    Animated.timing(this.imageHeight, {
+      toValue: IMAGE_HEIGHT_SMALL,
+    }).start();
+  };
+
+  keyboardDidHide = event => {
+    Animated.timing(this.imageHeight, {
+      toValue: IMAGE_HEIGHT,
+    }).start();
+  };
 
   formValidation = () => {
     this.showLoadingDialogue();
@@ -150,7 +185,7 @@ class Login extends Component {
   };
 
   render() {
-    const { showLoading, showFooter } = this.state;
+    const { showLoading } = this.state;
 
     return (
       <SafeAreaView style={styles.container}>
@@ -166,60 +201,65 @@ class Login extends Component {
           defaultContainer={styles.alert}
           ref={ref => (this.dropDownAlertRef = ref)}
         />
-        <View style={styles.wrapper}>
-          {/* <View style={styles.logoLayout}>
+        {/* <BackIcon onPress={this.handleBackPress} /> */}
+        <KeyboardAvoidingView style={styles.wrapper}>
           <Image source={logicallogo} style={[styles.logo]} />
 
-          </View> */}
-
-          <View style={styles.welcomeTextLayout}>
-            <Paragraph text={'LOGIN'} styles={styles.introText} />
-          </View>
-
-          <View style={{ backgroundColor: 'white', height: '30%' }}>
-            <Paragraph text={'Phone Number'} styles={styles.labelText} />
-
-            <InputField
-              placeholder={'080xxxxxxxx'}
-              placeholderTextColor={'#00000033'}
-              textColor={colors.blackShade}
-              inputType={'phone'}
-              onChangeText={this.handlePhoneChange}
-              autoCapitalize='none'
-              autoCompleteType='tel'
-              textContentType='telephoneNumber'
-              keyboardType='phone-pad'
-              width={'100%'}
-              borderBottomColor={'#00000033'}
-              maxLength={11}
-              returnKeyType={'done'}
-              blurOnSubmit={false}
-              onSubmitEditing={() => {
-                this.formValidation();
-              }}
-            />
-
+          <View>
+            <View
+              style={[
+                styles.textInputView,
+                {
+                  borderColor: this.state.isEmailFocused
+                    ? colors.blue
+                    : colors.whiteShade,
+                },
+              ]}
+            >
+              <Image
+                source={require('assets/images/email.png')}
+                style={StyleSheet.flatten(styles.iconForm)}
+              />
+              {/* <View > */}
+              <InputField
+                placeholder={'Phone'}
+                placeholderTextColor={colors.blackShade}
+                textColor={colors.blackShade}
+                inputType={'phone'}
+                onChangeText={this.handlePhoneChange}
+                autoCapitalize='none'
+                autoCompleteType='tel'
+                textContentType='telephoneNumber'
+                keyboardType='phone-pad'
+                height={40}
+                width={'90%'}
+                borderColor={colors.white}
+                refs={input => {
+                  this.phone = input;
+                }}
+                returnKeyType={'done'}
+                blurOnSubmit={false}
+                onFocus={() => this.setState({ isPhoneFocused: true })}
+                onBlur={() => this.setState({ isPhoneFocused: false })}
+                onSubmitEditing={() => {
+                  this.formValidation();
+                }}
+              />
+            </View>
             <View style={styles.btnView}>
               <SubmitButton
                 title={'Log in'}
                 disabled={!this.toggleButtonState()}
                 onPress={this.formValidation}
+                imgSrc={require('assets/images/loginIcon.png')}
                 btnStyle={styles.buttonWithImage}
+                imgStyle={styles.iconDoor}
                 titleStyle={styles.buttonTxt}
               />
             </View>
           </View>
-          {showFooter ? (
-            <View style={styles.footerImageLayout}>
-              <Image
-                style={styles.footerImage}
-                source={require('assets/images/loginImage.png')}
-              />
-            </View>
-          ) : null}
-
           <Preloader modalVisible={showLoading} animationType='fade' />
-        </View>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }

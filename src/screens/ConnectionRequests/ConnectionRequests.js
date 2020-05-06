@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { Paragraph, Line } from 'components';
 import styles from './styles';
-import { connect } from 'react-redux';
 import UserAvatar from 'react-native-user-avatar';
 import {
   heightPercentageToDP as hp,
@@ -20,7 +19,6 @@ class ConnectionRequests extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: this.props.connectionRequests.data,
       token: '',
       showLoading: false,
     };
@@ -31,9 +29,10 @@ class ConnectionRequests extends Component {
   };
 
   showRequestDetails = (item, value) => {
+    let { navigation } = this.props.connections;
     let message = `${'Select the information you would like \nto share with '}${value}${'\nyou can select multiple items.'}`;
     let params = { item, message };
-    return this.props.navigation.navigate('RequestDetails', { params });
+    return navigation.navigate('RequestDetails', { params });
   };
 
   renderRow = ({ item }) => {
@@ -82,7 +81,8 @@ class ConnectionRequests extends Component {
   };
 
   render() {
-    const { data } = this.state;
+    let { connectionRequests } = this.props.connections;
+    let { data } = connectionRequests;
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.wrapper}>
@@ -119,10 +119,4 @@ class ConnectionRequests extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    connectionRequests: state.ConnectionRequestReducer.connectionRequests,
-  };
-};
-
-export default connect(mapStateToProps)(ConnectionRequests);
+export default ConnectionRequests;

@@ -174,14 +174,14 @@ const VerificationScreen = ({ navigation }) => {
     try {
       const response = await fetch(VerifyOTPEndpoint, settings);
       const res = await response.json();
-      //console.log({res})
       if (typeof res.data === 'undefined') {
         return showNotification('error', 'Message', res.error);
       }
-      let result = res.data;
-      await saveToken(result.token);
-      return typeof result.user === 'undefined'
-        ? resetNavigationStack() //completeRegistration(result.token)
+      let { new_user, token } = res.data;
+      let status = typeof new_user !== 'undefined' ? 'new' : 'old';
+      await saveToken(token, status);
+      return typeof new_user !== 'undefined'
+        ? resetNavigationStack()
         : navigation.navigate('OnBoarding');
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
@@ -239,7 +239,7 @@ const VerificationScreen = ({ navigation }) => {
 
       <View style={styles.navBar}>
         <Icons
-          name={'ios-arrow-back'}
+          name={'keyboard-arrow-left'}
           iconStyle={styles.backView}
           iconColor={colors.blue}
           iconSize={20}

@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 import theme from 'assets/theme';
-import colors from 'assets/colors';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -10,33 +9,33 @@ export default styles = StyleSheet.create({
     ...theme.container,
     justifyContent: 'center',
     alignContent: 'center',
+    backgroundColor: 'transparent',
   },
 
   wrapper: {
     flex: 1,
     paddingLeft: wp('3%'),
-    paddingRight: wp('3%'),
-
-    //justifyContent: 'center',
+    marginTop: hp('1%'),
   },
 
   nameText: {
-    fontSize: theme.headerFourFont,
+    fontSize: theme.headerTwoFont,
     fontFamily: theme.headerFont,
-    color: colors.blue,
+    color: theme.primaryTextColor,
   },
 
   fieldLabel: {
     fontFamily: theme.inputHintFont,
     fontSize: theme.headerFourFont,
-    color: colors.label,
+    color: '#00000055',
   },
 
   profileRowItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: hp('8%'),
+    height: hp('9%'),
     justifyContent: 'space-between',
+    //marginTop:10
   },
 
   avatarIconLayout: {

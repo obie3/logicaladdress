@@ -46,11 +46,7 @@ export default styles = StyleSheet.create({
 
   deleteIcon: {
     height: hp('4%'),
-    width: wp('7%'),
     justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: hp('0%') / 2,
-    //backgroundColor: colors.label,
   },
 
   dialIcon: {
@@ -124,7 +120,7 @@ export default styles = StyleSheet.create({
   },
 
   inputTextStyle: {
-    fontSize: hp('4%'),
+    fontSize: hp('3%'),
     fontFamily: theme.secondaryFont,
     color: theme.primaryTextColor,
     textAlign: 'center',
@@ -132,9 +128,8 @@ export default styles = StyleSheet.create({
   },
 
   deleteIconView: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
-    marginRight: wp('15%'),
   },
 
   dialerLayout: { height: hp('50%'), alignItems: 'flex-end' },

@@ -47,7 +47,6 @@ export default class UserProfile extends Component {
       dob: {},
       currentValue: '',
       showDate: false,
-      isEditable: false,
       date: moment()
         .subtract(18, 'years')
         .valueOf(),
@@ -101,7 +100,7 @@ export default class UserProfile extends Component {
     if (type === 'set') {
       return this.submitForm(selectedDate);
     }
-    //return this.showDatepicker();
+    return;
   };
 
   getImage = async item => {
@@ -177,7 +176,6 @@ export default class UserProfile extends Component {
             title: 'Message',
             message: 'Success',
           };
-          console.log(res);
           this.hideLoadingDialogue();
           img.value = value;
           this.setState({ img });
@@ -211,8 +209,6 @@ export default class UserProfile extends Component {
     try {
       const response = await fetch(UpdateProfileEndpoint, settings);
       const res = await response.json();
-      console.log(res);
-
       if (typeof res.data === 'undefined') {
         message = {
           handle: 'error',
@@ -291,7 +287,7 @@ export default class UserProfile extends Component {
       phoneArray,
       emailArray,
       dob,
-      logicalAddress: logicalAddress,
+      logicalAddress,
       img: profileImage,
       profileFields,
       showDate: false,
@@ -331,7 +327,7 @@ export default class UserProfile extends Component {
   }
 
   renderIcon = item => {
-    const { isEditable } = this.state;
+    let { isEditable } = this.props;
     let { id, key, value, status } = item;
     if (isEditable) {
       if (key === 'Phone') {
@@ -472,8 +468,8 @@ export default class UserProfile extends Component {
       currentValue,
       showDate,
       date,
-      isEditable,
     } = this.state;
+    let { isEditable } = this.props;
 
     return (
       <ScrollView
@@ -484,21 +480,6 @@ export default class UserProfile extends Component {
           paddingBottom: hp('3%'),
         }}
       >
-        <View style={styles.navBar}>
-          <View style={styles.editButton}>
-            <Icon
-              name={'edit'}
-              color={colors.blue}
-              size={20}
-              style={styles.shadow}
-              onPress={() =>
-                this.setState(prevState => ({
-                  isEditable: !prevState.isEditable,
-                }))
-              }
-            />
-          </View>
-        </View>
         <View style={styles.avatarLayout}>
           <View
             style={{

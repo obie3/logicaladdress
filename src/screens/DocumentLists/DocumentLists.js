@@ -18,28 +18,8 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 export default class DocumentLists extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      data: this.props.documents.data,
-      // _isMounted : false,
-    };
+    this.state = {};
   }
-
-  // async componentDidMount() {
-  //   const { navigation } = this.props;
-  //   this.setState({
-  //     _isMounted: true,
-  //   });
-  //   this.focusListener =  await navigation.addListener('didFocus', () => {
-  //     this.setState({
-  //       data: this.props.documents.data,
-  //     });
-  //   });
-
-  // }
-
-  // componentWillUnmount() {
-  //   this.focusListener.remove();
-  // }
 
   renderRow = ({ item }) => {
     let iconConfig = {};
@@ -86,7 +66,9 @@ export default class DocumentLists extends Component {
   };
 
   render() {
-    const { data } = this.state;
+    const { parentProps } = this.props;
+    let { documents } = parentProps;
+    let { data } = documents;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar

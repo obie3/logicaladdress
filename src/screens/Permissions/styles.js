@@ -12,10 +12,37 @@ export default styles = StyleSheet.create({
     alignContent: 'center',
   },
 
+  navBg: {
+    backgroundColor: colors.blue,
+    height: 100,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    elevation: 1,
+  },
+
+  title: {
+    color: colors.background,
+    fontSize: 24,
+    fontFamily: theme.headerFont,
+    paddingLeft: wp('5%'),
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: wp('3.5%'),
+  },
+
+  navIcon: {
+    height: hp('8%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   wrapper: {
     flex: 1,
     paddingLeft: wp('3%'),
-    paddingRight: wp('3%'),
   },
 
   avatarLayout: {
@@ -24,28 +51,27 @@ export default styles = StyleSheet.create({
   },
 
   nameText: {
-    fontSize: theme.smallFont,
-    fontFamily: theme.headerFont,
-    color: colors.blue, //colors.headerFontColor,
+    fontFamily: theme.secondaryFont,
+    fontSize: theme.headerTwoFont,
+    color: theme.primaryTextColor,
   },
 
   fieldLabel: {
     fontFamily: theme.inputHintFont,
     fontSize: theme.headerFourFont,
-    color: colors.label,
+    color: '#00000055',
   },
 
   profileRowItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: hp('8%'),
+    height: hp('10%'),
     justifyContent: 'space-between',
   },
 
   avatarIconLayout: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    //paddingRight: wp('4%'),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   listName: {
@@ -65,12 +91,12 @@ export default styles = StyleSheet.create({
     fontSize: 14,
   },
 
-  title: {
-    color: colors.blue,
-    fontFamily: theme.headerFont,
-    fontSize: theme.smallFont,
-    padding: 10,
-  },
+  // title: {
+  //   color: colors.blue,
+  //   fontFamily: theme.headerFont,
+  //   fontSize: theme.smallFont,
+  //   padding: 10,
+  // },
 
   contactsImage: {
     height: hp('50%'),
