@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import theme from 'assets/theme';
 import { TouchableOpacity, StyleSheet, View, Text } from 'react-native';
-import Icon from '@expo/vector-icons/Ionicons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,

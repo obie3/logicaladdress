@@ -1,9 +1,9 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import theme from 'assets/theme';
-const window = Dimensions.get('window');
-
-export const IMAGE_HEIGHT = window.width / 3;
-export const IMAGE_HEIGHT_SMALL = window.width / 10;
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 let styles = StyleSheet.create({
   container: {
@@ -11,8 +11,9 @@ let styles = StyleSheet.create({
   },
 
   wrapper: {
-    ...theme.wrapper,
-    //backgroundColor: 'green'
+    flex: 1,
+    paddingHorizontal: wp('6%'),
+    //paddingVertical: wp('6%')
   },
 
   iconForm: {
@@ -29,83 +30,12 @@ let styles = StyleSheet.create({
     ...theme.inputField,
   },
 
-  btnView: {
-    ...theme.buttonView,
-  },
-
-  buttonWithImage: {
+  buttonStyle: {
     ...theme.button,
+    borderRadius: 6,
+    width: '100%',
+    height: 45,
     marginTop: 25,
-  },
-
-  footerView: {
-    width: '100%',
-    height: '20%',
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-  },
-
-  signupLinkView: {
-    flexDirection: 'row',
-    marginTop: 8,
-  },
-
-  createAccount: {
-    fontSize: theme.smallFont,
-    color: theme.primaryColor,
-    fontFamily: theme.secondaryFont,
-    alignSelf: 'center',
-  },
-
-  signupText: {
-    fontSize: theme.smallFont,
-    color: theme.primaryTextColor,
-    fontFamily: theme.secondaryFont,
-    alignSelf: 'center',
-    marginBottom: 4,
-  },
-
-  signWithView: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    marginTop: 16,
-  },
-
-  socialIconView: {
-    flexDirection: 'row',
-    paddingTop: 4,
-  },
-
-  socialIcons: {
-    height: 24,
-    width: 24,
-    tintColor: theme.primaryTextColor,
-    marginLeft: 2,
-  },
-
-  signupWith: {
-    color: theme.primaryTextColor,
-    marginBottom: 8,
-    fontFamily: theme.subHeaderFont,
-    fontSize: theme.thinyFont,
-  },
-
-  termCondition: {
-    fontSize: theme.thinyFont,
-    color: theme.darkGray,
-    fontFamily: theme.subHeaderFont,
-    alignSelf: 'center',
-    position: 'absolute',
-    right: Platform.OS === 'ios' ? 75 : 65,
-  },
-
-  logoIcon: {
-    width: 150,
-    height: 100,
-    resizeMode: 'contain',
   },
 
   LogoLayout: {
@@ -120,12 +50,57 @@ let styles = StyleSheet.create({
   },
 
   logo: {
-    height: IMAGE_HEIGHT,
     resizeMode: 'contain',
     marginBottom: 20,
     padding: 10,
     marginTop: '20%',
     width: '100%',
+  },
+
+  welcomeTextLayout: {
+    height: '10%',
+    justifyContent: 'center',
+    marginTop: hp('10%'),
+  },
+
+  introText: {
+    fontFamily: theme.headerFont,
+    color: theme.primaryTextColor,
+    fontSize: 36,
+  },
+
+  labelText: {
+    fontFamily: theme.secondaryFont,
+    fontSize: theme.smallFont,
+    color: '#00000033',
+    marginVertical: '1%',
+  },
+
+  footerImageLayout: {
+    //flex:1,
+    height: '30%',
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+  },
+
+  footerImage: {
+    height: '100%',
+    width: '100%',
+    resizeMode: 'contain',
+  },
+
+  labelLayout: {
+    flexDirection: 'row',
+    width: '100%',
+    marginTop: '4%',
+    justifyContent: 'space-between',
+  },
+
+  formLayout: {
+    backgroundColor: 'white',
+    marginTop: '15%',
+    flex: 2,
   },
 });
 

@@ -22,21 +22,6 @@ export default styles = StyleSheet.create({
     elevation: 1,
   },
 
-  iconContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flex: 1,
-    paddingRight: wp('6%'),
-    paddingLeft: wp('6%'),
-    alignItems: 'center',
-  },
-
-  headerText: {
-    color: colors.blue,
-    fontSize: 16,
-    fontFamily: theme.headerFont,
-  },
-
   wrapper: {
     flex: 1,
     marginTop: hp('3%'),

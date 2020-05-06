@@ -9,9 +9,8 @@ import DropdownAlert from 'react-native-dropdownalert';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import CustomTabBar from '../CustomTab';
 import ContactLists from '../ContactLists';
-import Permissions from '../Permissions';
 import ConnectionRequests from '../ConnectionRequests';
-
+import { connect } from 'react-redux';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class Dashboard extends Component {
@@ -53,9 +52,6 @@ class Dashboard extends Component {
         title = 'Contacts';
         break;
       case 1:
-        title = 'Permissions';
-        break;
-      case 2:
         title = 'Connection Requests';
         break;
     }
@@ -66,8 +62,7 @@ class Dashboard extends Component {
 
   render() {
     const { title } = this.state;
-    let iconName =
-      title === 'Contacts' ? 'ios-add-circle' : 'ios-notifications';
+    let iconName = title === 'Contacts' ? 'person-add' : 'notifications';
     let link =
       title === 'Contacts' ? this.showDialer : this.showNotificationPage;
 
@@ -86,7 +81,7 @@ class Dashboard extends Component {
             <Icons
               disabled={false}
               onPress={this.showSettingsPage}
-              name={'ios-settings'}
+              name={'settings'}
               iconStyle={styles.navIcon}
               iconColor={colors.blue}
               iconSize={hp('3%')}
@@ -115,13 +110,22 @@ class Dashboard extends Component {
           onChangeTab={obj => this._updateTitle(obj)}
           renderTabBar={() => <CustomTabBar {...this.props} />}
         >
-          <ContactLists {...this.props} tabLabel={'ios-people'} />
-          <Permissions {...this.props} tabLabel={'ios-key'} />
-          <ConnectionRequests {...this.props} tabLabel={'ios-person-add'} />
+          <ContactLists contacts={this.props} tabLabel={'ios-people'} />
+          <ConnectionRequests
+            connections={this.props}
+            tabLabel={'ios-person-add'}
+          />
         </ScrollableTabView>
       </SafeAreaView>
     );
   }
 }
 
-export default Dashboard;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    connections: state.ConnectionReducer.connections,
+    connectionRequests: state.ConnectionRequestReducer.connectionRequests,
+  };
+};
+
+export default connect(mapStateToProps)(Dashboard);

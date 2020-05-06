@@ -11,11 +11,6 @@ import { connect } from 'react-redux';
 import { Paragraph, SubmitButton, Preloader, Line, Icons } from 'components';
 import styles from './styles';
 import colors from 'assets/colors';
-import { Navbar } from 'components';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
 import DropdownAlert from 'react-native-dropdownalert';
 import { ProcessPermissionRequestEndpoint, fetchToken } from 'utils';
 import moment from 'moment';
@@ -187,24 +182,13 @@ class RequestDetails extends Component {
         />
         <View style={styles.navBar}>
           <Icons
-            name={'ios-arrow-back'}
+            name={'keyboard-arrow-left'}
             iconStyle={styles.backView}
             iconColor={colors.blue}
             iconSize={20}
             onPress={this.handleBackPress}
           />
         </View>
-        {/* <Navbar
-          size={hp('4%')}
-          layoutSize={3}
-          leftIconName={'ios-arrow-back'}
-          rightIconName={null}
-          rightIconColor={colors.blue}
-          leftIconColor={colors.iconColor}
-          headerTitle={null}
-          leftIconOnPress={this.handleBackPress}
-          rightIconOnPress={() => {}}
-        /> */}
 
         <View style={styles.wrapper}>
           <View

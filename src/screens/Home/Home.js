@@ -66,7 +66,7 @@ class BoardingScreen extends Component {
   };
 
   componentDidMount() {
-    this.getToken();
+    this.initApp();
   }
 
   _renderItem = item => {
@@ -108,21 +108,20 @@ class BoardingScreen extends Component {
     );
   };
 
-  getToken = async () => {
+  initApp = async () => {
     //await logout();
-    let profile = await fetchToken();
-    if (typeof profile.token == 'undefined') {
-      return this.getProfile();
+    let { token, status } = await fetchToken();
+    if (typeof token === 'undefined') {
+      return this.setState({ restoring: false });
+    } else {
+      if (typeof status === 'undefined') {
+        return this.props.navigation.navigate('Verification');
+      } else if (status === 'new') {
+        return this.props.navigation.navigate('Register');
+      } else {
+        return this.props.navigation.navigate('OnBoarding');
+      }
     }
-    return this.props.navigation.navigate('OnBoarding');
-  };
-
-  getProfile = async () => {
-    let response = await fetchProfile();
-    if (typeof response.name !== 'undefined') {
-      return this.props.navigation.navigate('Verification');
-    }
-    return this.setState({ restoring: false });
   };
 
   render() {

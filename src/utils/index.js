@@ -88,8 +88,8 @@ export const fetchToken = async () => {
   });
 };
 
-export const saveToken = async token => {
-  const profile = { token };
+export const saveToken = async (token, status) => {
+  const profile = { token, status };
   await AsyncStorage.setItem('token', JSON.stringify(profile));
   return true;
 };

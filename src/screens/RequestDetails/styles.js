@@ -16,6 +16,7 @@ export default styles = StyleSheet.create({
     paddingRight: wp('3%'),
     paddingLeft: wp('3%'),
     flex: 1,
+    marginBottom: hp('2%'),
   },
 
   navBar: {
@@ -55,14 +56,9 @@ export default styles = StyleSheet.create({
   cardLayout: {
     flexDirection: 'column',
     backgroundColor: colors.white,
-    // elevation: 2,
-    // shadowOpacity: 0.23,
-    // shadowRadius: 2.62,
-    // shadowOffset: { height: 1, width: 0 },
-    // marginTop: hp('1%'),
-    paddingRight: wp('3%'),
-    paddingLeft: wp('3%'),
-    //marginHorizontal: wp('5%'),
+    paddingRight: wp('2%'),
+    paddingLeft: wp('2%'),
+    //marginBottom:  hp('2%'),
   },
 
   cardHeader: {

@@ -266,7 +266,7 @@ const PhoneVerification = ({ navigation }) => {
 
       <View style={styles.navBar}>
         <Icons
-          name={'ios-arrow-back'}
+          name={'keyboard-arrow-left'}
           iconStyle={styles.backView}
           iconColor={colors.blue}
           iconSize={20}

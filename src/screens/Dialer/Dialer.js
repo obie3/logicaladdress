@@ -166,7 +166,7 @@ export default class Dialer extends Component {
         <Navbar
           size={hp('4%')}
           layoutSize={3}
-          leftIconName={'ios-arrow-back'}
+          leftIconName={'keyboard-arrow-left'}
           rightIconName={null}
           rightIconColor={colors.blue}
           leftIconColor={colors.iconColor}
@@ -200,10 +200,10 @@ export default class Dialer extends Component {
             </View>
             <View style={styles.deleteIconView}>
               <Icons
-                name={'ios-backspace'}
+                name={'chevron-left'}
                 iconStyle={styles.deleteIcon}
                 iconColor={colors.label}
-                iconSize={hp('4%')}
+                iconSize={hp('5%')}
                 onPress={this.onDeletePress}
                 disabled={status}
               />
@@ -224,7 +224,7 @@ export default class Dialer extends Component {
           <Preloader modalVisible={showLoading} animationType='fade' />
           <View style={styles.dialIconLayout}>
             <Icons
-              name={'ios-call'}
+              name={'phone'}
               iconStyle={styles.dialIcon}
               iconColor={colors.white}
               iconSize={hp('3%')}

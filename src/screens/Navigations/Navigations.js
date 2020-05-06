@@ -5,8 +5,10 @@ import theme from 'assets/theme';
 import Dashboard from '../Dashboard';
 import Profile from '../Profile';
 import Notification from '../Notification';
-import { Icons } from 'components';
-import { createAppContainer, createBottomTabNavigator } from 'react-navigation';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { createAppContainer } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -14,51 +16,33 @@ import {
 
 const BottomTab = createBottomTabNavigator(
   {
-    Dashboard: {
-      screen: Dashboard,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
-          <Icons
-            name={'ios-home'}
-            color={tintColor}
-            iconSize={hp('4%')}
-            iconStyle={{}}
-          />
-        ),
-      },
-    },
-
-    Profile: {
-      screen: Profile,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
-          <Icons
-            name={'md-person'}
-            color={tintColor}
-            iconSize={hp('4%')}
-            iconStyle={{}}
-          />
-        ),
-      },
-    },
-
-    Notification: {
-      screen: Notification,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
-          <Icons
-            name={'ios-notifications'}
-            color={tintColor}
-            iconSize={hp('4%')}
-            iconStyle={{}}
-          />
-        ),
-      },
-    },
+    Dashboard: Dashboard,
+    Profile: Profile,
+    Notification: Notification,
   },
+
   {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        const { routeName } = navigation.state;
+        let iconName;
+        switch (routeName) {
+          case 'Dashboard':
+            iconName = 'home';
+            break;
+          case 'Profile':
+            iconName = 'person';
+            break;
+          case 'Notification':
+            iconName = 'notifications';
+            break;
+        }
+        return <Icon name={iconName} color={tintColor} size={hp('4%')} />;
+      },
+    }),
+
     tabBarOptions: {
-      activeTintColor: theme.primaryTextColor,
+      activeTintColor: colors.blue,
       inactiveTintColor: theme.secondaryTextColor,
       style: {
         backgroundColor: colors.white,
@@ -73,7 +57,4 @@ const BottomTab = createBottomTabNavigator(
   },
 );
 
-const App = createAppContainer(BottomTab);
-export default App;
-
-// export default AppDrawer;
+export default createAppContainer(BottomTab);

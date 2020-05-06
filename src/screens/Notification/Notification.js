@@ -36,7 +36,7 @@ export default class Settings extends Component {
             <Icons
               disabled={false}
               onPress={this.handleBackPress}
-              name={'ios-settings'}
+              name={'settings'}
               iconStyle={styles.forwardIcon}
               iconColor={colors.blue}
               iconSize={hp('3%')}
@@ -56,7 +56,7 @@ export default class Settings extends Component {
               <Icons
                 disabled={false}
                 onPress={this.showContactTracingPage}
-                name={'ios-arrow-forward'}
+                name={'chevron-right'}
                 iconStyle={styles.forwardIcon}
                 iconColor={'#95a5a6'}
                 iconSize={hp('3%')}
@@ -83,7 +83,7 @@ export default class Settings extends Component {
               <Icons
                 disabled={false}
                 onPress={this.showContactTracingPage}
-                name={'ios-arrow-forward'}
+                name={'chevron-right'}
                 iconStyle={styles.forwardIcon}
                 iconColor={'#95a5a6'}
                 iconSize={hp('3%')}

@@ -89,7 +89,7 @@ export default styles = StyleSheet.create({
   },
 
   imageOverlay: {
-    backgroundColor: 'rgba(0,0,0,.9)',
+    backgroundColor: 'rgba(0,0,0,.8)',
     height: '100%',
     width: '100%',
     borderRadius: 6,

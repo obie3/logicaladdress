@@ -11,6 +11,7 @@ import { Paragraph, Line, Icons } from 'components';
 import styles from './styles';
 import { connect } from 'react-redux';
 import UserAvatar from 'react-native-user-avatar';
+import colors from 'assets/colors';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -23,14 +24,7 @@ class Permissions extends Component {
     };
   }
 
-  showLoadingDialogue = () => this.setState({ showLoading: true });
-  hideLoadingDialogue = () => this.setState({ showLoading: false });
-  handleProfileLink = () => this.props.navigation.navigate('Profile');
-
-  showNotification = (type, title, message) => {
-    this.hideLoadingDialogue();
-    return this.dropDownAlertRef.alertWithType(type, title, message);
-  };
+  handleBackPress = () => this.props.navigation.goBack();
 
   showRequestDetails = (item, value) => {
     let message = `${'Revoke or Grant '}${value}${'\n access to your profile details, \nyou can select multiple items.'}`;
@@ -67,33 +61,24 @@ class Permissions extends Component {
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.avatarIconLayout}>
             <UserAvatar
-              size={hp('5%')}
-              name={title}
+              size={hp('7%')}
+              name={value}
               bgColors={['#ccc', '#fafafa', '#ccaabb']}
             />
           </View>
           <View style={styles.listName}>
             <Paragraph
-              text={title}
-              styles={styles.fieldLabel}
-              onPress={() => this.showRequestDetails(item, value)}
-            />
-            <Paragraph
               text={value}
               styles={styles.nameText}
               onPress={() => this.showRequestDetails(item, value)}
             />
+
+            <Paragraph
+              text={title}
+              styles={styles.fieldLabel}
+              onPress={() => this.showRequestDetails(item, value)}
+            />
           </View>
-        </View>
-        <View style={styles.iconLayout}>
-          <Icons
-            disabled={false}
-            onPress={() => this.showRequestDetails(item, value)}
-            name={'ios-arrow-forward'}
-            iconStyle={[styles.forwardIcon, { paddingLeft: '15%' }]}
-            iconColor={'#95a5a6'}
-            iconSize={hp('3%')}
-          />
         </View>
       </TouchableOpacity>
     );
@@ -103,6 +88,28 @@ class Permissions extends Component {
     const { data } = this.state;
     return (
       <SafeAreaView style={styles.container}>
+        <View style={styles.navBg}>
+          <View style={styles.iconContainer}>
+            <Icons
+              disabled={false}
+              onPress={this.handleBackPress}
+              name={'chevron-left'}
+              iconStyle={styles.navIcon}
+              iconColor={colors.white}
+              iconSize={hp('4%')}
+            />
+            <Icons
+              disabled={false}
+              onPress={this.showSettingsPage}
+              name={'notifications'}
+              iconStyle={styles.navIcon}
+              iconColor={colors.white}
+              iconSize={hp('4%')}
+            />
+          </View>
+
+          <Paragraph styles={styles.title} text={'Permissions'} />
+        </View>
         <View style={styles.wrapper}>
           {data.length > 0 ? (
             <View>
@@ -114,7 +121,7 @@ class Permissions extends Component {
                 ItemSeparatorComponent={this.renderSeparator}
                 showsVerticalScrollIndicator={false}
               />
-              <Line marginLeft={wp('15%')} />
+              <Line marginLeft={wp('18%')} />
             </View>
           ) : (
             <View style={styles.emptyListLayout}>

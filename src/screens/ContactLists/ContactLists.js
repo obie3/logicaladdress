@@ -8,12 +8,11 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-import { Paragraph, Line, Preloader, SubmitButton, Icons } from 'components';
+import { Paragraph, Line, SubmitButton, Icons } from 'components';
 import { fetchToken } from 'utils';
 import UserAvatar from 'react-native-user-avatar';
 import styles from './styles';
 import colors from 'assets/colors';
-import { connect } from 'react-redux';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -22,7 +21,6 @@ class ContactLists extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: this.props.connections.data,
       token: '',
       showLoading: false,
     };
@@ -49,7 +47,7 @@ class ContactLists extends Component {
   };
 
   renderSeparator = () => {
-    return <Line marginLeft={wp('15%')} />;
+    return <Line marginLeft={wp('18%')} />;
   };
 
   renderRow = ({ item }) => {
@@ -76,48 +74,47 @@ class ContactLists extends Component {
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.avatarIconLayout}>
             <UserAvatar
-              size={hp('5%')}
+              size={hp('7%')}
               name={value}
               bgColors={['#ccc', '#fafafa', '#ccaabb']}
             />
           </View>
           <View style={styles.listName}>
             <Paragraph
-              text={title}
-              styles={styles.fieldLabel}
-              onPress={() => this.showRequestDetails(item)}
-            />
-            <Paragraph
               text={value}
               styles={styles.nameText}
+              onPress={() => this.showRequestDetails(item)}
+            />
+
+            <Paragraph
+              text={title}
+              styles={styles.fieldLabel}
               onPress={() => this.showRequestDetails(item)}
             />
           </View>
         </View>
 
-        <View style={styles.iconLayout}>
-          <Icons
-            disabled={false}
-            onPress={() => this.showRequestDetails(item)}
-            name={'ios-arrow-forward'}
-            iconStyle={[styles.forwardIcon, { paddingLeft: '15%' }]}
-            iconColor={'#95a5a6'}
-            iconSize={hp('3%')}
-          />
-        </View>
+        {/* <View style={styles.iconLayout}>
+
+        </View> */}
       </TouchableOpacity>
     );
   };
 
   showRequestDetails = item => {
     let params = { item };
-    return this.props.navigation.navigate('LookupDetails', { params });
+    let { navigation } = this.props.contacts;
+    return navigation.navigate('LookupDetails', { params });
   };
 
-  showDialer = () => this.props.navigation.navigate('Dialer');
+  showDialer = () => {
+    let { navigation } = this.props.contacts;
+    return navigation.navigate('Dialer');
+  };
 
   render() {
-    const { showLoading, data } = this.state;
+    let { connections } = this.props.contacts;
+    let { data } = connections;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -138,7 +135,7 @@ class ContactLists extends Component {
                 ItemSeparatorComponent={this.renderSeparator}
                 showsVerticalScrollIndicator={false}
               />
-              <Line marginLeft={wp('15%')} />
+              <Line marginLeft={wp('18%')} />
             </View>
           ) : (
             <View style={styles.emptyListLayout}>
@@ -164,18 +161,10 @@ class ContactLists extends Component {
               </View>
             </View>
           )}
-
-          <Preloader modalVisible={showLoading} animationType='fade' />
         </View>
       </SafeAreaView>
     );
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    connections: state.ConnectionReducer.connections,
-  };
-};
-
-export default connect(mapStateToProps)(ContactLists);
+export default ContactLists;

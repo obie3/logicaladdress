@@ -37,28 +37,6 @@ export default styles = StyleSheet.create({
     marginTop: '5%',
   },
 
-  navBar: {
-    marginTop: 10,
-    paddingLeft: 16,
-    paddingRight: 16,
-    justifyContent: 'flex-end',
-    flexDirection: 'row',
-  },
-
-  editButton: {
-    height: 35,
-    width: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: colors.background,
-    elevation: 5,
-    textShadowColor: colors.black,
-    shadowOpacity: 0.4,
-    shadowRadius: 15,
-    textShadowOffset: { width: 5, height: 2 },
-  },
-
   cameraButton: {
     height: 35,
     width: 35,

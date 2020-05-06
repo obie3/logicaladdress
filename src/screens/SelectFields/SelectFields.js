@@ -167,7 +167,7 @@ class SelectFields extends Component {
         <Navbar
           size={hp('4%')}
           layoutSize={3}
-          leftIconName={'ios-arrow-back'}
+          leftIconName={'keyboard-arrow-left'}
           rightIconName={null}
           rightIconColor={colors.blue}
           leftIconColor={colors.iconColor}

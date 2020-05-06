@@ -11,9 +11,11 @@ export default function documentReducer(state = initialState, action) {
         documents: action.data,
       });
     case types.ADD_DOCUMENT:
-      return Object.assign({}, state, {
-        documents: state.documents.data.concat(action.data),
-      });
+      let data = state.documents.data.concat(action.data);
+      return {
+        ...state,
+        documents: { ...state.documents, data },
+      };
     default:
       return state;
   }
