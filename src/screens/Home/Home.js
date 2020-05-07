@@ -126,6 +126,7 @@ class BoardingScreen extends Component {
   };
 
   initNavigation = async (token, status) => {
+    console.log(status);
     if (typeof token === 'undefined') {
       return this.setState({ restoring: false });
     } else {

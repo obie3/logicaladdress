@@ -80,7 +80,7 @@ export default styles = StyleSheet.create({
     marginBottom: hp('2%'),
     borderWidth: 2,
     borderColor: colors.blue,
-    backgroundColor: theme.backgroundColor,
+    backgroundColor: '#ecf0f1',
   },
 
   buttonTxt: {
