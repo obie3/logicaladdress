@@ -185,9 +185,8 @@ const VerificationScreen = ({ navigation }) => {
       }
       let { new_user, token } = res.data;
       let status = typeof new_user !== 'undefined' ? 'new' : 'old';
-      console.log({ 'varification screen status': status });
       await saveToken(token, status);
-      if (expoPushToken) {
+      if (status === 'old' && expoPushToken) {
         await registerPushNotification(token);
       }
       showNotification('success', 'Message', 'Success');

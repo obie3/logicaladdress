@@ -338,23 +338,3 @@ export default class Register extends Component {
     );
   }
 }
-
-// Object {
-//   "fields": Array [
-//     Object {
-//       "action": "create",
-//       "fieldName": "firstName",
-//       "value": "Justice",
-//     },
-//     Object {
-//       "action": "create",
-//       "fieldName": "middleName",
-//       "value": "James",
-//     },
-//     Object {
-//       "action": "create",
-//       "fieldName": "lastName",
-//       "value": "Ogebe",
-//     },
-//   ],
-// }

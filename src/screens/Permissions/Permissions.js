@@ -39,7 +39,6 @@ class Permissions extends Component {
   renderRow = ({ item }) => {
     let { profileFields } = item.user;
     let title, value;
-    console.log(item);
     let profile = profileFields.find(
       element =>
         element.key === 'firstName' ||

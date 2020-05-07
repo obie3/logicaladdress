@@ -42,7 +42,7 @@
         "mdpi": "./src/assets/images/splash.png",
         "hdpi": "./src/assets/images/splash.png",
         "xhdpi": "./src/assets/images/splash.png",
-        "backgroundColor": "#fff"
+        "backgroundColor": "#ffffff"
       }
     },
     
@@ -84,7 +84,8 @@
     "notification": {
       "icon":"./src/assets/images/iosIcon.png",
       "androidMode": "collapse",
-      "androidCollapsedTitle":"New Messages"
-    }
+      "androidCollapsedTitle":"New Messages",
+      "iosDisplayInForeground": true,
+      "color" : "#0177c1"    }
   }
 }

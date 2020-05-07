@@ -317,20 +317,23 @@ class Settings extends Component {
         />
 
         <View style={styles.wrapper}>
-          <View style={styles.cardLayout}>
+          <TouchableOpacity
+            onPress={this.showContactTracingPage}
+            style={styles.cardLayout}
+          >
             <View style={styles.cardContent}>
               <Paragraph styles={styles.cardText} text={'Contact Tracing'} />
 
               <Icons
                 disabled={false}
-                onPress={this.showPermissionsPage}
+                onPress={this.showContactTracingPage}
                 name={'location-searching'}
                 iconStyle={styles.forwardIcon}
                 iconColor={'#95a5a6'}
                 iconSize={20}
               />
             </View>
-          </View>
+          </TouchableOpacity>
 
           <TouchableOpacity
             onPress={this.showPermissionsPage}

@@ -29,8 +29,6 @@ class ConnectionRequests extends Component {
   };
 
   showRequestDetails = (item, value) => {
-    console.log(item);
-
     let { navigation } = this.props.connections;
     let message = `${'Select the information you would like \nto share with '}${value}${'\nyou can select multiple items.'}`;
     let params = { item, message };

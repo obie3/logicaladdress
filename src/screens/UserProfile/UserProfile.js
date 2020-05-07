@@ -249,7 +249,6 @@ export default class UserProfile extends Component {
 
   initData = () => {
     const { profile } = this.props;
-    console.log(this.props);
     let { profileFields, logicalAddress } = profile;
     let phoneArray = [],
       nameArray = [],
