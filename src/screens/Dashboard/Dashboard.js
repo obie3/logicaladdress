@@ -28,9 +28,9 @@ class Dashboard extends Component {
   }
 
   getProfile = async () => {
-    let response = await fetchToken();
+    let { token } = await fetchToken();
     return this.setState({
-      token: response.token,
+      token: token,
     });
   };
 

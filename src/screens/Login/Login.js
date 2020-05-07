@@ -7,10 +7,11 @@ import {
   StatusBar,
   Keyboard,
   Platform,
-  Animated,
 } from 'react-native';
 import { InputField, SubmitButton, Preloader, Paragraph } from 'components';
-import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL } from './styles';
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
+import styles from './styles';
 import {
   isEmpty,
   isPhoneValid,
@@ -18,11 +19,11 @@ import {
   saveToLocalStorage,
 } from 'utils';
 import colors from 'assets/colors';
-import logicallogo from 'assets/images/logo.png';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { addProfile } from 'redux/actions/ProfileActions';
 import DropdownAlert from 'react-native-dropdownalert';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class Login extends Component {
   constructor(props) {
@@ -32,8 +33,8 @@ class Login extends Component {
       showLoading: false,
       isPhoneFocused: false,
       showFooter: true,
+      expoPushToken: '',
     };
-    this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
   }
 
   resetNavigationStack = location => {
@@ -86,6 +87,7 @@ class Login extends Component {
   componentDidMount() {
     Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
     Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+    this.registerForPushNotificationsAsync();
   }
 
   componentWillUnmount() {
@@ -115,9 +117,31 @@ class Login extends Component {
     return this.requestLogin(phone);
   };
 
+  registerForPushNotificationsAsync = async () => {
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS,
+    );
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      return this.showNotification(
+        'info',
+        'Message',
+        'Please enable Push Notifications in device settings',
+      );
+    }
+    let token = await Notifications.getExpoPushTokenAsync();
+    this.setState({ expoPushToken: token });
+  };
+
   requestLogin = async phone => {
+    let { expoPushToken } = this.state;
     let stripedPhone = phone.substring(1);
     phone = `${'+234'}${stripedPhone}`;
+    let params = { expoPushToken, phone };
     let body = {
       contact: phone,
       action: 'auth',
@@ -141,7 +165,7 @@ class Login extends Component {
           res.error[0].phone.isPhoneNumber,
         );
       }
-      await saveToLocalStorage(null, null, phone);
+      await saveToLocalStorage(expoPushToken, phone);
       this.hideLoadingDialogue();
       return this.props.navigation.navigate('Verification');
     } catch (error) {
@@ -166,17 +190,15 @@ class Login extends Component {
           defaultContainer={styles.alert}
           ref={ref => (this.dropDownAlertRef = ref)}
         />
-        <View style={styles.wrapper}>
-          {/* <View style={styles.logoLayout}>
-          <Image source={logicallogo} style={[styles.logo]} />
-
-          </View> */}
-
+        <KeyboardAwareScrollView
+          behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+          style={styles.wrapper}
+        >
           <View style={styles.welcomeTextLayout}>
-            <Paragraph text={'LOGIN'} styles={styles.introText} />
+            <Paragraph text={'Get Started'} styles={styles.introText} />
           </View>
 
-          <View style={{ backgroundColor: 'white', height: '30%' }}>
+          <View style={styles.formLayout}>
             <Paragraph text={'Phone Number'} styles={styles.labelText} />
 
             <InputField
@@ -198,28 +220,25 @@ class Login extends Component {
                 this.formValidation();
               }}
             />
-
-            <View style={styles.btnView}>
-              <SubmitButton
-                title={'Log in'}
-                disabled={!this.toggleButtonState()}
-                onPress={this.formValidation}
-                btnStyle={styles.buttonWithImage}
-                titleStyle={styles.buttonTxt}
-              />
-            </View>
+            <SubmitButton
+              title={'Log in'}
+              disabled={!this.toggleButtonState()}
+              onPress={this.formValidation}
+              btnStyle={styles.buttonStyle}
+              titleStyle={styles.buttonTxt}
+            />
           </View>
-          {showFooter ? (
-            <View style={styles.footerImageLayout}>
-              <Image
-                style={styles.footerImage}
-                source={require('assets/images/loginImage.png')}
-              />
-            </View>
-          ) : null}
 
           <Preloader modalVisible={showLoading} animationType='fade' />
-        </View>
+        </KeyboardAwareScrollView>
+        {showFooter ? (
+          <View style={styles.footerImageLayout}>
+            <Image
+              style={styles.footerImage}
+              source={require('assets/images/loginImage.png')}
+            />
+          </View>
+        ) : null}
       </SafeAreaView>
     );
   }

@@ -1,8 +1,8 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import colors from 'assets/colors';
 import theme from 'assets/theme';
 
-export const CELL_SIZE = 50;
+export const CELL_SIZE = 40;
 export const CELL_BORDER_RADIUS = 8;
 export const DEFAULT_CELL_BG_COLOR = '#fff';
 export const NOT_EMPTY_CELL_BG_COLOR = '#3557b7';
@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
     height: CELL_SIZE,
     width: CELL_SIZE,
     lineHeight: CELL_SIZE - 5,
-    ...Platform.select({ web: { lineHeight: 65 } }),
     fontSize: 30,
     textAlign: 'center',
     borderRadius: CELL_BORDER_RADIUS,
@@ -113,11 +112,9 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
 
-  btnText: {
-    fontSize: theme.MediumFont,
-    color: colors.white,
-    fontFamily: theme.headerFont,
-    alignSelf: 'center',
+  buttonTxt: {
+    ...theme.buttonText,
+    color: '#00000055',
   },
 
   optView: {
@@ -131,16 +128,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
-  buttonWithImage: {
+  buttonStyle: {
     borderRadius: 30,
-    width: '60%',
-    height: 45,
-    backgroundColor: theme.buttonPrimary,
+    width: '80%',
+    height: 50,
+    backgroundColor: theme.backgroundColor,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
     marginTop: 25,
-    paddingRight: 8,
+    borderColor: '#00000055',
+    borderWidth: 2,
+    //paddingRight: 8,
   },
 
   iconDoor: {
@@ -148,13 +147,6 @@ const styles = StyleSheet.create({
     width: 18,
     resizeMode: 'contain',
     marginLeft: 24,
-  },
-
-  buttonTxt: {
-    fontFamily: theme.headerFont,
-    color: theme.colorAccent,
-    fontSize: theme.smallFont,
-    alignSelf: 'center',
   },
 
   alert: {

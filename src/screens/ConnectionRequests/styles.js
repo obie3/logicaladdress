@@ -14,27 +14,28 @@ export default styles = StyleSheet.create({
 
   wrapper: {
     flex: 1,
+    paddingLeft: wp('3%'),
+    paddingTop: hp('1%'),
+    backgroundColor: '#ecf0f1',
   },
 
   nameText: {
-    fontSize: theme.smallFont,
-    fontFamily: theme.headerFont,
-    color: colors.blue,
+    fontFamily: theme.secondaryFont,
+    fontSize: theme.headerTwoFont,
+    color: theme.primaryTextColor,
   },
 
   fieldLabel: {
     fontFamily: theme.inputHintFont,
     fontSize: theme.headerFourFont,
-    color: colors.label,
+    color: '#00000055',
   },
 
   profileRowItem: {
     flexDirection: 'row',
-    marginTop: hp('2%'),
-    paddingBottom: hp('1%'),
-    paddingLeft: wp('3%'),
-    paddingRight: wp('3%'),
     alignItems: 'center',
+    height: hp('9%'),
+    justifyContent: 'space-between',
   },
 
   requestFieldNames: {
@@ -43,10 +44,14 @@ export default styles = StyleSheet.create({
     color: colors.primaryTextColor,
   },
 
-  iconLayout: {
+  avatarIconLayout: {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     paddingRight: wp('4%'),
+  },
+
+  listName: {
+    //marginLeft: wp('5%'),
   },
 
   title: {
@@ -72,28 +77,5 @@ export default styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  flatListItem: {
-    justifyContent: 'space-around',
-    paddingRight: wp('10%'),
-    flexDirection: 'row',
-    width: wp('100%'),
-    height: hp('4%'),
-    borderWidth: 0,
-  },
-
-  flatListText: {
-    fontFamily: theme.secondaryFont,
-    fontSize: hp('2.5%'),
-    color: theme.primaryTextColor,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  flatListName: {
-    width: '50%',
-    alignItems: 'center',
-    flexDirection: 'row',
   },
 });

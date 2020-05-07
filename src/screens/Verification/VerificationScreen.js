@@ -12,11 +12,13 @@ import colors from 'assets/colors';
 import WomanSvg from './WomanSvg';
 import { NavigationActions, StackActions } from 'react-navigation';
 import {
-  fetchProfile,
+  fetchLocalStorageData,
   saveToken,
   VerifyOTPEndpoint,
   generateOTPEndpoint,
   logout,
+  getAppConfig,
+  RegisterPushNotificationEndpoint,
 } from 'utils';
 import DropdownAlert from 'react-native-dropdownalert';
 
@@ -36,7 +38,7 @@ import styles, {
 } from './styles';
 
 const { Value, Text: AnimatedText } = Animated;
-const CELL_COUNT = 4;
+const CELL_COUNT = 6;
 
 const animationsColor = [...new Array(CELL_COUNT)].map(() => new Value(0));
 const animationsScale = [...new Array(CELL_COUNT)].map(() => new Value(1));
@@ -58,11 +60,12 @@ const VerificationScreen = ({ navigation }) => {
   const [phone, setPhone] = useState('');
   const [nPhone, setnPhone] = useState('');
   const [showLoading, setShowLoading] = useState(false);
-  const [params, setParams] = useState({});
   const [enabledRequest, setEnabledRequest] = useState(true);
   const [startTimer, setStartTimer] = useState(false);
+  const [otpLength, setOtpLength] = useState(4);
+  const [expoPushToken, setExpoPushToken] = useState(4);
 
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const ref = useBlurOnFulfill({ value, cellCount: otpLength });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -128,12 +131,15 @@ const VerificationScreen = ({ navigation }) => {
   };
 
   const getParams = async () => {
-    let profile = await fetchProfile();
-    let nPhone = profile.phone.substring(4);
+    let { expoPushToken, phone } = await fetchLocalStorageData();
+    let { config } = await getAppConfig();
+    let { app } = config.data;
+    let nPhone = phone.substring(4);
     nPhone = `${'0'}${nPhone}`;
-    setPhone(profile.phone);
+    setPhone(phone);
     setnPhone(nPhone);
-    setParams(profile);
+    setOtpLength(app.otpLength);
+    setExpoPushToken(expoPushToken);
   };
 
   let handleBackPress = async () => {
@@ -180,9 +186,38 @@ const VerificationScreen = ({ navigation }) => {
       let { new_user, token } = res.data;
       let status = typeof new_user !== 'undefined' ? 'new' : 'old';
       await saveToken(token, status);
-      return typeof new_user !== 'undefined'
-        ? resetNavigationStack()
-        : navigation.navigate('OnBoarding');
+      if (expoPushToken) {
+        await registerPushNotification(token);
+      }
+      showNotification('success', 'Message', 'Success');
+      return setTimeout(() => {
+        return typeof new_user !== 'undefined'
+          ? navigation.navigate('OnBoarding')
+          : navigation.navigate('AppInit');
+      }, 3000);
+    } catch (error) {
+      return showNotification('error', 'Hello', error.toString());
+    }
+  };
+
+  let registerPushNotification = async token => {
+    let body = {
+      token: expoPushToken,
+    };
+    const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify(body),
+    };
+
+    try {
+      const response = await fetch(RegisterPushNotificationEndpoint, settings);
+      const res = await response.json();
+      return res;
     } catch (error) {
       return showNotification('error', 'Hello', error.toString());
     }
@@ -252,7 +287,7 @@ const VerificationScreen = ({ navigation }) => {
           styles={styles.Verification}
         />
         <Paragraph
-          text={'Enter 4 digits code sent to'}
+          text={`${'Enter '}${otpLength}${' digits code sent to'}`}
           styles={styles.msgText}
         />
         <Paragraph text={nPhone} styles={styles.msgText2} />
@@ -276,7 +311,7 @@ const VerificationScreen = ({ navigation }) => {
           {...props}
           value={value}
           onChangeText={setValue}
-          cellCount={CELL_COUNT}
+          cellCount={otpLength}
           rootStyle={styles.codeFiledRoot}
           keyboardType='number-pad'
           renderCell={renderCell}
@@ -285,9 +320,7 @@ const VerificationScreen = ({ navigation }) => {
           <SubmitButton
             title={'Verify'}
             onPress={phoneVerification}
-            imgSrc={require('assets/images/add_peopl.png')}
-            btnStyle={styles.buttonWithImage}
-            imgStyle={styles.iconDoor}
+            btnStyle={styles.buttonStyle}
             titleStyle={styles.buttonTxt}
             disabled={false}
           />

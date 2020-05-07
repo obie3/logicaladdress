@@ -17,7 +17,6 @@ import {
   AddProfileFieldEndpoint,
   generateOTPEndpoint,
 } from 'utils';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import DialogInput from 'react-native-dialog-input';
 import { addProfile } from 'redux/actions/ProfileActions';
 import {
@@ -130,9 +129,16 @@ class Settings extends Component {
     let newTitle = id === 'firstName' ? 'middleName' : id;
     let result = profileFields.filter(item => item.key === newTitle);
     if (result.length < maxValues) {
-      id === 'dob'
-        ? this.showDatepicker()
-        : this.showInputDialog(true, id, title);
+      switch (id) {
+        case 'dob':
+          this.showDatepicker();
+          break;
+        case 'homeLocation':
+          this.showMap();
+          break;
+        default:
+          this.showInputDialog(true, id, title);
+      }
     } else {
       return this.showNotification(
         'info',
@@ -252,9 +258,7 @@ class Settings extends Component {
         <TouchableOpacity
           key={id}
           style={styles.cardLayout}
-          onPress={() =>
-            id === 'homeLocation' ? this.showMap() : this.canAddItem(item)
-          }
+          onPress={() => this.canAddItem(item)}
         >
           <View style={styles.cardContent}>
             <Paragraph
@@ -294,25 +298,23 @@ class Settings extends Component {
           networkActivityIndicatorVisible={true}
         />
 
-        <View style={styles.navBg}>
-          <DropdownAlert
-            duration={5}
-            defaultContainer={styles.alert}
-            ref={ref => (this.dropDownAlertRef = ref)}
-          />
+        <DropdownAlert
+          duration={5}
+          defaultContainer={styles.alert}
+          ref={ref => (this.dropDownAlertRef = ref)}
+        />
 
-          <Navbar
-            size={hp('3%')}
-            layoutSize={3}
-            leftIconName={'keyboard-arrow-left'}
-            rightIconName={'notifications'}
-            rightIconColor={colors.blue}
-            leftIconColor={colors.blue}
-            headerTitle={'Settings'}
-            leftIconOnPress={this.handleBackPress}
-            rightIconOnPress={this.showNotificationPage}
-          />
-        </View>
+        <Navbar
+          size={20}
+          layoutSize={3}
+          leftIconName={'keyboard-arrow-left'}
+          rightIconName={'notifications'}
+          rightIconColor={colors.blue}
+          leftIconColor={colors.blue}
+          headerTitle={'Settings'}
+          leftIconOnPress={this.handleBackPress}
+          rightIconOnPress={this.showNotificationPage}
+        />
 
         <View style={styles.wrapper}>
           <View style={styles.cardLayout}>
@@ -325,7 +327,7 @@ class Settings extends Component {
                 name={'location-searching'}
                 iconStyle={styles.forwardIcon}
                 iconColor={'#95a5a6'}
-                iconSize={hp('3%')}
+                iconSize={20}
               />
             </View>
           </View>
@@ -343,7 +345,7 @@ class Settings extends Component {
                 name={'lock-open'}
                 iconStyle={styles.forwardIcon}
                 iconColor={'#95a5a6'}
-                iconSize={hp('3%')}
+                iconSize={20}
               />
             </View>
           </TouchableOpacity>
@@ -363,7 +365,7 @@ class Settings extends Component {
               name={'exit-to-app'}
               iconStyle={styles.buttonStyle}
               iconColor={'#7f8c8d'}
-              iconSize={hp('3%')}
+              iconSize={20}
             />
           </View>
           <DialogInput

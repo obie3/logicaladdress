@@ -66,14 +66,18 @@ export default styles = StyleSheet.create({
   buttonWithImage: {
     ...theme.button,
     borderRadius: 30,
-    width: wp('45%'),
-    height: hp('6%'),
+    width: '45%',
+    height: 50,
     marginTop: 25,
+    backgroundColor: theme.backgroundColor,
+    borderColor: colors.blue,
+    borderWidth: 2,
   },
 
   buttonTxt: {
     ...theme.buttonText,
-    fontSize: hp('2%'),
+    color: colors.blue,
+    //fontSize: hp('2%'),
   },
 
   flatListName: {

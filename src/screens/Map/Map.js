@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   Platform,
   BackHandler,
-  TouchableOpacity,
 } from 'react-native';
 import MapView, {
   Marker,
@@ -21,7 +20,9 @@ import DropdownAlert from 'react-native-dropdownalert';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import colors from 'assets/colors';
-import { UpdateProfileEndpoint, fetchToken, getProfile } from 'utils';
+import { UpdateProfileEndpoint, fetchToken } from 'utils';
+import { connect } from 'react-redux';
+import { addProfile } from 'redux/actions/ProfileActions';
 
 /**
  * @typedef {Object} Position
@@ -36,7 +37,7 @@ const LATITUDE_DELTA = 0.015;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-export default class Map extends Component {
+class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -60,14 +61,16 @@ export default class Map extends Component {
   componentDidMount() {
     this.initToken();
     this.getLocationAsync();
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.disableBackPress);
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    BackHandler.removeEventListener('hardwareBackPress', this.disableBackPress);
   }
 
-  handleBackPress = () => this.props.navigation.navigate('OnBoarding');
+  disableBackPress = () => true;
+
+  handleBackPress = () => this.props.navigation.goBack();
 
   showLoadingDialogue = () => this.setState({ showLoading: true });
 
@@ -79,18 +82,20 @@ export default class Map extends Component {
   };
 
   handleSetHomeAddress = response => {
-    return this.setState({
-      coordinates: response.nativeEvent.coordinate,
-    });
+    return this.setState(
+      {
+        coordinates: response.nativeEvent.coordinate,
+      },
+      () => this.bs.current.snapTo(1),
+    );
   };
 
   updateLogicalAddress = async () => {
     this.showLoadingDialogue();
     const { token, coordinates, fieldId } = this.state;
-    let data = {
-      fieldId,
-      value: coordinates,
-    };
+    let data = fieldId
+      ? { fieldId, value: coordinates, action: 'update' }
+      : { fieldName: 'homeLocation', value: coordinates, action: 'create' };
 
     const settings = {
       method: 'PUT',
@@ -108,6 +113,11 @@ export default class Map extends Component {
       if (typeof res.data === 'undefined') {
         return this.showNotification('error', 'Message', res.error);
       }
+
+      let result = res.data[0];
+      let tempData = res.data[0].value;
+      result.value = JSON.parse(tempData);
+      this.props.addProfile(result);
       this.hideLoadingDialogue();
       return this.showNotification(
         'success',
@@ -128,14 +138,23 @@ export default class Map extends Component {
             styles={styles.panelTitle}
             text={'Drag Marker to Set Address'}
           />
+          <View style={styles.panelButton}>
+            <SubmitButton
+              title={'Confirm'}
+              onPress={() => this.updateLogicalAddress()}
+              btnStyle={styles.buttonWithImage}
+              titleStyle={styles.panelButtonTitle}
+              disabled={false}
+            />
+          </View>
         </View>
       );
     }
     return (
       <View style={styles.panel}>
         <Paragraph
-          styles={styles.panelTitle}
-          text={'Drag Marker to Set Address'}
+          styles={styles.panelBody}
+          text={'Use current Location as house address'}
         />
         <View style={styles.panelButton}>
           <SubmitButton
@@ -154,14 +173,18 @@ export default class Map extends Component {
     <View style={styles.header}>
       <View style={styles.panelHeader}>
         <View style={styles.panelHandle} />
+        <Paragraph
+          styles={styles.panelTitle}
+          text={'Click and drag Marker to Set Address'}
+        />
       </View>
     </View>
   );
 
   initToken = async () => {
     let { token } = await fetchToken();
-    let profile = await getProfile();
-    let filteredArray = profile.data.params.profileData.filter(record => {
+    let { profileFields } = this.props.profile;
+    let filteredArray = profileFields.filter(record => {
       return record.key == 'homeLocation';
     });
     const fieldId = (filteredArray[0] || {}).id;
@@ -256,7 +279,7 @@ export default class Map extends Component {
             onPress={this.handleBackPress}
           />
           <Icons
-            name={'ios-locate'}
+            name={'location-searching'}
             iconColor={colors.blue}
             iconSize={20}
             iconStyle={styles.locationButton}
@@ -268,11 +291,12 @@ export default class Map extends Component {
 
         <BottomSheet
           ref={this.bs}
-          snapPoints={[150, 100, 30]}
+          snapPoints={[300, 200, 100]}
           renderContent={this.renderInner}
           renderHeader={this.renderHeader}
           initialSnap={2}
           enabledBottomClamp={true}
+          enabledContentGestureInteraction={false}
           springConfig={{
             mass: 0.3,
             damping: 5,
@@ -286,6 +310,35 @@ export default class Map extends Component {
   }
 }
 
+const mapStateToProps = (state, ownProps) => {
+  return {
+    profile: state.ProfileReducer.profile,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addProfile: data => dispatch(addProfile(data)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Map);
+
 Map.propTypes = {
   provider: ProviderPropType,
 };
+
+// "data": Array [
+//   Object {
+//     "createdAt": "2020-05-06T23:55:13.709Z",
+//     "id": 170,
+//     "isDeleted": false,
+//     "isPublic": false,
+//     "isVerified": false,
+//     "key": "homeLocation",
+//     "updatedAt": "2020-05-06T23:55:13.709Z",
+//     "userId": 25,
+//     "value": "{\"latitude\":9.8514232,\"longitude\":8.8899417}",
+//   },
+// ],
+// }

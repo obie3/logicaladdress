@@ -46,7 +46,7 @@ class CustomSidebarMenu extends Component {
   }
 
   componentDidMount() {
-    this.getProfile();
+    // this.getProfile();
   }
 
   getProfile = async () => {

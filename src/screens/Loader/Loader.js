@@ -6,12 +6,13 @@ import styles from './styles';
 import {
   fetchToken,
   ProfileEndpoint,
-  saveToLocalStorage,
+  saveAppConfig,
   GetDocumentsEndpoint,
   FetchProfileField,
   PermissionsEndpoint,
   FetchConnectionRequestEndpoint,
   FetchConnectionEndpoint,
+  AppConfigEndpoint,
 } from 'utils';
 import {
   Placeholder,
@@ -43,8 +44,8 @@ class Loader extends Component {
   }
 
   getProfile = async () => {
-    let response = await fetchToken();
-    if (response.token) this.getRemoteProfileandDocumentsAsync(response.token);
+    let { token } = await fetchToken();
+    if (token) this.getRemoteProfileandDocumentsAsync(token);
   };
 
   showNotification = (type, title, message) => {
@@ -60,7 +61,6 @@ class Loader extends Component {
         Authorization: token,
       },
     };
-
     const profileRequest = fetch(ProfileEndpoint, settings);
     const documentRequest = fetch(GetDocumentsEndpoint, settings);
     const profileFieldNameRequest = fetch(FetchProfileField, settings);
@@ -69,6 +69,7 @@ class Loader extends Component {
       FetchConnectionRequestEndpoint,
       settings,
     );
+    const fetchAppConfigRequest = fetch(AppConfigEndpoint, settings);
     const fetchConnections = fetch(FetchConnectionEndpoint, settings);
     Promise.all([
       profileRequest,
@@ -77,6 +78,7 @@ class Loader extends Component {
       permissionsRequests,
       fetchConnectionRequests,
       fetchConnections,
+      fetchAppConfigRequest,
     ])
       .then(value => Promise.all(value.map(value => value.json())))
       .then(serverResponse => {
@@ -85,22 +87,10 @@ class Loader extends Component {
           profileFieldNameResponse = serverResponse[2].data,
           permissionsResponse = serverResponse[3],
           connectionRequestResponse = serverResponse[4],
-          connectionsResponse = serverResponse[5];
-        let data = { params: {} };
-        data.params['LogicalAddress'] = profileResponse.logicalAddress;
-        data.params['isVerified'] = profileResponse.profileFields[0].isVerified;
-        data.params['profileData'] = profileResponse.profileFields;
-        data.params['userId'] = profileResponse.id;
+          connectionsResponse = serverResponse[5],
+          appConfig = serverResponse[6];
 
-        profileResponse.profileFields.map(profile => {
-          let value = profile.value;
-          if (profile.key === 'phone') {
-            let phone = profile.value.substring(4);
-            value = `${'0'}${phone}`;
-          }
-          data.params[profile.key] = value;
-        });
-        saveToLocalStorage(null, null, null, data);
+        saveAppConfig(appConfig);
         this.props.setData(
           profileResponse,
           documentsResponse,

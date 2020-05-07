@@ -177,7 +177,7 @@ export default class Dialer extends Component {
 
         <View style={{ height: hp('25%'), justifyContent: 'center' }}>
           <Paragraph
-            text={'Dial users logicalAddress \n to connect'}
+            text={'Dial users logical Address \n to connect'}
             styles={styles.requestMessage}
           />
         </View>

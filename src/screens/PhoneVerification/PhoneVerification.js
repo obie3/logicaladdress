@@ -10,11 +10,11 @@ import { Paragraph, SubmitButton, Preloader, Icons } from 'components';
 import CountDown from 'react-native-countdown-component';
 import colors from 'assets/colors';
 import WomanSvg from './WomanSvg';
-import { NavigationActions, StackActions } from 'react-navigation';
 import {
   VerifyOTPEndpoint,
   generateOTPEndpoint,
   AddProfileFieldEndpoint,
+  getAppConfig,
 } from 'utils';
 import DropdownAlert from 'react-native-dropdownalert';
 
@@ -34,7 +34,7 @@ import styles, {
 } from './styles';
 
 const { Value, Text: AnimatedText } = Animated;
-const CELL_COUNT = 4;
+const CELL_COUNT = 6;
 
 const animationsColor = [...new Array(CELL_COUNT)].map(() => new Value(0));
 const animationsScale = [...new Array(CELL_COUNT)].map(() => new Value(1));
@@ -60,8 +60,9 @@ const PhoneVerification = ({ navigation }) => {
   const [showLoading, setShowLoading] = useState(false);
   const [enabledRequest, setEnabledRequest] = useState(true);
   const [startTimer, setStartTimer] = useState(false);
+  const [otpLength, setOtpLength] = useState(4);
 
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const ref = useBlurOnFulfill({ value, cellCount: otpLength });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -70,18 +71,6 @@ const PhoneVerification = ({ navigation }) => {
   useEffect(() => {
     getParams();
   }, []);
-
-  let resetNavigationStack = () => {
-    const navigateAction = StackActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: 'Register',
-        }),
-      ],
-    });
-    navigation.dispatch(navigateAction);
-  };
 
   const renderCell = ({ index, symbol, isFocused }) => {
     const hasValue = Boolean(symbol);
@@ -128,10 +117,13 @@ const PhoneVerification = ({ navigation }) => {
 
   const getParams = async () => {
     let { token, fieldName, value } = navigation.getParam('params');
+    let { config } = await getAppConfig();
+    let { app } = config.data;
     setPhone(value);
     setnPhone(value);
     setToken(token);
     setFieldName(fieldName);
+    setOtpLength(app.otpLength);
   };
 
   let handleBackPress = async () => {
@@ -279,7 +271,7 @@ const PhoneVerification = ({ navigation }) => {
           styles={styles.Verification}
         />
         <Paragraph
-          text={'Enter 4 digits code sent to'}
+          text={`${'Enter '}${otpLength}${' digits code sent to'}`}
           styles={styles.msgText}
         />
         <Paragraph text={nPhone} styles={styles.msgText2} />
@@ -303,7 +295,7 @@ const PhoneVerification = ({ navigation }) => {
           {...props}
           value={value}
           onChangeText={setValue}
-          cellCount={CELL_COUNT}
+          cellCount={otpLength}
           rootStyle={styles.codeFiledRoot}
           keyboardType='number-pad'
           renderCell={renderCell}
@@ -312,9 +304,7 @@ const PhoneVerification = ({ navigation }) => {
           <SubmitButton
             title={'Verify'}
             onPress={phoneVerification}
-            imgSrc={require('assets/images/add_peopl.png')}
             btnStyle={styles.buttonWithImage}
-            imgStyle={styles.iconDoor}
             titleStyle={styles.buttonTxt}
             disabled={false}
           />

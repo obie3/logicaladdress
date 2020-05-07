@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import theme from 'assets/theme';
+import colors from 'assets/colors';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -8,56 +9,17 @@ import {
 export default styles = StyleSheet.create({
   container: {
     ...theme.container,
-    justifyContent: 'center',
   },
 
   wrapper: {
     flex: 1,
     paddingHorizontal: wp('6%'),
-    paddingVertical: wp('6%'),
-  },
-
-  btnView: {
-    ...theme.buttonView,
-  },
-
-  textInputView: {
-    ...theme.inputField,
-  },
-
-  iconForm: {
-    ...theme.formIcon,
-  },
-
-  buttonWithImage: {
-    ...theme.button,
-    borderRadius: 6,
-    width: '100%',
-    height: 45,
-    marginTop: 25,
-  },
-
-  buttonTxt: {
-    ...theme.buttonText,
-  },
-
-  logoLayout: {
-    backgroundColor: 'green',
-    height: '20%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  logo: {
-    height: '20%',
-    resizeMode: 'contain',
-    padding: 10,
   },
 
   welcomeTextLayout: {
-    height: '30%',
+    flex: 1,
     justifyContent: 'center',
-    marginTop: hp('5%'),
+    marginTop: hp('20%'),
   },
 
   introText: {
@@ -66,20 +28,40 @@ export default styles = StyleSheet.create({
     fontSize: 36,
   },
 
+  formLayout: {
+    height: '100%',
+    marginTop: '25%',
+  },
+
   labelText: {
     fontFamily: theme.secondaryFont,
     fontSize: theme.smallFont,
     color: '#00000033',
   },
 
+  buttonStyle: {
+    ...theme.button,
+    borderRadius: 30,
+    width: '80%',
+    height: 50,
+    marginTop: 25,
+    backgroundColor: colors.background,
+    borderWidth: 2,
+    borderColor: '#00000055',
+    alignSelf: 'center',
+  },
+
+  buttonTxt: {
+    ...theme.buttonText,
+    color: '#00000055',
+  },
+
   footerImageLayout: {
-    flexDirection: 'row',
     height: '30%',
-    justifyContent: 'center',
-    alignItems: 'center',
     position: 'absolute',
     bottom: 0,
     width: '100%',
+    backgroundColor: 'white',
   },
 
   footerImage: {

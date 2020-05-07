@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Paragraph, Logo } from 'components';
 import styles from './styles';
-import { fetchProfile, fetchToken, logout } from 'utils';
+import { fetchToken, logout } from 'utils';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -31,7 +31,7 @@ const slides = [
     key: 'somethun-dos',
     title: 'Better Emergency Service!',
     text:
-      'LogicalAddresses provide accurate location  \ninformation enabling care to find you \n no matter the situation',
+      'Logical Addresses provide accurate location  \ninformation enabling care to find you \n no matter the situation',
     image: require('assets/images/icon2a.png'),
     backgroundColor: '#febe29',
   },
@@ -117,9 +117,9 @@ class BoardingScreen extends Component {
       if (typeof status === 'undefined') {
         return this.props.navigation.navigate('Verification');
       } else if (status === 'new') {
-        return this.props.navigation.navigate('Register');
-      } else {
         return this.props.navigation.navigate('OnBoarding');
+      } else {
+        return this.props.navigation.navigate('AppInit');
       }
     }
   };

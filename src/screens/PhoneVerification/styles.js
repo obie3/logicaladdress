@@ -2,7 +2,7 @@ import { StyleSheet, Platform } from 'react-native';
 import colors from 'assets/colors';
 import theme from 'assets/theme';
 
-export const CELL_SIZE = 50;
+export const CELL_SIZE = 40;
 export const CELL_BORDER_RADIUS = 8;
 export const DEFAULT_CELL_BG_COLOR = '#fff';
 export const NOT_EMPTY_CELL_BG_COLOR = '#3557b7';
@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
     height: CELL_SIZE,
     width: CELL_SIZE,
     lineHeight: CELL_SIZE - 5,
-    ...Platform.select({ web: { lineHeight: 65 } }),
     fontSize: 30,
     textAlign: 'center',
     borderRadius: CELL_BORDER_RADIUS,
@@ -134,28 +133,19 @@ const styles = StyleSheet.create({
 
   buttonWithImage: {
     borderRadius: 30,
-    width: '60%',
-    height: 45,
-    backgroundColor: theme.buttonPrimary,
+    width: '80%',
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
     marginTop: 25,
-    paddingRight: 8,
-  },
-
-  iconDoor: {
-    height: 18,
-    width: 18,
-    resizeMode: 'contain',
-    marginLeft: 24,
+    borderColor: '#00000055',
+    borderWidth: 2,
   },
 
   buttonTxt: {
-    fontFamily: theme.headerFont,
-    color: theme.colorAccent,
-    fontSize: theme.smallFont,
-    alignSelf: 'center',
+    ...theme.buttonText,
+    color: '#00000055',
   },
 
   alert: {

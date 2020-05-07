@@ -12,6 +12,12 @@ export default styles = StyleSheet.create({
     alignContent: 'center',
   },
 
+  wrapper: {
+    flex: 1,
+    paddingLeft: wp('3%'),
+    backgroundColor: '#ecf0f1',
+  },
+
   navBg: {
     backgroundColor: colors.blue,
     height: 100,
@@ -22,7 +28,7 @@ export default styles = StyleSheet.create({
 
   title: {
     color: colors.background,
-    fontSize: 24,
+    fontSize: 28,
     fontFamily: theme.headerFont,
     paddingLeft: wp('5%'),
   },
@@ -38,11 +44,6 @@ export default styles = StyleSheet.create({
     height: hp('8%'),
     justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  wrapper: {
-    flex: 1,
-    paddingLeft: wp('3%'),
   },
 
   avatarLayout: {

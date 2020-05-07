@@ -11,7 +11,6 @@ export default styles = StyleSheet.create({
     ...theme.container,
     justifyContent: 'flex-start',
     alignContent: 'center',
-    backgroundColor: '#ecf0f1',
   },
 
   navBg: {
@@ -39,7 +38,7 @@ export default styles = StyleSheet.create({
 
   wrapper: {
     flex: 1,
-    //marginTop: hp('3%'),
+    backgroundColor: '#ecf0f1',
     paddingRight: wp('3%'),
     paddingLeft: wp('3%'),
   },

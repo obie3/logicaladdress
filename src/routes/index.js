@@ -79,6 +79,9 @@ export const VerificationStack = createStackNavigator({
       header: null,
     },
   },
+});
+
+export const OnBoardingStack = createStackNavigator({
   Register: {
     screen: Register,
     navigationOptions: {
@@ -87,7 +90,7 @@ export const VerificationStack = createStackNavigator({
   },
 });
 
-export const OnBoardingStack = createStackNavigator({
+export const AppInitStack = createStackNavigator({
   Loader: {
     screen: Loader,
     navigationOptions: {
@@ -229,6 +232,7 @@ const AppSwitchNavigator = createSwitchNavigator(
     Auth: AuthStack,
     Verification: VerificationStack,
     App: AppStack,
+    AppInit: AppInitStack,
     OnBoarding: OnBoardingStack,
   },
   {

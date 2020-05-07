@@ -13,10 +13,10 @@ import colors from 'assets/colors';
 import styles from './styles';
 import {
   RegistrationEndpoint,
-  saveToLocalStorage,
-  isEmpty,
   fetchToken,
   saveToken,
+  RegisterPushNotificationEndpoint,
+  fetchLocalStorageData,
 } from 'utils';
 import DropdownAlert from 'react-native-dropdownalert';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -118,6 +118,7 @@ export default class Register extends Component {
   formValidation = async () => {
     this.showLoadingDialogue();
     let { token } = await fetchToken();
+    let { expoPushToken } = await fetchLocalStorageData();
     const { firstName, lastName, middleName, isMiddleNameValid } = this.state;
     let item1 = { fieldName: 'firstName', value: firstName, action: 'create' };
     let item2 = {
@@ -147,7 +148,7 @@ export default class Register extends Component {
       );
     }
     let params = isMiddleNameValid ? [item1, item2, item3] : [item1, item3];
-    return this.completeRegistration(params, token);
+    return this.completeRegistration(params, token, expoPushToken);
   };
 
   completeRegistration = async (params, token) => {
@@ -169,11 +170,36 @@ export default class Register extends Component {
         return this.showNotification('error', 'Message', res.error.message);
       }
       await saveToken(res.data.token);
-      await saveToLocalStorage(name, email, phone);
+      if (expoPushToken) {
+        await registerPushNotification(res.data.token, expoPushToken);
+      }
       this.hideLoadingDialogue();
-      return this.props.navigation.navigate('OnBoarding');
+      return this.props.navigation.navigate('AppInit');
     } catch (error) {
       return this.showNotification('error', 'Hello', error.toString());
+    }
+  };
+
+  registerPushNotification = async (token, expoPushToken) => {
+    let body = {
+      token: expoPushToken,
+    };
+    const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify(body),
+    };
+
+    try {
+      const response = await fetch(RegisterPushNotificationEndpoint, settings);
+      const res = await response.json();
+      return res;
+    } catch (error) {
+      return showNotification('error', 'Hello', error.toString());
     }
   };
 
@@ -223,7 +249,6 @@ export default class Register extends Component {
               autoCapitalize='words'
               autoCompleteType='name'
               textContentType='givenName'
-              keyboardType='name-phone-pad'
               width={'100%'}
               borderBottomColor={'#00000033'}
               maxLength={11}
@@ -243,7 +268,6 @@ export default class Register extends Component {
               autoCapitalize='words'
               autoCompleteType='name'
               textContentType='middleName'
-              keyboardType='name-phone-pad'
               width={'100%'}
               borderBottomColor={'#00000033'}
               maxLength={11}

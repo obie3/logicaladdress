@@ -219,7 +219,7 @@ export default class Settings extends Component {
           <View style={styles.card}>
             <View style={styles.encrypt}>
               <View>
-                <Paragraph text={'LogicalAddress'} styles={styles.subText} />
+                <Paragraph text={'Logical Address'} styles={styles.subText} />
                 <Paragraph text={logicalAddress} styles={styles.text} />
               </View>
               <Icon
