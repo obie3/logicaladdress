@@ -47,13 +47,13 @@ export default styles = StyleSheet.create({
     marginTop: 25,
     backgroundColor: colors.background,
     borderWidth: 2,
-    borderColor: '#00000055',
+    borderColor: colors.blue,
     alignSelf: 'center',
   },
 
   buttonTxt: {
     ...theme.buttonText,
-    color: '#00000055',
+    color: colors.blue,
   },
 
   footerImageLayout: {

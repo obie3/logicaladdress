@@ -7,8 +7,9 @@ import {
   SafeAreaView,
   Platform,
   ImageBackground,
+  Vibration,
 } from 'react-native';
-import { Paragraph, Logo } from 'components';
+import { Paragraph } from 'components';
 import styles from './styles';
 import { fetchToken, logout } from 'utils';
 import AppIntroSlider from 'react-native-app-intro-slider';
@@ -17,6 +18,7 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { addProfile } from 'redux/actions/ProfileActions';
 import colors from 'assets/colors';
+import { Notifications } from 'expo';
 
 const slides = [
   {
@@ -65,9 +67,15 @@ class BoardingScreen extends Component {
     this.props.navigation.dispatch(navigateAction);
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    this.listener = Notifications.addListener(this.handleNotification);
+
     this.initApp();
   }
+
+  handleNotification = notification => {
+    Vibration.vibrate();
+  };
 
   _renderItem = item => {
     return (

@@ -18,7 +18,7 @@ let styles = StyleSheet.create({
 
   buttonTxt: {
     ...theme.buttonText,
-    color: '#00000055',
+    color: colors.blue,
   },
 
   buttonStyle: {
@@ -30,7 +30,7 @@ let styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: colors.background,
     borderWidth: 2,
-    borderColor: '#00000055',
+    borderColor: colors.blue,
   },
 
   LogoLayout: {

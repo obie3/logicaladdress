@@ -141,7 +141,6 @@ class Login extends Component {
     let { expoPushToken } = this.state;
     let stripedPhone = phone.substring(1);
     phone = `${'+234'}${stripedPhone}`;
-    let params = { expoPushToken, phone };
     let body = {
       contact: phone,
       action: 'auth',
