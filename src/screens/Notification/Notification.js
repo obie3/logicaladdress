@@ -33,14 +33,15 @@ export default class Settings extends Component {
 
         <View style={styles.navBg}>
           <View style={styles.iconContainer}>
-            <Icons
+            {/* <Icons
               disabled={false}
               onPress={this.handleBackPress}
-              name={'settings'}
+              name={}
               iconStyle={styles.forwardIcon}
               iconColor={colors.blue}
               iconSize={hp('3%')}
-            />
+            /> */}
+            <Paragraph styles={styles.headerText} text={''} />
 
             <Paragraph styles={styles.headerText} text={'Notification'} />
 

@@ -29,6 +29,8 @@ class ConnectionRequests extends Component {
   };
 
   showRequestDetails = (item, value) => {
+    console.log(item);
+
     let { navigation } = this.props.connections;
     let message = `${'Select the information you would like \nto share with '}${value}${'\nyou can select multiple items.'}`;
     let params = { item, message };
@@ -57,24 +59,26 @@ class ConnectionRequests extends Component {
         onPress={() => this.showRequestDetails(item, value)}
         style={styles.profileRowItem}
       >
-        <View style={styles.iconLayout}>
-          <UserAvatar
-            size={hp('5%')}
-            name={value}
-            bgColors={['#ccc', '#fafafa', '#ccaabb']}
-          />
-        </View>
-        <View style={styles.profileItem}>
-          <Paragraph
-            text={title}
-            styles={styles.fieldLabel}
-            onPress={() => this.showRequestDetails(item, value)}
-          />
-          <Paragraph
-            text={value}
-            styles={styles.nameText}
-            onPress={() => this.showRequestDetails(item, value)}
-          />
+        <View style={{ flexDirection: 'row' }}>
+          <View style={styles.avatarIconLayout}>
+            <UserAvatar
+              size={hp('7%')}
+              name={value}
+              bgColors={['#ccc', '#fafafa', '#ccaabb']}
+            />
+          </View>
+          <View style={styles.listName}>
+            <Paragraph
+              text={value}
+              styles={styles.nameText}
+              onPress={() => this.showRequestDetails(item, value)}
+            />
+            <Paragraph
+              text={title}
+              styles={styles.fieldLabel}
+              onPress={() => this.showRequestDetails(item, value)}
+            />
+          </View>
         </View>
       </TouchableOpacity>
     );

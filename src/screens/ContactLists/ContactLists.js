@@ -60,7 +60,7 @@ class ContactLists extends Component {
     );
 
     if (typeof (profile || {}).value !== 'undefined') {
-      title = 'Name';
+      title = item.logicalAddress;
       value = profile.value;
     } else {
       title = 'Logical Address';

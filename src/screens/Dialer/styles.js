@@ -16,6 +16,7 @@ export default styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#ecf0f1',
   },
 
   fieldLabel: {

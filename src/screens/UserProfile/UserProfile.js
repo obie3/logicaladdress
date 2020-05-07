@@ -21,6 +21,8 @@ import moment from 'moment';
 import UserAvatar from 'react-native-user-avatar';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+
 import {
   CLOUDINARY_UPLOAD_URL,
   CLOUDINARY_UPLOAD_PRESET,
@@ -45,6 +47,7 @@ export default class UserProfile extends Component {
       fieldId: '',
       label: '',
       dob: {},
+      homeLocation: {},
       currentValue: '',
       showDate: false,
       date: moment()
@@ -89,6 +92,8 @@ export default class UserProfile extends Component {
     });
   };
 
+  showMap = (fieldId = null) => this.props.navigation.navigate('Map');
+
   hideDatePicker = () => {
     this.setState({
       showDate: false,
@@ -104,30 +109,42 @@ export default class UserProfile extends Component {
   };
 
   getImage = async item => {
-    let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
     let message = {};
-    if (permissionResult.granted === false) {
+    const { status: cameraPerm } = await Permissions.askAsync(
+      Permissions.CAMERA,
+    );
+    const { status: cameraRollPerm } = await Permissions.askAsync(
+      Permissions.CAMERA_ROLL,
+    );
+
+    if (cameraPerm === 'granted' && cameraRollPerm === 'granted') {
+      let pickerResult = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        base64: true,
+      });
+
+      if (!pickerResult.cancelled) {
+        const { uri, base64 } = pickerResult;
+        this.showLoadingDialogue();
+        return this.uploadImage(uri, base64, item);
+      } else {
+        message = {
+          handle: 'info',
+          title: 'Message',
+          message: 'Profile picture update cancelled',
+        };
+        return this.props.showResponse(message);
+      }
+    } else {
       message = {
         handle: 'info',
         title: 'Message',
         message: 'Permission to access camera is required',
       };
-      this.hideLoadingDialogue();
       return this.props.showResponse(message);
     }
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-      base64: true,
-    });
-    if (!result.cancelled) {
-      const { uri, base64 } = result;
-      this.showLoadingDialogue();
-      return this.uploadImage(uri, base64, item);
-    }
-    return;
   };
 
   uploadImage = async (uri, base64, item) => {
@@ -238,7 +255,8 @@ export default class UserProfile extends Component {
       emailArray = [],
       addressArray = [],
       profileImage = null,
-      dob = {};
+      dob = {},
+      homeLocation = {};
 
     profileFields.map(profile => {
       let { key, value, id, isVerified } = profile;
@@ -279,6 +297,8 @@ export default class UserProfile extends Component {
         dob = { value, key, id, status: isVerified };
       } else if (key === 'profilePhoto') {
         profileImage = { value, id, key };
+      } else if (key === 'homeLocation') {
+        homeLocation = { value, key, id, status: isVerified };
       }
     });
     this.setState({
@@ -287,6 +307,7 @@ export default class UserProfile extends Component {
       phoneArray,
       emailArray,
       dob,
+      homeLocation,
       logicalAddress,
       img: profileImage,
       profileFields,
@@ -468,6 +489,7 @@ export default class UserProfile extends Component {
       currentValue,
       showDate,
       date,
+      homeLocation,
     } = this.state;
     let { isEditable } = this.props;
 
@@ -490,7 +512,7 @@ export default class UserProfile extends Component {
           >
             <UserAvatar
               size='200'
-              name={'LogicalAddress'}
+              name={'Logical Address'}
               color={colors.buttonBlue}
               src={img ? img.value : no_image}
             />
@@ -514,7 +536,7 @@ export default class UserProfile extends Component {
         <View style={styles.card}>
           <View style={styles.encrypt}>
             <View>
-              <Paragraph text={'LogicalAddress'} styles={styles.subText} />
+              <Paragraph text={'Logical Address'} styles={styles.subText} />
               <Paragraph text={logicalAddress} styles={styles.text} />
             </View>
             <Icon
@@ -578,6 +600,47 @@ export default class UserProfile extends Component {
               </View>
               {isEditable ? (
                 <TouchableOpacity onPress={() => this.showDatepicker(dob.id)}>
+                  <Icon
+                    name={'edit'}
+                    color='#075e54'
+                    size={20}
+                    style={{ padding: 5 }}
+                  />
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          ) : (
+            this.emptyItem()
+          )}
+        </View>
+
+        <View style={styles.sectionHeaderView}>
+          <Paragraph text={'Home Location'} styles={styles.sectionHeader} />
+        </View>
+
+        <View style={styles.card}>
+          {homeLocation.value ? (
+            <View style={styles.encrypt}>
+              <View>
+                <Paragraph text={'Home Location'} styles={styles.subText} />
+                <View style={{ flexDirection: 'row' }}>
+                  <Paragraph text={'Latitude: '} styles={styles.text} />
+                  <Paragraph
+                    text={homeLocation.value.latitude}
+                    styles={[styles.text, { paddingLeft: 25 }]}
+                  />
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <Paragraph text={'Longitude: '} styles={styles.text} />
+                  <Paragraph
+                    text={homeLocation.value.longitude}
+                    styles={[styles.text, { paddingLeft: 10 }]}
+                  />
+                </View>
+              </View>
+              {isEditable ? (
+                <TouchableOpacity onPress={() => this.showMap(homeLocation.id)}>
                   <Icon
                     name={'edit'}
                     color='#075e54'

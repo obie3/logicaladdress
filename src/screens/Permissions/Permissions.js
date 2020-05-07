@@ -37,8 +37,10 @@ class Permissions extends Component {
   };
 
   renderRow = ({ item }) => {
+    let { profileFields } = item.user;
     let title, value;
-    let profile = item.user.profileFields.find(
+    console.log(item);
+    let profile = profileFields.find(
       element =>
         element.key === 'firstName' ||
         element.key === 'middleName' ||
@@ -46,7 +48,7 @@ class Permissions extends Component {
     );
 
     if (typeof (profile || {}).value !== 'undefined') {
-      title = 'Name';
+      title = item.user.logicalAddress;
       value = profile.value;
     } else {
       title = 'Logical Address';
@@ -96,7 +98,7 @@ class Permissions extends Component {
               name={'chevron-left'}
               iconStyle={styles.navIcon}
               iconColor={colors.white}
-              iconSize={hp('4%')}
+              iconSize={20}
             />
             <Icons
               disabled={false}
@@ -104,7 +106,7 @@ class Permissions extends Component {
               name={'notifications'}
               iconStyle={styles.navIcon}
               iconColor={colors.white}
-              iconSize={hp('4%')}
+              iconSize={20}
             />
           </View>
 

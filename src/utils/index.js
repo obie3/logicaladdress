@@ -16,6 +16,8 @@ const LookupLogicalAddressEndpoint = `${ENDPOINT}lookup/`;
 const ProcessPermissionRequestEndpoint = `${ENDPOINT}permissions/requests/`;
 const FetchConnectionEndpoint = `${ENDPOINT}connections`;
 const DeleteProfileFieldEndpoint = `${ENDPOINT}profile/`;
+const AppConfigEndpoint = `${ENDPOINT}config`;
+const RegisterPushNotificationEndpoint = `${ENDPOINT}notifications`;
 
 export {
   generateOTPEndpoint,
@@ -34,6 +36,8 @@ export {
   ProcessPermissionRequestEndpoint,
   FetchConnectionEndpoint,
   DeleteProfileFieldEndpoint,
+  AppConfigEndpoint,
+  RegisterPushNotificationEndpoint,
 };
 
 export const isEmailValid = email => {
@@ -53,23 +57,16 @@ export const isEmpty = str => {
   return !str || 0 === str.toString().trim().length;
 };
 
-export const saveToLocalStorage = async (
-  name = null,
-  email = null,
-  phone = null,
-  data = null,
-) => {
+export const saveToLocalStorage = async (expoPushToken, phone) => {
   const profile = {
-    name,
-    email,
+    expoPushToken,
     phone,
-    data,
   };
   await AsyncStorage.setItem('profile', JSON.stringify(profile));
   return true;
 };
 
-export const fetchProfile = async () => {
+export const fetchLocalStorageData = async () => {
   return await AsyncStorage.getItem('profile').then(value => {
     if (value) {
       return JSON.parse(value);
@@ -79,7 +76,6 @@ export const fetchProfile = async () => {
 };
 
 export const fetchToken = async () => {
-  //await AsyncStorage.clear();
   return await AsyncStorage.getItem('token').then(value => {
     if (value) {
       return JSON.parse(value);
@@ -94,6 +90,21 @@ export const saveToken = async (token, status) => {
   return true;
 };
 
+export const saveAppConfig = async config => {
+  let res = { config };
+  await AsyncStorage.setItem('config', JSON.stringify(res));
+  return true;
+};
+
+export const getAppConfig = async () => {
+  return await AsyncStorage.getItem('config').then(value => {
+    if (value) {
+      return JSON.parse(value);
+    } else {
+      return false;
+    }
+  });
+};
 export const logout = async () => {
   let keys = ['token', 'profile'];
   return await AsyncStorage.multiRemove(keys, err => {});

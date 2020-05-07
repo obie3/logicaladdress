@@ -22,10 +22,11 @@ export default styles = StyleSheet.create({
     right: 0,
   },
   panel: {
-    height: 100,
+    height: 300,
     padding: 20,
     backgroundColor: '#f7f5eee8',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   header: {
     backgroundColor: '#f7f5eee8',
@@ -33,6 +34,7 @@ export default styles = StyleSheet.create({
     paddingTop: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    height: 50,
   },
   panelHeader: {
     alignItems: 'center',
@@ -47,8 +49,18 @@ export default styles = StyleSheet.create({
   panelTitle: {
     fontSize: theme.headerThreeFont,
     color: colors.blue, //colors.headerFontColor,
-    //fontWeight: 'bold',
+    fontWeight: 'bold',
+    paddingBottom: 20,
+    marginTop: 20,
   },
+
+  panelBody: {
+    fontSize: theme.headerThreeFont,
+    color: colors.blue, //colors.headerFontColor,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+
   panelSubtitle: {
     fontSize: 14,
     color: 'gray',
@@ -61,9 +73,15 @@ export default styles = StyleSheet.create({
 
   buttonWithImage: {
     ...theme.button,
+    borderRadius: 30,
+    height: 50,
+    backgroundColor: colors.backgroundColor,
+    borderWidth: 2,
+    borderColor: colors.blue,
   },
   panelButtonTitle: {
     ...theme.buttonText,
+    color: colors.blue,
   },
 
   alert: {

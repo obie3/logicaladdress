@@ -76,8 +76,6 @@ export default defaultTheme = {
     height: '80%',
     paddingLeft: Platform.OS === 'ios' ? 30 : 30,
     paddingRight: Platform.OS === 'ios' ? 30 : 30,
-    // justifyContent: 'flex-end',
-    //backgroundColor: 'green'
   },
 
   formIcon: {
@@ -88,7 +86,7 @@ export default defaultTheme = {
   },
 
   buttonText: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-SemiBold',
     color: colors.white,
     fontSize: 18,
     alignSelf: 'center',

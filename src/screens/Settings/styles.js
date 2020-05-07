@@ -11,7 +11,6 @@ export default styles = StyleSheet.create({
     ...theme.container,
     justifyContent: 'flex-start',
     alignContent: 'center',
-    backgroundColor: '#ecf0f1',
   },
 
   navBg: {
@@ -23,10 +22,10 @@ export default styles = StyleSheet.create({
   },
 
   wrapper: {
+    backgroundColor: '#ecf0f1',
     flex: 1,
-    marginTop: hp('3%'),
-    paddingRight: wp('3%'),
-    paddingLeft: wp('3%'),
+    paddingTop: hp('3%'),
+    paddingHorizontal: wp('3%'),
   },
 
   cardLayout: {

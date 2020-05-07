@@ -4,6 +4,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import colors from '../../assets/colors';
 
 let styles = StyleSheet.create({
   container: {
@@ -13,29 +14,23 @@ let styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     paddingHorizontal: wp('6%'),
-    //paddingVertical: wp('6%')
-  },
-
-  iconForm: {
-    ...theme.formIcon,
   },
 
   buttonTxt: {
     ...theme.buttonText,
-  },
-  iconDoor: {
-    ...theme.buttonIcon,
-  },
-  textInputView: {
-    ...theme.inputField,
+    color: '#00000055',
   },
 
   buttonStyle: {
     ...theme.button,
-    borderRadius: 6,
-    width: '100%',
-    height: 45,
+    borderRadius: 30,
+    width: '80%',
+    height: 50,
     marginTop: 25,
+    alignSelf: 'center',
+    backgroundColor: colors.background,
+    borderWidth: 2,
+    borderColor: '#00000055',
   },
 
   LogoLayout: {

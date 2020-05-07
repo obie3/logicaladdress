@@ -4,18 +4,19 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import colors from '../../assets/colors';
 export default styles = StyleSheet.create({
   container: {
     ...theme.container,
     justifyContent: 'center',
     alignContent: 'center',
-    backgroundColor: 'transparent',
   },
 
   wrapper: {
     flex: 1,
     paddingLeft: wp('3%'),
-    marginTop: hp('1%'),
+    paddingTop: hp('1%'),
+    backgroundColor: '#ecf0f1',
   },
 
   nameText: {
@@ -41,7 +42,6 @@ export default styles = StyleSheet.create({
   avatarIconLayout: {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    //paddingRight: wp('4%'),
   },
 
   listName: {
@@ -73,22 +73,19 @@ export default styles = StyleSheet.create({
 
   button: {
     ...theme.button,
-    borderRadius: 10,
+    borderRadius: 30,
     width: '60%',
-    height: hp('6%'),
+    height: 50,
     marginTop: hp('2%'),
     marginBottom: hp('2%'),
+    borderWidth: 2,
+    borderColor: colors.blue,
+    backgroundColor: theme.backgroundColor,
   },
 
   buttonTxt: {
     ...theme.buttonText,
-    fontFamily: theme.headerFont,
-    color: theme.colorAccent,
-    fontSize: theme.smallFont,
-  },
-
-  scrollViewStyle: {
-    flex: 1,
+    color: colors.blue,
   },
 
   emptyListLayout: {

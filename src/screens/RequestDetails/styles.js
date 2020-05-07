@@ -8,22 +8,22 @@ import {
 
 export default styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ecf0f1',
+    ...theme.container,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
 
   wrapper: {
-    paddingRight: wp('3%'),
-    paddingLeft: wp('3%'),
     flex: 1,
-    marginBottom: hp('2%'),
+    paddingHorizontal: wp('3%'),
+    backgroundColor: '#ecf0f1',
   },
 
   navBar: {
-    marginTop: 15,
     paddingHorizontal: 16,
     alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
+    height: 50,
   },
 
   backView: {
@@ -32,7 +32,6 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 25,
-    backgroundColor: colors.label,
   },
 
   buttonTxt: {
