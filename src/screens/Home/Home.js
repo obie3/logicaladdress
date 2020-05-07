@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Paragraph } from 'components';
 import styles from './styles';
-import { fetchToken, logout } from 'utils';
+import { fetchToken, logout, AppConfigEndpoint, saveAppConfig } from 'utils';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -119,6 +119,13 @@ class BoardingScreen extends Component {
   initApp = async () => {
     //await logout();
     let { token, status } = await fetchToken();
+    let res = await this.requestAppConfig();
+    return res
+      ? this.initNavigation(token, status)
+      : this.setState({ restoring: false });
+  };
+
+  initNavigation = async (token, status) => {
     if (typeof token === 'undefined') {
       return this.setState({ restoring: false });
     } else {
@@ -129,6 +136,29 @@ class BoardingScreen extends Component {
       } else {
         return this.props.navigation.navigate('AppInit');
       }
+    }
+  };
+
+  requestAppConfig = async () => {
+    const settings = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+
+    try {
+      const response = await fetch(AppConfigEndpoint, settings);
+      const res = await response.json();
+      if (typeof res.data === 'undefined') {
+        this.showNotification('error', 'Message', res.error.message);
+        return false;
+      }
+      saveAppConfig(res);
+      return true;
+    } catch (error) {
+      return this.showNotification('error', 'Hello', error.toString());
     }
   };
 

@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
 
   buttonTxt: {
     ...theme.buttonText,
-    color: '#00000055',
+    color: colors.blue,
   },
 
   optView: {
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginTop: 25,
-    borderColor: '#00000055',
+    borderColor: colors.blue,
     borderWidth: 2,
     //paddingRight: 8,
   },
