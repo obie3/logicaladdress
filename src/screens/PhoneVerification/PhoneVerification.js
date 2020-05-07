@@ -285,7 +285,7 @@ const PhoneVerification = ({ navigation }) => {
             timeToShow={['S']}
             timeLabels={{ s: 'Secs' }}
             running={startTimer}
-            digitTxtStyle={styles.buttonTxt}
+            digitTxtStyle={[styles.buttonTxt, { color: 'white' }]}
             size={20}
           />
         ) : null}

@@ -34,18 +34,30 @@ export default class Register extends Component {
       isActive: false,
       isNameFocused: false,
       showFooter: true,
+      expoPushToken: null,
+      token: '',
     };
   }
 
   componentDidMount() {
     Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
     Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+    this.initToken();
   }
 
   componentWillUnmount() {
     Keyboard.removeListener('keyboardDidShow', this.keyboardDidShow);
     Keyboard.removeListener('keyboardDidHide', this.keyboardDidHide);
   }
+
+  initToken = async () => {
+    let { token } = await fetchToken();
+    let { expoPushToken } = await fetchLocalStorageData();
+    return this.setState({
+      token,
+      expoPushToken,
+    });
+  };
 
   keyboardDidShow = () => this.showFooterImage();
 
@@ -117,9 +129,15 @@ export default class Register extends Component {
 
   formValidation = async () => {
     this.showLoadingDialogue();
-    let { token } = await fetchToken();
-    let { expoPushToken } = await fetchLocalStorageData();
-    const { firstName, lastName, middleName, isMiddleNameValid } = this.state;
+
+    const {
+      firstName,
+      lastName,
+      middleName,
+      isMiddleNameValid,
+      token,
+      expoPushToken,
+    } = this.state;
     let item1 = { fieldName: 'firstName', value: firstName, action: 'create' };
     let item2 = {
       fieldName: 'middleName',
@@ -151,7 +169,7 @@ export default class Register extends Component {
     return this.completeRegistration(params, token, expoPushToken);
   };
 
-  completeRegistration = async (params, token) => {
+  completeRegistration = async (params, token, expoPushToken) => {
     let body = { fields: params };
     const settings = {
       method: 'POST',
@@ -169,9 +187,9 @@ export default class Register extends Component {
       if (typeof res.data === 'undefined') {
         return this.showNotification('error', 'Message', res.error.message);
       }
-      await saveToken(res.data.token);
+      await saveToken(res.data.token, 'old');
       if (expoPushToken) {
-        await registerPushNotification(res.data.token, expoPushToken);
+        await this.registerPushNotification(res.data.token, expoPushToken);
       }
       this.hideLoadingDialogue();
       return this.props.navigation.navigate('AppInit');
@@ -320,3 +338,23 @@ export default class Register extends Component {
     );
   }
 }
+
+// Object {
+//   "fields": Array [
+//     Object {
+//       "action": "create",
+//       "fieldName": "firstName",
+//       "value": "Justice",
+//     },
+//     Object {
+//       "action": "create",
+//       "fieldName": "middleName",
+//       "value": "James",
+//     },
+//     Object {
+//       "action": "create",
+//       "fieldName": "lastName",
+//       "value": "Ogebe",
+//     },
+//   ],
+// }

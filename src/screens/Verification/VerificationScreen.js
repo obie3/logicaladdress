@@ -131,7 +131,7 @@ const VerificationScreen = ({ navigation }) => {
   };
 
   const getParams = async () => {
-    let { expoPushToken, phone } = await fetchLocalStorageData();
+    let { phone } = await fetchLocalStorageData();
     let { config } = await getAppConfig();
     let { app } = config.data;
     let nPhone = phone.substring(4);
@@ -185,6 +185,7 @@ const VerificationScreen = ({ navigation }) => {
       }
       let { new_user, token } = res.data;
       let status = typeof new_user !== 'undefined' ? 'new' : 'old';
+      console.log({ 'varification screen status': status });
       await saveToken(token, status);
       if (expoPushToken) {
         await registerPushNotification(token);
@@ -301,7 +302,7 @@ const VerificationScreen = ({ navigation }) => {
             timeToShow={['S']}
             timeLabels={{ s: 'Secs' }}
             running={startTimer}
-            digitTxtStyle={styles.buttonTxt}
+            digitTxtStyle={(styles.buttonTxt, { color: 'white' })}
             size={20}
           />
         ) : null}

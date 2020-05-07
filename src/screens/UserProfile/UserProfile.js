@@ -61,14 +61,14 @@ export default class UserProfile extends Component {
     let { navigation } = this.props;
     this.setState({ token });
     this.initData();
-    this.focusListener = navigation.addListener('didFocus', () => {
-      this.initData();
-    });
+    // this.focusListener = navigation.addListener('didFocus', () => {
+    //   this.initData();
+    // });
   }
 
-  componentWillUnmount() {
-    this.focusListener.remove();
-  }
+  // componentWillUnmount() {
+  //   this.focusListener.remove();
+  // }
 
   showLoadingDialogue = () =>
     this.setState({
@@ -249,6 +249,7 @@ export default class UserProfile extends Component {
 
   initData = () => {
     const { profile } = this.props;
+    console.log(this.props);
     let { profileFields, logicalAddress } = profile;
     let phoneArray = [],
       nameArray = [],
