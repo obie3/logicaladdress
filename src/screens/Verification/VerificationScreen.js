@@ -181,7 +181,7 @@ const VerificationScreen = ({ navigation }) => {
       const response = await fetch(VerifyOTPEndpoint, settings);
       const res = await response.json();
       if (typeof res.data === 'undefined') {
-        return showNotification('error', 'Message', res.error);
+        return showNotification('error', 'Message', res.error.message);
       }
       let { new_user, token } = res.data;
       let status = typeof new_user !== 'undefined' ? 'new' : 'old';

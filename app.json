@@ -15,7 +15,7 @@
     "splash": {
       "image": "./src/assets/images/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ecf0f1"
+      "backgroundColor": "#fff"
     },
     "updates": {
       "enabled": true,
@@ -42,7 +42,7 @@
         "mdpi": "./src/assets/images/splash.png",
         "hdpi": "./src/assets/images/splash.png",
         "xhdpi": "./src/assets/images/splash.png",
-        "backgroundColor": "#ecf0f1"
+        "backgroundColor": "#fff"
       }
     },
     
@@ -79,7 +79,12 @@
         "ts",
         "tsx"
       ]
+    },
+
+    "notification": {
+      "icon":"./src/assets/images/iosIcon.png",
+      "androidMode": "collapse",
+      "androidCollapsedTitle":"New Messages"
     }
-    
   }
 }
