@@ -15,8 +15,8 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { LookupLogicalAddressEndpoint, fetchToken } from 'utils';
 import DropdownAlert from 'react-native-dropdownalert';
 import { PulseIndicator, SkypeIndicator } from 'react-native-indicators';
-
 const NUMBERS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
+
 let tempAddress = [];
 export default class Dialer extends Component {
   constructor(props) {
@@ -28,20 +28,24 @@ export default class Dialer extends Component {
       status: true,
       showLoading: false,
       disableNumbers: false,
-      isDialling: false,
+      isDialing: false,
     };
   }
+
+  requestController = new AbortController();
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
   componentWillUnmount() {
+    this.requestController.abort();
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
   }
-  showLoadingDialogue = () => this.setState({ isDialling: true });
 
-  hideLoadingDialogue = () => this.setState({ isDialling: false });
+  showLoadingDialogue = () => this.setState({ isDialing: true });
+
+  hideLoadingDialogue = () => this.setState({ isDialing: false });
 
   showNotification = (type, title, message) => {
     this.hideLoadingDialogue();
@@ -84,11 +88,12 @@ export default class Dialer extends Component {
     });
   };
 
-  handleBackPress = () => this.props.navigation.navigate('Navigations');
+  handleBackPress = () =>
+    this.state.isDialing ? true : this.props.navigation.navigate('Navigations');
 
   onEndPress = () => {
-    this.onDialPress.removeEventListener();
-    this.setState({ isDialling: false });
+    this.requestController.abort();
+    return this.setState({ isDialing: false });
   };
 
   onDialPress = async () => {
@@ -103,6 +108,7 @@ export default class Dialer extends Component {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: token,
+        signal: this.requestController.signal,
       },
     };
 
@@ -112,12 +118,10 @@ export default class Dialer extends Component {
         settings,
       );
       const res = await response.json();
-      console.log(res);
+      this.hideLoadingDialogue();
       if (typeof res.data === 'undefined') {
-        this.hideLoadingDialogue();
         return this.showNotification('error', 'Message', res.error.message);
       } else if (res.data.profileFields.length > 0) {
-        this.hideLoadingDialogue();
         return this.props.navigation.navigate('LookupDetails', {
           params: res.data,
         });
@@ -154,7 +158,8 @@ export default class Dialer extends Component {
   };
 
   render() {
-    const { logicalAddress, isDisabled, status, isDialling } = this.state;
+    const { logicalAddress, isDisabled, status, isDialing } = this.state;
+    let iconName = isDialing ? null : 'keyboard-arrow-left';
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -174,7 +179,7 @@ export default class Dialer extends Component {
         <Navbar
           size={hp('4%')}
           layoutSize={3}
-          leftIconName={'keyboard-arrow-left'}
+          leftIconName={iconName}
           rightIconName={null}
           rightIconColor={colors.blue}
           leftIconColor={colors.iconColor}
@@ -182,7 +187,7 @@ export default class Dialer extends Component {
           leftIconOnPress={this.handleBackPress}
           rightIconOnPress={() => {}}
         />
-        {isDialling ? (
+        {isDialing ? (
           <View style={{ height: hp('25%'), justifyContent: 'center' }}>
             <PulseIndicator color={colors.blue} />
             <Paragraph text={'Requesting...'} styles={styles.requestMessage} />
@@ -235,16 +240,16 @@ export default class Dialer extends Component {
             />
           </View>
           <View style={styles.dialIconLayout}>
-            {!isDialling ? (
-              <Icons
-                name={'phone'}
-                iconStyle={styles.dialIcon}
-                iconColor={colors.white}
-                iconSize={hp('3%')}
-                onPress={this.onDialPress}
-                disabled={isDisabled}
-              />
-            ) : (
+            {/* {!isDialing ? ( */}
+            <Icons
+              name={'phone'}
+              iconStyle={styles.dialIcon}
+              iconColor={colors.white}
+              iconSize={hp('3%')}
+              onPress={this.onDialPress}
+              disabled={isDialing}
+            />
+            {/* ) : (
               <Icons
                 name={'call-end'}
                 iconStyle={[styles.dialIcon, { backgroundColor: colors.red }]}
@@ -253,7 +258,7 @@ export default class Dialer extends Component {
                 onPress={this.onEndPress}
                 disabled={isDisabled}
               />
-            )}
+            )} */}
           </View>
         </View>
       </SafeAreaView>

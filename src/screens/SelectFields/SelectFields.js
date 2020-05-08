@@ -50,13 +50,17 @@ class SelectFields extends Component {
 
   getNavParams = async () => {
     let { navigation, profileFieldNames } = this.props;
-    let { firstName, logicalAddress } = navigation.getParam('params');
+    let {
+      firstName,
+      logicalAddress,
+      filteredProfileNames,
+    } = navigation.getParam('params');
     let { token } = await fetchToken();
     return this.setState({
-      data: profileFieldNames,
+      data: filteredProfileNames ? filteredProfileNames : profileFieldNames,
+      firstName: firstName ? firstName : logicalAddress,
       token,
       logicalAddress,
-      firstName,
     });
   };
 
@@ -134,7 +138,10 @@ class SelectFields extends Component {
             />
           </View>
           <View style={[styles.flatListName, { justifyContent: 'flex-end' }]}>
-            <TouchableOpacity style={styles.radioButtonLayout}>
+            <TouchableOpacity
+              style={styles.radioButtonLayout}
+              onPress={() => this.onPressHandler({ item })}
+            >
               <TouchableOpacity
                 style={
                   item.selected == true

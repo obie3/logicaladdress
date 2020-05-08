@@ -140,6 +140,7 @@ const VerificationScreen = ({ navigation }) => {
     setnPhone(nPhone);
     setOtpLength(app.otpLength);
     setExpoPushToken(expoPushToken);
+    console.log(expoPushToken);
   };
 
   let handleBackPress = async () => {

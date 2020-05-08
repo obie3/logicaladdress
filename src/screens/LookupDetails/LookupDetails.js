@@ -8,10 +8,11 @@ let no_image =
   'https://gravatar.com/avatar/02bf38fddbfe9f82b94203336f9ebc41?s=200&d=retro';
 import ParallaxScrollView from '../beta-src/ParallaxScrollView';
 import Communications from 'react-native-communications';
+import { connect } from 'react-redux';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height / 2;
 
-export default class Settings extends Component {
+class LookupDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,49 +21,66 @@ export default class Settings extends Component {
       addressArray: [],
       phoneArray: [],
       emailArray: [],
+      filteredProfileNames: [],
       logicalAddress: 'Logical Address',
+      isButtonDisabaled: false,
     };
   }
 
   componentDidMount() {
-    let phoneArray = [],
-      nameArray = [],
-      addressArray = [],
-      emailArray = [],
-      res = this.props.navigation.getParam('params'),
+    this.initData();
+  }
+
+  initData = () => {
+    let { navigation, profileFieldNames } = this.props;
+    let res = navigation.getParam('params'),
       data = res.item || res;
 
     let profileImage = data.profileFields.find(
       element => element.key === 'profilePhoto',
     );
 
+    let filteredProfileNames = profileFieldNames.filter(
+      el => !data.profileFields.find(rm => rm.key === el.id),
+    );
+
+    return this.initRenderData(data, profileImage, filteredProfileNames);
+  };
+
+  initRenderData = (data, profileImage, filteredProfileNames) => {
+    let phoneArray = [],
+      nameArray = [],
+      addressArray = [],
+      emailArray = [];
+
     data.profileFields.map(profile => {
-      data[profile.key] = profile.id;
-      let label = this.formatProfileKey(profile.key);
+      let { value, key, id } = profile;
+      data[profile.key] = id;
+      let label = this.formatProfileKey(key);
       let val = {};
 
-      if (profile.key.includes('Name')) {
-        val['id'] = profile.id;
+      if (key.includes('Name')) {
+        val['id'] = id;
         val['key'] = label;
-        val['value'] = profile.value;
+        val['value'] = value;
         nameArray.push(val);
-      } else if (profile.key === 'phone') {
-        val['id'] = profile.id;
+      } else if (key === 'phone') {
+        val['id'] = id;
         val['key'] = label;
-        val['value'] = profile.value;
+        val['value'] = value;
         val['icon'] = 'phone';
         phoneArray.push(val);
-      } else if (profile.key === 'email') {
-        val['id'] = profile.id;
+      } else if (key === 'email') {
+        val['id'] = id;
         val['key'] = label;
-        val['value'] = profile.value;
+        val['value'] = value;
         val['icon'] = 'message';
         emailArray.push(val);
-      } else if (profile.key.includes('Address')) {
-        val['id'] = profile.id;
+      } else if (key.includes('Address')) {
+        val['id'] = id;
         val['key'] = label;
         val['icon'] = 'location-city';
-        val['value'] = profile.value;
+        val['value'] = value;
         addressArray.push(val);
       }
 
@@ -73,16 +91,18 @@ export default class Settings extends Component {
         emailArray,
         logicalAddress: data.logicalAddress,
         img: profileImage ? profileImage.value : no_image,
+        filteredProfileNames,
+        isButtonDisabled: filteredProfileNames.length > 0 ? false : true,
       });
     });
-  }
+  };
 
   handleBackPress = () => this.props.navigation.goBack();
 
   showSelectionPage = () => {
-    let { logicalAddress, nameArray } = this.state;
-    let firstName = nameArray[0].value;
-    let params = { firstName, logicalAddress };
+    let { logicalAddress, nameArray, filteredProfileNames } = this.state;
+    let firstName = nameArray.length > 0 ? nameArray[0].value : logicalAddress;
+    let params = { firstName, logicalAddress, filteredProfileNames };
     return this.props.navigation.navigate('SelectFields', { params });
   };
 
@@ -137,6 +157,7 @@ export default class Settings extends Component {
       addressArray,
       emailArray,
       logicalAddress,
+      isButtonDisabled,
       img,
     } = this.state;
     return (
@@ -227,7 +248,7 @@ export default class Settings extends Component {
           </View>
           <SubmitButton
             title={'Request'}
-            disabled={false}
+            disabled={isButtonDisabled}
             onPress={this.showSelectionPage}
             btnStyle={styles.button}
             titleStyle={styles.buttonTxt}
@@ -237,3 +258,11 @@ export default class Settings extends Component {
     );
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    profileFieldNames: state.ProfileReducer.profileFieldNames,
+  };
+};
+
+export default connect(mapStateToProps)(LookupDetails);
