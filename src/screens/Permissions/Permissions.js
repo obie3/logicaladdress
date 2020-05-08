@@ -99,14 +99,14 @@ class Permissions extends Component {
               iconColor={colors.white}
               iconSize={20}
             />
-            <Icons
+            {/* <Icons
               disabled={false}
               onPress={this.showSettingsPage}
               name={'notifications'}
               iconStyle={styles.navIcon}
               iconColor={colors.white}
               iconSize={20}
-            />
+            /> */}
           </View>
 
           <Paragraph styles={styles.title} text={'Permissions'} />

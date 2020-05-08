@@ -11,6 +11,14 @@ export default styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
 
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#ecf0f1',
+    paddingLeft: wp('3%'),
+    paddingRight: wp('3%'),
+    paddingBottom: hp('4%'),
+  },
+
   headerTextViewTitle: {
     fontSize: 35,
     color: 'white',
@@ -94,16 +102,28 @@ export default styles = StyleSheet.create({
     fontFamily: theme.inputHintFont,
   },
 
-  green: {
-    color: '#075e54',
-    fontSize: 10,
-  },
-
   headerIcons: {
     alignItems: 'center',
     justifyContent: 'center',
     height: 40,
     width: 40,
     borderRadius: 20,
+  },
+
+  button: {
+    ...theme.button,
+    borderRadius: 30,
+    width: '60%',
+    height: 50,
+    marginTop: 25,
+    backgroundColor: '#ecf0f1',
+    borderWidth: 2,
+    borderColor: colors.blue,
+    alignSelf: 'center',
+  },
+
+  buttonTxt: {
+    ...theme.buttonText,
+    color: colors.blue,
   },
 });

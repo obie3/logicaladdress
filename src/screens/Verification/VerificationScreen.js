@@ -131,7 +131,7 @@ const VerificationScreen = ({ navigation }) => {
   };
 
   const getParams = async () => {
-    let { phone } = await fetchLocalStorageData();
+    let { phone, expoPushToken } = await fetchLocalStorageData();
     let { config } = await getAppConfig();
     let { app } = config.data;
     let nPhone = phone.substring(4);

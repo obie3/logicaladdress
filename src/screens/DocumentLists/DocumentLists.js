@@ -96,7 +96,7 @@ export default class DocumentLists extends Component {
                 />
                 <Paragraph
                   text={
-                    'There re no documents in your profile,  \nonce you upload any,  \nthey will show here'
+                    'There are no documents in your profile,  \nonce you upload any,  \nthey will show here'
                   }
                   styles={styles.upladMessage}
                 />

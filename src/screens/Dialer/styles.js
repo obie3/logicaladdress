@@ -8,15 +8,14 @@ import {
 export default styles = StyleSheet.create({
   container: {
     ...theme.container,
-    backgroundColor: colors.backgroundColor,
     justifyContent: 'center',
     alignContent: 'center',
+    backgroundColor: '#ecf0f1',
   },
 
   wrapper: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
   },
 
   fieldLabel: {
@@ -99,25 +98,18 @@ export default styles = StyleSheet.create({
   formLayout: { flex: 1, justifyContent: 'flex-end' },
   textInput: {
     height: hp('8%'),
-    backgroundColor: '#ecf0f1',
-    justifyContent: 'center',
+    //backgroundColor: '#ecf0f1',
+    justifyContent: 'space-around',
     flexDirection: 'row',
-    paddingRight: wp('4%'),
-    paddingLeft: wp('4%'),
-  },
-
-  hrLine: {
-    width: '80%',
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: colors.label,
-    alignSelf: 'center',
+    paddingRight: wp('3%'),
+    paddingLeft: wp('3%'),
   },
 
   contentInputLayout: {
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
-    width: '90%',
+    width: '80%',
   },
 
   inputTextStyle: {
@@ -131,6 +123,7 @@ export default styles = StyleSheet.create({
   deleteIconView: {
     alignItems: 'flex-start',
     justifyContent: 'center',
+    width: '10%',
   },
 
   dialerLayout: { height: hp('50%'), alignItems: 'flex-end' },

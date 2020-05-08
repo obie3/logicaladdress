@@ -1,13 +1,9 @@
 'use strict';
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
-import { Paragraph } from 'components';
+import { Paragraph, SubmitButton } from 'components';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
 let no_image =
   'https://gravatar.com/avatar/02bf38fddbfe9f82b94203336f9ebc41?s=200&d=retro';
 import ParallaxScrollView from '../beta-src/ParallaxScrollView';
@@ -82,6 +78,13 @@ export default class Settings extends Component {
   }
 
   handleBackPress = () => this.props.navigation.goBack();
+
+  showSelectionPage = () => {
+    let { logicalAddress, nameArray } = this.state;
+    let firstName = nameArray[0].value;
+    let params = { firstName, logicalAddress };
+    return this.props.navigation.navigate('SelectFields', { params });
+  };
 
   formatProfileKey = key => {
     let nLabel = key.charAt(0).toUpperCase() + key.slice(1);
@@ -161,15 +164,7 @@ export default class Settings extends Component {
         }}
         leftIconOnPress={() => {}}
       >
-        <ScrollView
-          style={{
-            flex: 1,
-            backgroundColor: '#ecf0f1',
-            paddingLeft: wp('3%'),
-            paddingRight: wp('3%'),
-            paddingBottom: hp('4%'),
-          }}
-        >
+        <ScrollView style={styles.wrapper}>
           <View style={styles.sectionHeaderView}>
             <Paragraph text={'Initials'} styles={styles.sectionHeader} />
           </View>
@@ -230,6 +225,13 @@ export default class Settings extends Component {
               />
             </View>
           </View>
+          <SubmitButton
+            title={'Request'}
+            disabled={false}
+            onPress={this.showSelectionPage}
+            btnStyle={styles.button}
+            titleStyle={styles.buttonTxt}
+          />
         </ScrollView>
       </ParallaxScrollView>
     );

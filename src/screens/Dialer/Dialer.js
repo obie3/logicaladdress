@@ -14,6 +14,7 @@ import colors from 'assets/colors';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { LookupLogicalAddressEndpoint, fetchToken } from 'utils';
 import DropdownAlert from 'react-native-dropdownalert';
+import { PulseIndicator, SkypeIndicator } from 'react-native-indicators';
 
 const NUMBERS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
 let tempAddress = [];
@@ -27,6 +28,7 @@ export default class Dialer extends Component {
       status: true,
       showLoading: false,
       disableNumbers: false,
+      isDialling: false,
     };
   }
 
@@ -37,9 +39,9 @@ export default class Dialer extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
   }
-  showLoadingDialogue = () => this.setState({ showLoading: true });
+  showLoadingDialogue = () => this.setState({ isDialling: true });
 
-  hideLoadingDialogue = () => this.setState({ showLoading: false });
+  hideLoadingDialogue = () => this.setState({ isDialling: false });
 
   showNotification = (type, title, message) => {
     this.hideLoadingDialogue();
@@ -84,6 +86,11 @@ export default class Dialer extends Component {
 
   handleBackPress = () => this.props.navigation.navigate('Navigations');
 
+  onEndPress = () => {
+    this.onDialPress.removeEventListener();
+    this.setState({ isDialling: false });
+  };
+
   onDialPress = async () => {
     this.showLoadingDialogue();
     let res = await fetchToken();
@@ -105,9 +112,10 @@ export default class Dialer extends Component {
         settings,
       );
       const res = await response.json();
+      console.log(res);
       if (typeof res.data === 'undefined') {
         this.hideLoadingDialogue();
-        return this.showNotification('error', 'Message', res.message);
+        return this.showNotification('error', 'Message', res.error.message);
       } else if (res.data.profileFields.length > 0) {
         this.hideLoadingDialogue();
         return this.props.navigation.navigate('LookupDetails', {
@@ -146,9 +154,9 @@ export default class Dialer extends Component {
   };
 
   render() {
-    const { logicalAddress, isDisabled, status, showLoading } = this.state;
+    const { logicalAddress, isDisabled, status, isDialling } = this.state;
     return (
-      <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
+      <SafeAreaView style={styles.container}>
         <StatusBar
           barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
           hidden={false}
@@ -174,17 +182,22 @@ export default class Dialer extends Component {
           leftIconOnPress={this.handleBackPress}
           rightIconOnPress={() => {}}
         />
-
-        <View style={{ height: hp('25%'), justifyContent: 'center' }}>
-          <Paragraph
-            text={'Dial users logical Address \n to connect'}
-            styles={styles.requestMessage}
-          />
-        </View>
-
+        {isDialling ? (
+          <View style={{ height: hp('25%'), justifyContent: 'center' }}>
+            <PulseIndicator color={colors.blue} />
+            <Paragraph text={'Requesting...'} styles={styles.requestMessage} />
+          </View>
+        ) : (
+          <View style={{ height: hp('25%'), justifyContent: 'center' }}>
+            <Paragraph
+              text={'Dial users logical Address \n to connect'}
+              styles={styles.requestMessage}
+            />
+          </View>
+        )}
         <View style={styles.formLayout}>
           <View style={styles.textInput}>
-            <View style={styles.deleteIconView}>
+            <View style={[styles.deleteIconView]}>
               <Icons
                 name={null}
                 iconStyle={styles.deleteIcon}
@@ -198,7 +211,7 @@ export default class Dialer extends Component {
             <View style={styles.contentInputLayout}>
               <Paragraph text={logicalAddress} styles={styles.inputTextStyle} />
             </View>
-            <View style={styles.deleteIconView}>
+            <View style={[styles.deleteIconView, { marginLeft: 10 }]}>
               <Icons
                 name={'chevron-left'}
                 iconStyle={styles.deleteIcon}
@@ -209,7 +222,7 @@ export default class Dialer extends Component {
               />
             </View>
           </View>
-          {/* <View style={styles.hrLine}/> */}
+          <Line />
           <View style={styles.dialerLayout}>
             <FlatList
               extraData={this.state}
@@ -221,16 +234,26 @@ export default class Dialer extends Component {
               showsVerticalScrollIndicator={false}
             />
           </View>
-          <Preloader modalVisible={showLoading} animationType='fade' />
           <View style={styles.dialIconLayout}>
-            <Icons
-              name={'phone'}
-              iconStyle={styles.dialIcon}
-              iconColor={colors.white}
-              iconSize={hp('3%')}
-              onPress={this.onDialPress}
-              disabled={isDisabled}
-            />
+            {!isDialling ? (
+              <Icons
+                name={'phone'}
+                iconStyle={styles.dialIcon}
+                iconColor={colors.white}
+                iconSize={hp('3%')}
+                onPress={this.onDialPress}
+                disabled={isDisabled}
+              />
+            ) : (
+              <Icons
+                name={'call-end'}
+                iconStyle={[styles.dialIcon, { backgroundColor: colors.red }]}
+                iconColor={colors.white}
+                iconSize={hp('3%')}
+                onPress={this.onEndPress}
+                disabled={isDisabled}
+              />
+            )}
           </View>
         </View>
       </SafeAreaView>

@@ -24,6 +24,7 @@ class SelectFields extends Component {
       token: '',
       showLoading: false,
       logicalAddress: '',
+      firstName: '',
       data: [],
     };
   }
@@ -48,12 +49,14 @@ class SelectFields extends Component {
   hideLoadingDialogue = () => this.setState({ showLoading: false });
 
   getNavParams = async () => {
-    let response = this.props.navigation.getParam('params');
+    let { navigation, profileFieldNames } = this.props;
+    let { firstName, logicalAddress } = navigation.getParam('params');
     let { token } = await fetchToken();
     return this.setState({
-      data: this.props.profileFieldNames,
-      token: token,
-      logicalAddress: response.logicalAddress,
+      data: profileFieldNames,
+      token,
+      logicalAddress,
+      firstName,
     });
   };
 
@@ -149,7 +152,7 @@ class SelectFields extends Component {
   };
 
   render() {
-    const { data, showLoading } = this.state;
+    const { data, showLoading, firstName } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar
@@ -176,17 +179,9 @@ class SelectFields extends Component {
           rightIconOnPress={() => {}}
         />
 
-        <View
-          style={{
-            height: '15%',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
+        <View style={styles.wrapper}>
           <Paragraph
-            text={
-              'Select the information you would like \nto request from this connection \nyou can select multiple items.'
-            }
+            text={`${'Select the information you would like \nto request from '}${firstName}${'\nyou can select multiple items.'}`}
             styles={styles.introMessage}
           />
         </View>

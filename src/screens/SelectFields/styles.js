@@ -10,11 +10,16 @@ import {
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: '#ecf0f1',
+  },
+
+  wrapper: {
+    height: '15%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    //backgroundColor: '#ecf0f1'
   },
 
   profileRowItem: {
-    //padding: hp('1.5%'),
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-around',
@@ -22,7 +27,6 @@ export default styles = StyleSheet.create({
   },
 
   flatListItem: {
-    //backgroundColor: '#ecf0f1',
     justifyContent: 'space-around',
     paddingLeft: wp('10%'),
     paddingRight: wp('10%'),
