@@ -8,11 +8,38 @@ import Notification from '../Notification';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import IconWithBadge from './IconWithBadge';
+import styles from './styles';
 
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+const HomeIconWithBadge = props => {
+  return <IconWithBadge parentProps={props} />;
+};
+
+const getTabBarIcon = (navigation, focused, tintColor) => {
+  const { routeName } = navigation.state;
+  let IconComponent = Icon;
+  let iconName;
+  switch (routeName) {
+    case 'Dashboard':
+      iconName = 'home';
+      break;
+    case 'Profile':
+      iconName = 'person';
+      break;
+    case 'Notification':
+      iconName = 'notifications';
+      IconComponent = HomeIconWithBadge;
+      break;
+  }
+  return (
+    <IconComponent
+      name={iconName}
+      size={25}
+      isFocused={focused}
+      color={tintColor}
+    />
+  );
+};
 
 const BottomTab = createBottomTabNavigator(
   {
@@ -24,35 +51,14 @@ const BottomTab = createBottomTabNavigator(
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        switch (routeName) {
-          case 'Dashboard':
-            iconName = 'home';
-            break;
-          case 'Profile':
-            iconName = 'person';
-            break;
-          case 'Notification':
-            iconName = 'notifications';
-            break;
-        }
-        return <Icon name={iconName} color={tintColor} size={hp('4%')} />;
+        return getTabBarIcon(navigation, focused, tintColor);
       },
     }),
 
     tabBarOptions: {
       activeTintColor: colors.blue,
       inactiveTintColor: theme.secondaryTextColor,
-      style: {
-        backgroundColor: colors.white,
-        borderTopWidth: 0,
-        shadowOffset: { width: 5, height: 3 },
-        shadowColor: 'gray',
-        shadowOpacity: 0.2,
-        elevation: 4,
-        height: hp('7%'),
-      },
+      style: styles.bottomTab,
     },
   },
 );

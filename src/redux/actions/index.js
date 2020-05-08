@@ -6,6 +6,7 @@ import ContactActions from './ContactActions';
 import PermissionActions from './PermissionActions';
 import ConnectionRequestActions from './ConnectionRequestActions';
 import ConnectionActions from './ConnectionActions';
+import NotificationActions from './NotificationActions';
 
 export default {
   AuthActions,
@@ -16,4 +17,5 @@ export default {
   PermissionActions,
   ConnectionRequestActions,
   ConnectionActions,
+  NotificationActions,
 };

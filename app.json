@@ -2,20 +2,21 @@
   "expo": {
     "name": "LogicalAddress",
     "slug": "LogicalAddress",
-    "privacy": "public",
+    "privacy": "unlisted",
     "sdkVersion": "36.0.0",
-    "description": "Logical Address Mobile",
+    "description": "Digital identity management software, that keeps you connected to your community",
+    "primaryColor" :  "#0177c1",
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./src/assets/images/androidIcon.png",
     "splash": {
       "image": "./src/assets/images/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#fff"
+      "backgroundColor": "#ffffff"
     },
     "updates": {
       "enabled": true,
@@ -52,7 +53,7 @@
       "buildNumber": "1.0.0",
       "icon": "./src/assets/images/iosIcon.png",
       "splash": {
-        "backgroundColor": "#ecf0f1",
+        "backgroundColor": "#ffffff",
         "resizeMode": "contain",
         "image": "./src/assets/images/splash.png"
       },
@@ -86,6 +87,7 @@
       "androidMode": "collapse",
       "androidCollapsedTitle":"New Messages",
       "iosDisplayInForeground": true,
-      "color" : "#0177c1"    }
+      "color" : "#0177c1"
+    }
   }
 }

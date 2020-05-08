@@ -7,6 +7,7 @@ import ContactReducer from './ContactReducer';
 import PermissionReducer from './PermissionReducer';
 import ConnectionRequestReducer from './ConnectionRequestReducer';
 import ConnectionReducer from './ConnectionReducer';
+import NotificationReducer from './NotificationReducer';
 
 export default rootReducer = combineReducers({
   AuthReducer,
@@ -17,4 +18,5 @@ export default rootReducer = combineReducers({
   PermissionReducer,
   ConnectionRequestReducer,
   ConnectionReducer,
+  NotificationReducer,
 });

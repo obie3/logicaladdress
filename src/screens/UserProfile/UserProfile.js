@@ -58,17 +58,9 @@ export default class UserProfile extends Component {
 
   async componentDidMount() {
     let { token } = await fetchToken();
-    let { navigation } = this.props;
     this.setState({ token });
     this.initData();
-    // this.focusListener = navigation.addListener('didFocus', () => {
-    //   this.initData();
-    // });
   }
-
-  // componentWillUnmount() {
-  //   this.focusListener.remove();
-  // }
 
   showLoadingDialogue = () =>
     this.setState({
@@ -267,7 +259,8 @@ export default class UserProfile extends Component {
         val['id'] = id;
         val['key'] = label;
         val['value'] = value;
-        (val['status'] = isVerified), (val['isEditable'] = false);
+        val['status'] = isVerified;
+        val['isEditable'] = false;
         nameArray.push(val);
       } else if (key === 'phone') {
         val['id'] = id;

@@ -24,8 +24,16 @@ export default styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#ecf0f1',
     flex: 1,
-    paddingTop: hp('3%'),
     paddingHorizontal: wp('3%'),
+  },
+
+  introMessage: {
+    textAlign: 'center',
+    fontFamily: theme.secondaryFont,
+    fontSize: theme.smallFont,
+    color: theme.primaryTextColor,
+    paddingTop: hp('2%'),
+    paddingBottom: hp('2%'),
   },
 
   cardLayout: {

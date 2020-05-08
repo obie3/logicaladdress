@@ -317,6 +317,11 @@ class Settings extends Component {
         />
 
         <View style={styles.wrapper}>
+          <Paragraph
+            text={`${'Click an item to modify \n or make a new entry'}`}
+            styles={styles.introMessage}
+          />
+
           <TouchableOpacity
             onPress={this.showContactTracingPage}
             style={styles.cardLayout}

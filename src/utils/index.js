@@ -1,4 +1,5 @@
 import { AsyncStorage } from 'react-native';
+//https://api.logicaladdress.com
 const ENDPOINT = 'https://logicaladdress-api.herokuapp.com/api/v1/';
 const generateOTPEndpoint = `${ENDPOINT}otp/generate`;
 const RegistrationEndpoint = `${ENDPOINT}auth/register`;

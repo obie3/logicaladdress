@@ -17,8 +17,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { addProfile } from 'redux/actions/ProfileActions';
+import { addNotificationCount } from 'redux/actions/NotificationActions';
 import colors from 'assets/colors';
 import { Notifications } from 'expo';
+import Constants from 'expo-constants';
 
 const slides = [
   {
@@ -53,6 +55,7 @@ class BoardingScreen extends Component {
     this.state = {
       restoring: true,
     };
+    console.log(Constants.manifest.slug);
   }
 
   resetNavigationStack = location => {
@@ -75,6 +78,7 @@ class BoardingScreen extends Component {
 
   handleNotification = notification => {
     Vibration.vibrate();
+    this.props.addNotificationCount();
   };
 
   _renderItem = item => {
@@ -210,9 +214,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setProfile: data => {
-      dispatch(addProfile(data));
-    },
+    setProfile: data => dispatch(addProfile(data)),
+    addNotificationCount: () => dispatch(addNotificationCount()),
   };
 };
 
