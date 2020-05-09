@@ -23,7 +23,7 @@ class LookupDetails extends Component {
       emailArray: [],
       filteredProfileNames: [],
       logicalAddress: 'Logical Address',
-      isButtonDisabaled: false,
+      isButtonDisabled: false,
     };
   }
 

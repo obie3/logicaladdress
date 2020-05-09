@@ -13,6 +13,7 @@ import {
   FetchConnectionRequestEndpoint,
   FetchConnectionEndpoint,
   AppConfigEndpoint,
+  fetchLocalStorageData,
 } from 'utils';
 import {
   Placeholder,
@@ -39,7 +40,10 @@ class Loader extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    let { phone, expoPushToken } = await fetchLocalStorageData();
+    console.log(expoPushToken);
+
     this.getProfile();
   }
 

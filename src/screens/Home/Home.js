@@ -78,6 +78,7 @@ class BoardingScreen extends Component {
 
   handleNotification = notification => {
     Vibration.vibrate();
+    console.log({ notification });
     this.props.addNotificationCount();
   };
 
